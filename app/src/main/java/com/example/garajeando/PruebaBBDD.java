@@ -1,18 +1,41 @@
 package com.example.garajeando;
 
 import android.annotation.SuppressLint;
+import android.location.GnssAntennaInfo;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.material.animation.AnimatableView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class PruebaBBDD extends AppCompatActivity {
 
-    TextView title;
+    EditText idUsuarioEditText, ContrasenaEditText, NombreEditText, ApellidoEditText;
+    Button RegistrarseButton;
+    TextView AvisoTextView;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -26,9 +49,66 @@ public class PruebaBBDD extends AppCompatActivity {
             return insets;
         });
 
-        title = (TextView) findViewById(R.id.PruebaCampo);
-        title.setText("pruebaaaaaaaaaaaaa");
+        idUsuarioEditText = (EditText) findViewById(R.id.IdUsuario);
+        ContrasenaEditText = (EditText) findViewById(R.id.Contrasena);
+        NombreEditText = (EditText) findViewById(R.id.Nombre);
+        ApellidoEditText = (EditText) findViewById(R.id.Apellido);
 
+        AvisoTextView= (TextView) findViewById(R.id.Aviso);
 
+        RegistrarseButton = (Button) findViewById(R.id.Registrarse);
+        RegistrarseButton.setOnClickListener( new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                crearUsuario();
+            }
+        });
+    }
+
+    private void crearUsuario() {
+        String idUsuario = idUsuarioEditText.getText().toString().trim();
+        String Contrasena = ContrasenaEditText.getText().toString().trim();
+        String Nombre = NombreEditText.getText().toString().trim();
+        String Apellido = ApellidoEditText.getText().toString().trim();
+
+        StringRequest peticion = new StringRequest(Request.Method.POST,
+                Constantes.URL_CREARUSUARIO,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String respuesta) {
+                        AvisoTextView.setVisibility(View.VISIBLE);
+
+                        try {
+                            JSONObject objetoJSON = new JSONObject(respuesta);
+                            AvisoTextView.setText(objetoJSON.getString("mensaje"));
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        AvisoTextView.setVisibility(View.VISIBLE);
+                            AvisoTextView.setText("ERROR");
+
+                    }
+                }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map <String,String> parametros = new HashMap<>();
+                parametros.put("IdUsuario", idUsuario);
+                parametros.put("Contrasena", Contrasena);
+                parametros.put("Nombre", Nombre);
+                parametros.put("Apellido", Apellido);
+
+                return parametros;
+            }
+        };
+
+        RequestQueue colaPeticion = Volley.newRequestQueue(this);
+        colaPeticion.add(peticion);
     }
 }
