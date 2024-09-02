@@ -2,7 +2,10 @@ package com.example.garajeando;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +14,7 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.compose.animation.core.Motion;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -36,7 +40,9 @@ public class PruebaBBDD extends AppCompatActivity {
 
     String correoElectronico, contrasena, repetirContrasena, nombre, apellidos;
 
-    @SuppressLint("MissingInflatedId")
+    Boolean contrasenaVisible;
+
+    @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +56,7 @@ public class PruebaBBDD extends AppCompatActivity {
 
         correoElectronicoEditText = (EditText) findViewById(R.id.correoElectronicoEditText);
         contrasenaEditText = (EditText) findViewById(R.id.contrasenaEditText);
+        contrasenaVisible = false;
         repetirContrasenaEditText = (EditText) findViewById(R.id.repetirContrasenaEditText);
         nombreEditText = (EditText) findViewById(R.id.nombreEditText);
         apellidosEditText = (EditText) findViewById(R.id.apellidosEditText);
@@ -64,6 +71,31 @@ public class PruebaBBDD extends AppCompatActivity {
                 crearUsuario();
             }
         });
+
+        contrasenaEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    if(event.getRawX() >= contrasenaEditText.getRight()-contrasenaEditText.getCompoundDrawables()[2].getBounds().width()){
+                        int seleccion = contrasenaEditText.getSelectionEnd();
+                        if(contrasenaVisible){
+                            contrasenaEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ojo_cerrado,0);
+                            contrasenaEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            contrasenaVisible = false;
+                        }else{
+                            contrasenaEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ojo_abierto,0);
+                            contrasenaEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            contrasenaVisible = true;
+                        }
+                        contrasenaEditText.setSelection(seleccion);
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        });
+
     }
 
     private void crearUsuario() {
