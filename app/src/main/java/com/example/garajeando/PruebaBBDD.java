@@ -1,13 +1,12 @@
 package com.example.garajeando;
 
 import android.annotation.SuppressLint;
-import android.location.GnssAntennaInfo;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -18,26 +17,24 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.material.animation.AnimatableView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class PruebaBBDD extends AppCompatActivity {
 
-    EditText idUsuarioEditText, ContrasenaEditText, NombreEditText, ApellidoEditText;
-    Button RegistrarseButton;
-    TextView AvisoTextView;
+    EditText correoElectronicoEditText, contrasenaEditText, repetirContrasenaEditText, nombreEditText, apellidosEditText;
+    Button registrarseButton;
+    TextView avisoTextView;
 
-    String idUsuario, Contrasena, Nombre, Apellido;
+    String correoElectronico, contrasena, repetirContrasena, nombre, apellidos;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -51,15 +48,16 @@ public class PruebaBBDD extends AppCompatActivity {
             return insets;
         });
 
-        idUsuarioEditText = (EditText) findViewById(R.id.IdUsuario);
-        ContrasenaEditText = (EditText) findViewById(R.id.Contrasena);
-        NombreEditText = (EditText) findViewById(R.id.Nombre);
-        ApellidoEditText = (EditText) findViewById(R.id.Apellido);
+        correoElectronicoEditText = (EditText) findViewById(R.id.correoElectronicoEditText);
+        contrasenaEditText = (EditText) findViewById(R.id.contrasenaEditText);
+        repetirContrasenaEditText = (EditText) findViewById(R.id.repetirContrasenaEditText);
+        nombreEditText = (EditText) findViewById(R.id.nombreEditText);
+        apellidosEditText = (EditText) findViewById(R.id.apellidosEditText);
 
-        AvisoTextView= (TextView) findViewById(R.id.Aviso);
+        avisoTextView= (TextView) findViewById(R.id.avisoRegistrarseTextView);
 
-        RegistrarseButton = (Button) findViewById(R.id.Registrarse);
-        RegistrarseButton.setOnClickListener( new View.OnClickListener() {
+        registrarseButton = (Button) findViewById(R.id.registrarseBoton);
+        registrarseButton.setOnClickListener( new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -69,12 +67,14 @@ public class PruebaBBDD extends AppCompatActivity {
     }
 
     private void crearUsuario() {
-        idUsuario = idUsuarioEditText.getText().toString().trim();
-        Contrasena = ContrasenaEditText.getText().toString().trim();
-        Nombre = NombreEditText.getText().toString().trim();
-        Apellido = ApellidoEditText.getText().toString().trim();
+        correoElectronico = correoElectronicoEditText.getText().toString().trim();
+        contrasena = contrasenaEditText.getText().toString().trim();
+        nombre = nombreEditText.getText().toString().trim();
+        apellidos = apellidosEditText.getText().toString().trim();
 
-        peticionCrearUsuario();
+        if(validarCredenciales()){
+            peticionCrearUsuario();
+        }
 
     }
 
@@ -84,11 +84,11 @@ public class PruebaBBDD extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String respuesta) {
-                        AvisoTextView.setVisibility(View.VISIBLE);
+                        avisoTextView.setVisibility(View.VISIBLE);
 
                         try {
                             JSONObject objetoJSON = new JSONObject(respuesta);
-                            AvisoTextView.setText(objetoJSON.getString("mensaje"));
+                            avisoTextView.setText(objetoJSON.getString("mensaje"));
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
@@ -97,8 +97,8 @@ public class PruebaBBDD extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        AvisoTextView.setVisibility(View.VISIBLE);
-                        AvisoTextView.setText("ERROR");
+                        avisoTextView.setVisibility(View.VISIBLE);
+                        avisoTextView.setText("ERROR");
 
                     }
                 }){
@@ -106,15 +106,61 @@ public class PruebaBBDD extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map <String,String> parametros = new HashMap<>();
-                parametros.put("IdUsuario", idUsuario);
-                parametros.put("Contrasena", Contrasena);
-                parametros.put("Nombre", Nombre);
-                parametros.put("Apellido", Apellido);
+                parametros.put("CorreoElectronico", correoElectronico);
+                parametros.put("Contrasena", contrasena);
+                parametros.put("Nombre", nombre);
+                parametros.put("Apellidos", apellidos);
 
                 return parametros;
             }
         };
 
         AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
+    }
+
+    private Boolean validarCredenciales(){
+        correoElectronico = correoElectronicoEditText.getText().toString().trim();
+        contrasena = contrasenaEditText.getText().toString().trim();
+        repetirContrasena = repetirContrasenaEditText.getText().toString().trim();
+
+        Boolean camposValidos = true;
+
+        if(!contrasena.isEmpty() && Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-._¿¡]).{8,}$").matcher(contrasena).matches()){
+            /*At least one upper case English letter, (?=.*?[A-Z])
+            At least one lower case English letter, (?=.*?[a-z])
+            At least one digit, (?=.*?[0-9])
+            At least one special character, (?=.*?[#?!@$%^&*-])
+            Minimum eight in length .{8,} (with the anchors)*/
+            //contrasena correcta
+            if(contrasena.equals(repetirContrasena)){
+                //contrasenas coinciden
+            }else{
+                //no coinciden
+                camposValidos = false;
+                avisoTextView.setVisibility(View.VISIBLE);
+                avisoTextView.setText("Contraseñas no coinciden entre sí.");
+            }
+        }else{
+            //contrasena incorrecta
+            camposValidos = false;
+            avisoTextView.setVisibility(View.VISIBLE);
+            avisoTextView.setText("La contraseña no posee el formato correcto.");
+        }
+
+        if(!correoElectronico.isEmpty() && Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE).matcher(correoElectronico).matches()){
+            //CORREO BIEN
+        }else{
+            camposValidos = false;
+            avisoTextView.setVisibility(View.VISIBLE);
+            avisoTextView.setText("La dirección de correo electrónico no posee el formato correcto.");
+        }
+
+        if(correoElectronico.isEmpty() || contrasena.isEmpty() || nombre.isEmpty() || apellidos.isEmpty()){
+            camposValidos = false;
+            avisoTextView.setVisibility(View.VISIBLE);
+            avisoTextView.setText("Rellene los campos obligatorios.");
+        }
+
+        return camposValidos;
     }
 }

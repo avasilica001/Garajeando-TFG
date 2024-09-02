@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="0dp"
     tools:context=".PruebaBBDD">
 
     <androidx.appcompat.widget.Toolbar
@@ -21,78 +22,99 @@
         app:subtitleTextColor="#FFFFFF" />
 
     <EditText
-        android:id="@+id/IdUsuario"
-        android:layout_width="wrap_content"
+        android:id="@+id/nombreEditText"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Usuario"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.04" />
-
-    <EditText
-        android:id="@+id/Nombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
         android:ems="10"
         android:hint="Nombre"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Contrasena"
-        app:layout_constraintVertical_bias="0.04" />
-
-    <Button
-        android:id="@+id/Registrarse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Registrarse"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Apellido"
-        app:layout_constraintVertical_bias="0.08" />
-
-    <EditText
-        android:id="@+id/Contrasena"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Contraseña"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/IdUsuario"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintVertical_bias="0.04" />
 
     <EditText
-        android:id="@+id/Apellido"
-        android:layout_width="wrap_content"
+        android:id="@+id/apellidosEditText"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
         android:ems="10"
         android:hint="Apellidos"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Nombre"
+        app:layout_constraintTop_toBottomOf="@+id/nombreEditText"
         app:layout_constraintVertical_bias="0.04" />
 
-    <TextView
-        android:id="@+id/Aviso"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/correoElectronicoEditText"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
+        android:ems="10"
+        android:hint="Correo electrónico"
+        android:inputType="text|textEmailAddress|textAutoCorrect"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/apellidosEditText"
+        app:layout_constraintVertical_bias="0.04" />
+
+    <EditText
+        android:id="@+id/contrasenaEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
+        android:ems="10"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/correoElectronicoEditText"
+        app:layout_constraintVertical_bias="0.04" />
+
+    <Button
+        android:id="@+id/registrarseBoton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
+        android:text="Registrarse"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/repetirContrasenaEditText"
+        app:layout_constraintVertical_bias="0.08" />
+
+    <TextView
+        android:id="@+id/avisoRegistrarseTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
         android:text="TextView"
+        android:textAlignment="center"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Registrarse"
+        app:layout_constraintTop_toBottomOf="@+id/registrarseBoton"
         app:layout_constraintVertical_bias="0.08" />
+
+    <EditText
+        android:id="@+id/repetirContrasenaEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
+        android:ems="10"
+        android:hint="Repetir Contraseña"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contrasenaEditText"
+        app:layout_constraintVertical_bias="0.04" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
