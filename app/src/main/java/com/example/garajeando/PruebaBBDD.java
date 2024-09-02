@@ -37,6 +37,8 @@ public class PruebaBBDD extends AppCompatActivity {
     Button RegistrarseButton;
     TextView AvisoTextView;
 
+    String idUsuario, Contrasena, Nombre, Apellido;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +69,16 @@ public class PruebaBBDD extends AppCompatActivity {
     }
 
     private void crearUsuario() {
-        String idUsuario = idUsuarioEditText.getText().toString().trim();
-        String Contrasena = ContrasenaEditText.getText().toString().trim();
-        String Nombre = NombreEditText.getText().toString().trim();
-        String Apellido = ApellidoEditText.getText().toString().trim();
+        idUsuario = idUsuarioEditText.getText().toString().trim();
+        Contrasena = ContrasenaEditText.getText().toString().trim();
+        Nombre = NombreEditText.getText().toString().trim();
+        Apellido = ApellidoEditText.getText().toString().trim();
 
+        peticionCrearUsuario();
+
+    }
+
+    private void peticionCrearUsuario(){
         StringRequest peticion = new StringRequest(Request.Method.POST,
                 Constantes.URL_CREARUSUARIO,
                 new Response.Listener<String>() {
@@ -91,7 +98,7 @@ public class PruebaBBDD extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         AvisoTextView.setVisibility(View.VISIBLE);
-                            AvisoTextView.setText("ERROR");
+                        AvisoTextView.setText("ERROR");
 
                     }
                 }){
@@ -108,7 +115,6 @@ public class PruebaBBDD extends AppCompatActivity {
             }
         };
 
-        RequestQueue colaPeticion = Volley.newRequestQueue(this);
-        colaPeticion.add(peticion);
+        AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
     }
 }
