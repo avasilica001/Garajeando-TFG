@@ -3,7 +3,10 @@
     <style name="Base.Theme.Garajeando" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="homeAsUpIndicator">@drawable/flecha_atras</item>
     </style>
 
-    <style name="Theme.Garajeando" parent="Base.Theme.Garajeando" />
+    <style name="Theme.Garajeando" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="homeAsUpIndicator">@drawable/flecha_atras</item>
+    </style>
 </resources>

@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,17 +14,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Garajeando"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".PruebaBBDD"
-            android:exported="true"
-            android:label="@string/title_activity_prueba_bbdd"
-            android:theme="@style/Theme.Garajeando">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            android:name=".IniciarSesion"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Registrarse"
+            android:exported="true"
+            android:label="Registrarse"
+            android:theme="@style/Theme.Garajeando"
+            android:parentActivityName=".IniciarSesion"/>
     </application>
+
 </manifest>
