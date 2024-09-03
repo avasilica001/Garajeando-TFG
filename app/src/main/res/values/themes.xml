@@ -1,12 +1,24 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Garajeando" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Dia.Theme.Garajeando" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">#9B0017</item>
+        <item name="colorPrimaryDark">#6A0010</item>
+        <item name="colorAccent">#696a6b</item>
         <item name="homeAsUpIndicator">@drawable/flecha_atras</item>
+        <item name="android:colorBackground">#ffffff</item>
+        <item name="android:textColor">#181818</item>
     </style>
 
-    <style name="Theme.Garajeando" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Noche.Theme.Garajeando" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">#6A0010</item>
+        <item name="colorPrimaryDark">#8C0015</item>
+        <item name="colorAccent">#696a6b</item>
         <item name="homeAsUpIndicator">@drawable/flecha_atras</item>
+        <!-- <item name="android:background">@color/white_opaque</item> -->
+        <!-- <item name="android:windowBackground">@color/white_opaque</item> -->
+        <item name="android:colorBackground">#121212</item>
+        <item name="android:textColor">#ddd9e2</item>
     </style>
 </resources>

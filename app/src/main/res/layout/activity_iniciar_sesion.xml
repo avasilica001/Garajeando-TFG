@@ -10,7 +10,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/BarraSuperiorIniciarSesionToolbar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
@@ -24,7 +24,7 @@
         android:id="@+id/IniciarSesionScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="55dp"
         app:layout_constraintTop_toTopOf="@id/BarraSuperiorIniciarSesionToolbar"
         tools:layout_editor_absoluteX="1dp">
 
@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="25dp"
+                android:backgroundTint="#6A0010"
                 android:ems="10"
                 android:hint="Correo Electrónico"
                 android:inputType="text"
@@ -53,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="10dp"
+                android:backgroundTint="#6A0010"
                 android:drawableRight="@drawable/ojo_cerrado"
                 android:ems="10"
                 android:hint="Contrasena"
@@ -80,6 +82,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="10dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
                 android:text="INICIAR SESIÓN"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

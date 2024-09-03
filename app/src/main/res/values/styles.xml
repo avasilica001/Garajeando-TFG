@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="EditTextBasico">
         <item name="android:layout_width">0dp</item>
@@ -10,4 +10,5 @@
         <item name="android:inputType">text</item>
         <item name="android:singleLine">true</item>
     </style>
+
 </resources>
