@@ -79,6 +79,7 @@ public class Registrarse extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 crearUsuario();
+                finish();
             }
         });
 
@@ -148,7 +149,7 @@ public class Registrarse extends AppCompatActivity {
         nombre = nombreEditText.getText().toString().trim();
         apellidos = apellidosEditText.getText().toString().trim();
 
-        if (validarCredenciales()) {
+        if (validarCredencialesR()) {
             try {
                 contrasenaEncriptada = Encriptador.encrypt(contrasena);
             } catch (Exception e) {
@@ -198,7 +199,7 @@ public class Registrarse extends AppCompatActivity {
         AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
     }
 
-    private Boolean validarCredenciales() {
+    private Boolean validarCredencialesR() {
         correoElectronico = correoElectronicoEditText.getText().toString().trim();
         contrasena = contrasenaEditText.getText().toString().trim();
         repetirContrasena = repetirContrasenaEditText.getText().toString().trim();
@@ -230,12 +231,18 @@ public class Registrarse extends AppCompatActivity {
         if (!correoElectronico.isEmpty() && Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE).matcher(correoElectronico).matches()) {
             //correcto
 
-            if (correoElectronico.isEmpty() || contrasena.isEmpty() || nombre.isEmpty() || apellidos.isEmpty()) {
-                camposValidos = false;
-                avisoTextView.setVisibility(View.VISIBLE);
-                avisoTextView.setText("Rellene los campos obligatorios.");
-            }
+        }else{
+            camposValidos = false;
+            avisoTextView.setVisibility(View.VISIBLE);
+            avisoTextView.setText("El correo electrónico no posee un formato correcto.");
         }
+
+        if (correoElectronico.isEmpty() || contrasena.isEmpty() || nombre.isEmpty() || apellidos.isEmpty()) {
+            camposValidos = false;
+            avisoTextView.setVisibility(View.VISIBLE);
+            avisoTextView.setText("Rellene todos los campos antes de continuar.");
+        }
+
         return camposValidos;
     }
 }
