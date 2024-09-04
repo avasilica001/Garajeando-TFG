@@ -87,7 +87,7 @@ public class Registrarse extends AppCompatActivity {
     private static final int PHOTO_CODE=111;
 
     ActivityResultLauncher<String> activityResultLauncherElegirFoto;
-    ActivityResultLauncher<String> activityResultLauncherSacarFoto;
+    ActivityResultLauncher<Uri> activityResultLauncherSacarFoto;
 
     Intent camarai;
 
@@ -146,19 +146,21 @@ public class Registrarse extends AppCompatActivity {
         ContentValues cv = new ContentValues();
         //informacion de la imagen
         cv.put(MediaStore.Images.Media.TITLE, "Nueva Imagen");
+        cv.put(MediaStore.Images.Media.DESCRIPTION, "Nueva Imagen sacada con la cámara");
         //uri de la imagen
         imagen = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
+        //crear intent para la camara
+        Intent camarai = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        camarai.putExtra(MediaStore.EXTRA_OUTPUT, imagen);
 
         activityResultLauncherSacarFoto = registerForActivityResult(
-                new ActivityResultContracts.GetContent(),
-                new ActivityResultCallback<Uri>() {
+                new ActivityResultContracts.TakePicture(),
+                new ActivityResultCallback<Boolean>() {
                     @Override
-                    public void onActivityResult(Uri data) {
-                            // There are no request codes
-
-                            //ver vista previa de la imagen
+                    public void onActivityResult(Boolean result) {
+                        // There are no request code
+                        if (result) {
                             imagenPerfil.setImageURI(imagen);
-                            //guardar la imagen en bitmap para luego subirla a la bd
 
                             //encontrar directorio de la galeria
                             File directorio = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -180,6 +182,7 @@ public class Registrarse extends AppCompatActivity {
                                 //no hace nada
                             }
                         }
+                    }
                 });
 
 
@@ -310,7 +313,7 @@ public class Registrarse extends AppCompatActivity {
 
     //metodo para cuando se usa la camara
     private void abrirCamara() {
-        activityResultLauncherSacarFoto.launch(String.valueOf(imagen));
+        activityResultLauncherSacarFoto.launch(imagen);
     }
 
     //metodo para cuando se elige foto de la galeria
