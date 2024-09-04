@@ -2,23 +2,25 @@
     <!-- Base application theme. -->
     <style name="Dia.Theme.Garajeando" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="colorPrimary">#9B0017</item>
-        <item name="colorPrimaryDark">#6A0010</item>
-        <item name="colorAccent">#696a6b</item>
-        <item name="homeAsUpIndicator">@drawable/flecha_atras</item>
-        <item name="android:colorBackground">#ffffff</item>
-        <item name="android:textColor">#181818</item>
+        <item name="colorPrimary">@color/rojo</item>
+        <item name="colorPrimaryDark">@color/rojo_oscuro</item>
+        <item name="colorAccent">@color/gris_acentuado</item>
+        <item name="homeAsUpIndicator">@drawable/flecha_atras_tema_claro</item>
+        <item name="android:colorBackground">@color/blanco</item>
+        <item name="android:textColor">@color/gris_acentuado</item>
+        <item name="android:textColorPrimary">@color/gris_acentuado</item>
+        <item name="android:textColorHint">@color/gris_oscuro</item>
     </style>
 
     <style name="Noche.Theme.Garajeando" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="colorPrimary">#6A0010</item>
-        <item name="colorPrimaryDark">#8C0015</item>
-        <item name="colorAccent">#696a6b</item>
-        <item name="homeAsUpIndicator">@drawable/flecha_atras</item>
-        <!-- <item name="android:background">@color/white_opaque</item> -->
-        <!-- <item name="android:windowBackground">@color/white_opaque</item> -->
+        <item name="colorPrimary">@color/rojo_oscuro</item>
+        <item name="colorPrimaryDark">@color/rojo</item>
+        <item name="colorAccent">@color/gris_oscuro</item>
+        <item name="homeAsUpIndicator">@drawable/flecha_atras_tema_oscuro</item>
         <item name="android:colorBackground">#121212</item>
-        <item name="android:textColor">#ddd9e2</item>
+        <item name="android:textColor">@color/gris_muy_claro</item>
+        <item name="android:textColorPrimary">@color/gris_muy_claro</item>
+        <item name="android:textColorHint">@color/gris_oscuro</item>
     </style>
 </resources>

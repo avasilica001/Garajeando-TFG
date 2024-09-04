@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="negro">#FF000000</color>
+    <color name="blanco">#FFFFFFFF</color>
+    <color name="gris_muy_claro">#e0e0e0</color>
+    <color name="rojo">#9B0017</color>
+    <color name="rojo_oscuro">#6A0010</color>
+    <color name="rojo_oscuro_oscuro">#52000C</color>
+    <color name="fondo_oscuro">#121212</color>
+    <color name="gris_oscuro">#6D6D6D</color>
+    <color name="gris_acentuado">#292929</color>
 </resources>

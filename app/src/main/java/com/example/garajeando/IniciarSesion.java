@@ -85,14 +85,14 @@ public class IniciarSesion extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= contrasenaEditText.getRight() - contrasenaEditText.getCompoundDrawables()[2].getBounds().width()) {
+                    if (event.getRawX() >= contrasenaEditText.getRight() - contrasenaEditText.getCompoundDrawables()[2].getBounds().width() - 60) {
                         int seleccion = contrasenaEditText.getSelectionEnd();
                         if (contrasenaVisible) {
-                            contrasenaEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ojo_cerrado, 0);
+                            contrasenaEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.candado_cerrado, 0, R.drawable.ojo_cerrado, 0);
                             contrasenaEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
                             contrasenaVisible = false;
                         } else {
-                            contrasenaEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ojo_abierto, 0);
+                            contrasenaEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.candado_cerrado, 0, R.drawable.ojo_abierto, 0);
                             contrasenaEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                             contrasenaVisible = true;
                         }
@@ -129,11 +129,11 @@ public class IniciarSesion extends AppCompatActivity {
         contrasenaVisible = savedInstanceState.getBoolean("contrasenaVisible");
         int seleccion = contrasenaEditText.getSelectionEnd();
         if (contrasenaVisible) {
-            contrasenaEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ojo_abierto, 0);
+            contrasenaEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.candado_cerrado, 0, R.drawable.ojo_abierto, 0);
             contrasenaEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             contrasenaVisible = true;
         } else {
-            contrasenaEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ojo_cerrado, 0);
+            contrasenaEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.candado_cerrado, 0, R.drawable.ojo_cerrado, 0);
             contrasenaEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
             contrasenaVisible = false;
         }
