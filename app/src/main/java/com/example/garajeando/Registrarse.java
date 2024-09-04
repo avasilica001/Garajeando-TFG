@@ -1,6 +1,9 @@
 package com.example.garajeando;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -8,6 +11,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
@@ -20,6 +25,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
@@ -27,8 +33,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -54,6 +62,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import android.Manifest;
+import com.canhub.cropper.CropImage;
+import com.canhub.cropper.CropImageActivity;
 
 public class Registrarse extends AppCompatActivity {
 
@@ -68,15 +78,18 @@ public class Registrarse extends AppCompatActivity {
 
     public static Boolean contrasenaVisible;
 
-    private static final int IMAGE_CODE=112;
-    private static final int PHOTO_CODE=111;
-
     private Uri imagen;
     private Bitmap bimagen;
     private String b64;
     private String nombreimagen;
 
-    ActivityResultLauncher<String> elegirFotoActividad;
+    private static final int IMAGE_CODE=112;
+    private static final int PHOTO_CODE=111;
+
+    ActivityResultLauncher<String> activityResultLauncherElegirFoto;
+
+
+
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     @Override
@@ -116,34 +129,27 @@ public class Registrarse extends AppCompatActivity {
 
         imagenPerfil = (ImageView) findViewById(R.id.fotoPerfilR);
 
-        elegirFotoActividad = registerForActivityResult(new ActivityResultContracts.GetContent(),
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+
+        activityResultLauncherElegirFoto = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
                 new ActivityResultCallback<Uri>() {
                     @Override
-                    public void onActivityResult(Uri result){
-                        imagen = result;
-                        imagenPerfil.setImageURI(result);
+                    public void onActivityResult(Uri data) {
+                        imagen = data;
+                        imagenPerfil.setImageURI(imagen);
                     }
                 });
+
 
         anadirFotoButton = (Button) findViewById(R.id.anadirFotoButtonR);
         anadirFotoButton.bringToFront();
         anadirFotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mirar si la version es mayor o igual a marshmallow
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    //si lo es mirar si se han dado los permisos de lectura
-                    if (ActivityCompat.checkSelfPermission(Registrarse.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        //si no hay permisos de lectura darselos
-                        ActivityCompat.requestPermissions(Registrarse.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, IMAGE_CODE);
-                    } else {
-                        //si ya hay permisos
-                        elegirfoto();
-                    }
-                } else {
-                    //si la version es menor a marshmallow
-                    elegirfoto();
-                }
+                mostrarDialogoSeleccion();
+
             }
         });
 
@@ -215,6 +221,111 @@ public class Registrarse extends AppCompatActivity {
         imagenPerfil.setImageURI(savedInstanceState.getParcelable("imagen"));
     }
 
+    private void mostrarDialogoSeleccion(){
+        String opciones[] = {"Sacar una foto","Seleccionar de la galería"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selecciona una opción para tu foto de perfil");
+        builder.setItems(opciones, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (i == 0){
+                    //se ha de mirar primero si la version es igual o superior a la marshmallow
+                    //si es igual o superior
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        //si no hay permisos para acceder a la cámara, o escribir
+                        if (ActivityCompat.checkSelfPermission(Registrarse.this,android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(Registrarse.this,android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            //dar permisos de camara y escritura
+                            ActivityCompat.requestPermissions(Registrarse.this,new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PHOTO_CODE);
+                        } else {
+                            //si ya hay permisos se abre la camara
+                            abrirCamara();
+                        }
+                    }
+                    //si la version es menor a la marshmallow
+                    else {
+                        abrirCamara();
+                    }
+                }else if (i == 1){
+
+
+                    //mirar si la version es mayor o igual a marshmallow
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        //si lo es mirar si se han dado los permisos de lectura
+                        if (ActivityCompat.checkSelfPermission(Registrarse.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            //si no hay permisos de lectura darselos
+                            ActivityCompat.requestPermissions(Registrarse.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, IMAGE_CODE);
+                        } else {
+                            //si ya hay permisos
+                            elegirfoto();
+                        }
+                    } else {
+                        //si la version es menor a marshmallow
+                        elegirfoto();
+                    }
+                }
+            }
+        });
+        builder.create().show();
+    }
+
+    //metodo para cuando se usa la camara
+    private void abrirCamara() {
+        ContentValues cv = new ContentValues();
+        //informacion de la imagen
+        cv.put(MediaStore.Images.Media.TITLE, "Nueva Imagen");
+        cv.put(MediaStore.Images.Media.DESCRIPTION, "Nueva Imagen sacada con la cámara");
+        //uri de la imagen
+        imagen = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
+        //crear intent para la camara
+        Intent camarai = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        camarai.putExtra(MediaStore.EXTRA_OUTPUT, imagen);
+
+        //startActivityForResult(camarai, 1111);
+
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            Intent data = result.getData();
+
+                            //ver vista previa de la imagen
+                            imagenPerfil.setImageURI(imagen);
+                            //guardar la imagen en bitmap para luego subirla a la bd
+
+                            //encontrar directorio de la galeria
+                            File directorio = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+
+                            //crear nombre de la foto sacada
+                            String tiempo = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+                            nombreimagen = "IMG_" + tiempo + ".png";
+                            File imagenfinal = new File(directorio, nombreimagen);
+
+                            try {
+                                //guardar la foto en un file y enviarla a la galeria
+                                FileOutputStream fos = new FileOutputStream(imagenfinal);
+                                bimagen.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                fos.flush();
+                                fos.close();
+
+                                Toast.makeText(Registrarse.this, "Se ha guardado la imagen en la galería", Toast.LENGTH_SHORT).show();
+                            } catch (Exception e) {
+                                //no hace nada
+                            }
+                        }
+                    }
+                });
+
+        activityResultLauncher.launch(camarai);
+    }
+
+    //metodo para cuando se elige foto de la galeria
+    private void elegirfoto() {
+        activityResultLauncherElegirFoto.launch("image/*");
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -223,7 +334,7 @@ public class Registrarse extends AppCompatActivity {
         if(requestCode==PHOTO_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //se han dado los permisos necesarios
-                //abrirCamara();
+                abrirCamara();
             } else {
                 //no se han dado los permisos necesarios
                 Toast.makeText(this, "No se han aceptado los permisos", Toast.LENGTH_SHORT).show();
@@ -345,9 +456,4 @@ public class Registrarse extends AppCompatActivity {
         return camposValidos;
     }
 
-    private void elegirfoto() {
-        //crear intent para la galeria
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        elegirFotoActividad.launch("image/*");
-    }
 }

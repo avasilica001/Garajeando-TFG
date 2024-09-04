@@ -68,6 +68,9 @@ dependencies {
     debugImplementation libs.ui.tooling
     debugImplementation libs.ui.test.manifest
     implementation 'com.android.volley:volley:1.2.1'
-    implementation 'com.github.dhaval2404:imagepicker:2.1'
-    implementation 'com.github.dhaval2404:imagepicker:2.1'
+
+    implementation libs.picasso
+    implementation libs.circleimageview
+    implementation "com.vanniktech:android-image-cropper:4.6.0"
+
 }
