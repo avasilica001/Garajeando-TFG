@@ -87,8 +87,9 @@ public class Registrarse extends AppCompatActivity {
     private static final int PHOTO_CODE=111;
 
     ActivityResultLauncher<String> activityResultLauncherElegirFoto;
+    ActivityResultLauncher<String> activityResultLauncherSacarFoto;
 
-
+    Intent camarai;
 
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
@@ -129,17 +130,56 @@ public class Registrarse extends AppCompatActivity {
 
         imagenPerfil = (ImageView) findViewById(R.id.fotoPerfilR);
 
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
 
         activityResultLauncherElegirFoto = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 new ActivityResultCallback<Uri>() {
                     @Override
                     public void onActivityResult(Uri data) {
-                        imagen = data;
-                        imagenPerfil.setImageURI(imagen);
+                        if (data != null && !data.equals(Uri.EMPTY)){
+                            imagen = data;
+                            imagenPerfil.setImageURI(imagen);
+                        }
                     }
+                });
+
+        ContentValues cv = new ContentValues();
+        //informacion de la imagen
+        cv.put(MediaStore.Images.Media.TITLE, "Nueva Imagen");
+        //uri de la imagen
+        imagen = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
+
+        activityResultLauncherSacarFoto = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri data) {
+                            // There are no request codes
+
+                            //ver vista previa de la imagen
+                            imagenPerfil.setImageURI(imagen);
+                            //guardar la imagen en bitmap para luego subirla a la bd
+
+                            //encontrar directorio de la galeria
+                            File directorio = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+
+                            //crear nombre de la foto sacada
+                            String tiempo = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+                            nombreimagen = "IMG_" + tiempo + ".png";
+                            File imagenfinal = new File(directorio, nombreimagen);
+
+                            try {
+                                //guardar la foto en un file y enviarla a la galeria
+                                FileOutputStream fos = new FileOutputStream(imagenfinal);
+                                bimagen.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                fos.flush();
+                                fos.close();
+
+                                Toast.makeText(Registrarse.this, "Se ha guardado la imagen en la galería", Toast.LENGTH_SHORT).show();
+                            } catch (Exception e) {
+                                //no hace nada
+                            }
+                        }
                 });
 
 
@@ -270,55 +310,7 @@ public class Registrarse extends AppCompatActivity {
 
     //metodo para cuando se usa la camara
     private void abrirCamara() {
-        ContentValues cv = new ContentValues();
-        //informacion de la imagen
-        cv.put(MediaStore.Images.Media.TITLE, "Nueva Imagen");
-        cv.put(MediaStore.Images.Media.DESCRIPTION, "Nueva Imagen sacada con la cámara");
-        //uri de la imagen
-        imagen = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
-        //crear intent para la camara
-        Intent camarai = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        camarai.putExtra(MediaStore.EXTRA_OUTPUT, imagen);
-
-        //startActivityForResult(camarai, 1111);
-
-        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
-                            Intent data = result.getData();
-
-                            //ver vista previa de la imagen
-                            imagenPerfil.setImageURI(imagen);
-                            //guardar la imagen en bitmap para luego subirla a la bd
-
-                            //encontrar directorio de la galeria
-                            File directorio = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-
-                            //crear nombre de la foto sacada
-                            String tiempo = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-                            nombreimagen = "IMG_" + tiempo + ".png";
-                            File imagenfinal = new File(directorio, nombreimagen);
-
-                            try {
-                                //guardar la foto en un file y enviarla a la galeria
-                                FileOutputStream fos = new FileOutputStream(imagenfinal);
-                                bimagen.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                                fos.flush();
-                                fos.close();
-
-                                Toast.makeText(Registrarse.this, "Se ha guardado la imagen en la galería", Toast.LENGTH_SHORT).show();
-                            } catch (Exception e) {
-                                //no hace nada
-                            }
-                        }
-                    }
-                });
-
-        activityResultLauncher.launch(camarai);
+        activityResultLauncherSacarFoto.launch(String.valueOf(imagen));
     }
 
     //metodo para cuando se elige foto de la galeria
