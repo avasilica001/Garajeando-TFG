@@ -60,6 +60,7 @@ dependencies {
     implementation libs.ui.tooling.preview
     implementation libs.material3
     implementation libs.play.services.cast.framework
+    implementation libs.media3.common
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
@@ -71,6 +72,8 @@ dependencies {
 
     implementation libs.picasso
     implementation libs.circleimageview
-    implementation "com.vanniktech:android-image-cropper:4.6.0"
+    implementation 'com.vanniktech:android-image-cropper:4.6.0'
+
+    implementation 'com.github.yalantis:ucrop:2.2.8'
 
 }

@@ -138,7 +138,11 @@ public class Registrarse extends AppCompatActivity {
                     public void onActivityResult(Uri data) {
                         if (data != null && !data.equals(Uri.EMPTY)){
                             imagen = data;
-                            imagenPerfil.setImageURI(imagen);
+                            //imagenPerfil.setImageURI(imagen);
+
+                            Intent intent2 = new Intent(Registrarse.this, RecortarImagen.class);
+                            intent2.putExtra("data", String.valueOf(imagen));
+                            startActivityForResult(intent2,101);
                         }
                     }
                 });
@@ -451,4 +455,20 @@ public class Registrarse extends AppCompatActivity {
         return camposValidos;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == -1 && requestCode == 101){
+            data.getExtras().get("data");
+            String resultadoRecorte = String.valueOf(data.getExtras().get("data"));
+            Uri uriResultadoRecorte = null;
+
+            if (resultadoRecorte != null){
+                uriResultadoRecorte = Uri.parse(resultadoRecorte);
+                imagen = uriResultadoRecorte;
+                imagenPerfil.setImageURI(uriResultadoRecorte);
+            }
+        }
+
+    }
 }
