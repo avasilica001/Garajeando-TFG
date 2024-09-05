@@ -50,7 +50,7 @@ public class RecortarImagen extends AppCompatActivity {
             UCrop.of(Uri.parse(uri), Uri.fromFile(new File(getCacheDir(), uri_destino)))
                     .withOptions(opciones)
                     .withAspectRatio(1,1)
-                    .withMaxResultSize(1080,1080)
+                    .withMaxResultSize(300,300)
                     .start(RecortarImagen.this);
         }
 

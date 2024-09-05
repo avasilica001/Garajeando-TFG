@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -52,8 +53,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -164,22 +167,7 @@ public class Registrarse extends AppCompatActivity {
                     public void onActivityResult(Boolean result) {
                         // There are no request code
                         if (result) {
-                            //imagenPerfil.setImageURI(imagen);
-
-                            //encontrar directorio de la galeria
-                            File directorio = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-
-                            //crear nombre de la foto sacada
-                            String tiempo = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-                            nombreimagen = "IMG_" + tiempo + ".png";
-                            File imagenfinal = new File(directorio, nombreimagen);
-
                             try {
-                                //guardar la foto en un file y enviarla a la galeria
-                                FileOutputStream fos = new FileOutputStream(imagenfinal);
-                                bimagen.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                                fos.flush();
-                                fos.close();
 
                                 Toast.makeText(Registrarse.this, "Se ha guardado la imagen en la galería", Toast.LENGTH_SHORT).show();
                             } catch (Exception e) {
@@ -372,6 +360,23 @@ public class Registrarse extends AppCompatActivity {
     }
 
     private void peticionCrearUsuario() {
+
+        //para la imagen de uri a bitmap
+        try {
+            bimagen = MediaStore.Images.Media.getBitmap(getContentResolver(),imagen);
+        } catch (IOException e) {
+            //no hace nada
+        }
+
+        //convertir el bitmap de la imagen en base64
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bimagen.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b= baos.toByteArray();
+        b64= Base64.encodeToString(b, Base64.DEFAULT);
+
+        String tiempo = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String nombreImagenFinal = "IMG_" + tiempo + ".png";
+
         StringRequest peticion = new StringRequest(Request.Method.POST,
                 Constantes.URL_CREARUSUARIO,
                 new Response.Listener<String>() {
@@ -403,6 +408,8 @@ public class Registrarse extends AppCompatActivity {
                 parametros.put("Contrasena", contrasenaEncriptada);
                 parametros.put("Nombre", nombre);
                 parametros.put("Apellidos", apellidos);
+                parametros.put("FotoPerfil", b64);
+                parametros.put("NombreFoto", nombreImagenFinal);
 
                 return parametros;
             }
