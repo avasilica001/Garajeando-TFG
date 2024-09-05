@@ -22,5 +22,6 @@
         <item name="android:textColor">@color/gris_muy_claro</item>
         <item name="android:textColorPrimary">@color/gris_muy_claro</item>
         <item name="android:textColorHint">@color/gris_oscuro</item>
+        <item name="colorButtonNormal">@color/rojo_oscuro</item>
     </style>
 </resources>

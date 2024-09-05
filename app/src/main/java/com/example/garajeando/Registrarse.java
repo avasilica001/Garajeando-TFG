@@ -164,7 +164,7 @@ public class Registrarse extends AppCompatActivity {
                     public void onActivityResult(Boolean result) {
                         // There are no request code
                         if (result) {
-                            imagenPerfil.setImageURI(imagen);
+                            //imagenPerfil.setImageURI(imagen);
 
                             //encontrar directorio de la galeria
                             File directorio = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -186,6 +186,9 @@ public class Registrarse extends AppCompatActivity {
                                 //no hace nada
                             }
                         }
+                        Intent intent2 = new Intent(Registrarse.this, RecortarImagen.class);
+                        intent2.putExtra("data", String.valueOf(imagen));
+                        startActivityForResult(intent2,101);
                     }
                 });
 
