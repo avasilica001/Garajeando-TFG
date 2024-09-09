@@ -72,9 +72,8 @@ public class Registrarse extends AppCompatActivity {
     private Uri CarnetReverso;
     private int F_PERFIL = 0, F_FRONTAL = 1, F_REVERSO = 2, target;
 
-    private Bitmap bimagen;
-    private String b64;
-    private String nombreimagen;
+    private Bitmap bperfil, bfrontal, breverso;
+    private String b64p, b64f, b64r;
 
     private static final int IMAGE_CODE=112;
     private static final int PHOTO_CODE=111;
@@ -400,22 +399,38 @@ public class Registrarse extends AppCompatActivity {
     }
 
     private void peticionCrearUsuario() {
+        ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
 
         //para la imagen de uri a bitmap
         try {
-            bimagen = MediaStore.Images.Media.getBitmap(getContentResolver(),imagen);
+
+            if(perfil != null){
+                bperfil = MediaStore.Images.Media.getBitmap(getContentResolver(),perfil);
+
+                bperfil.compress(Bitmap.CompressFormat.PNG, 100, baos1);
+                byte[] b1= baos1.toByteArray();
+                b64p = Base64.encodeToString(b1, Base64.DEFAULT);
+            }
+            bfrontal = MediaStore.Images.Media.getBitmap(getContentResolver(),frontal);
+            breverso = MediaStore.Images.Media.getBitmap(getContentResolver(),reverso);
         } catch (IOException e) {
             //no hace nada
         }
 
-        //convertir el bitmap de la imagen en base64
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bimagen.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] b= baos.toByteArray();
-        b64= Base64.encodeToString(b, Base64.DEFAULT);
+        ByteArrayOutputStream baos2= new ByteArrayOutputStream();
+        bfrontal.compress(Bitmap.CompressFormat.PNG, 100, baos2);
+        byte[] b2= baos2.toByteArray();
+        b64f = Base64.encodeToString(b2, Base64.DEFAULT);
+
+        ByteArrayOutputStream baos3 = new ByteArrayOutputStream();
+        breverso.compress(Bitmap.CompressFormat.PNG, 100, baos2);
+        byte[] b3= baos2.toByteArray();
+        b64r = Base64.encodeToString(b3, Base64.DEFAULT);
 
         String tiempo = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String nombreImagenFinal = "IMG_" + tiempo + ".png";
+        String nombreImagenFinal = "IMG_" + tiempo + "_" + F_PERFIL +".png";
+        String nombreFrontalFinal = "IMG_" + tiempo + "_" + F_FRONTAL +".png";
+        String nombreReversoFinal = "IMG_" + tiempo + "_" + F_REVERSO +".png";
 
         StringRequest peticion = new StringRequest(Request.Method.POST,
                 Constantes.URL_CREARUSUARIO,
@@ -428,7 +443,7 @@ public class Registrarse extends AppCompatActivity {
                             JSONObject objetoJSON = new JSONObject(respuesta);
                             avisoTextView.setText(objetoJSON.getString("mensaje"));
                         } catch (JSONException e) {
-                            throw new RuntimeException(e);
+                            //
                         }
                     }
                 },
@@ -448,8 +463,14 @@ public class Registrarse extends AppCompatActivity {
                 parametros.put("Contrasena", contrasenaEncriptada);
                 parametros.put("Nombre", nombre);
                 parametros.put("Apellidos", apellidos);
-                parametros.put("FotoPerfil", b64);
-                parametros.put("NombreFoto", nombreImagenFinal);
+                if (perfil != null){
+                    parametros.put("FotoPerfil", b64p);
+                    parametros.put("NombreFoto", nombreImagenFinal);
+                }
+                parametros.put("FotoCarnetFrontal", b64f);
+                parametros.put("NombreCarnetFrontal", nombreFrontalFinal);
+                parametros.put("FotoCarnetReverso", b64r);
+                parametros.put("NombreCarnetReverso", nombreReversoFinal);
 
                 return parametros;
             }
