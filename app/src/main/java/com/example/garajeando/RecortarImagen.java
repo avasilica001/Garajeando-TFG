@@ -24,13 +24,15 @@ public class RecortarImagen extends AppCompatActivity {
 
     String resultado;
     String uri;
+    String formatoImagen;
+    int ejeX, ejeY;
 
     @OptIn(markerClass = UnstableApi.class)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_recortar_imagen);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -42,6 +44,15 @@ public class RecortarImagen extends AppCompatActivity {
         if(getIntent().hasExtra("data")){
             resultado = getIntent().getExtras().getString("data");
             uri = resultado;
+            formatoImagen = getIntent().getExtras().getString("formato");
+
+            if(formatoImagen.equals("169")){
+                ejeX = 16;
+                ejeY= 9;
+            }else{
+                ejeX = 1;
+                ejeY= 1;
+            }
 
             String uri_destino = new StringBuilder(UUID.randomUUID().toString()).append(".png").toString();
 
@@ -49,7 +60,7 @@ public class RecortarImagen extends AppCompatActivity {
 
             UCrop.of(Uri.parse(uri), Uri.fromFile(new File(getCacheDir(), uri_destino)))
                     .withOptions(opciones)
-                    .withAspectRatio(1,1)
+                    .withAspectRatio(ejeX,ejeY)
                     .withMaxResultSize(300,300)
                     .start(RecortarImagen.this);
         }

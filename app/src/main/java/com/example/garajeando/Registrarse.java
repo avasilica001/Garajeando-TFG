@@ -1,7 +1,6 @@
 package com.example.garajeando;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,9 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Base64;
@@ -26,18 +23,14 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -47,33 +40,26 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.google.android.gms.cast.framework.media.ImagePicker;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Pattern;
 import android.Manifest;
-import com.canhub.cropper.CropImage;
-import com.canhub.cropper.CropImageActivity;
 
 public class Registrarse extends AppCompatActivity {
 
     private EditText correoElectronicoEditText, contrasenaEditText, repetirContrasenaEditText, nombreEditText, apellidosEditText;
-    private Button registrarseButton, anadirFotoButton;
+    private Button registrarseButton, anadirFotoButton, anadirCarnetFrontal, anadirCarnetReverso;
     private TextView avisoTextView;
-    private ImageView imagenPerfil;
+    private ImageView imagenPerfil, carnetFrontal, carnetReverso;
     Toolbar barraSuperiorRegistrarseToolbar;
 
     private String correoElectronico, contrasena, repetirContrasena, nombre, apellidos, aviso, contrasenaEncriptada, pathImagen;
@@ -81,7 +67,11 @@ public class Registrarse extends AppCompatActivity {
 
     public static Boolean contrasenaVisible;
 
-    private Uri imagen;
+    private Uri imagen, frontal, reverso, perfil;
+    private Uri CarnetFrontal;
+    private Uri CarnetReverso;
+    private int F_PERFIL = 0, F_FRONTAL = 1, F_REVERSO = 2, target;
+
     private Bitmap bimagen;
     private String b64;
     private String nombreimagen;
@@ -131,34 +121,9 @@ public class Registrarse extends AppCompatActivity {
             }
         });
 
-        imagenPerfil = (ImageView) findViewById(R.id.fotoPerfilR);
-
-
-        activityResultLauncherElegirFoto = registerForActivityResult(
-                new ActivityResultContracts.GetContent(),
-                new ActivityResultCallback<Uri>() {
-                    @Override
-                    public void onActivityResult(Uri data) {
-                        if (data != null && !data.equals(Uri.EMPTY)){
-                            imagen = data;
-                            //imagenPerfil.setImageURI(imagen);
-
-                            Intent intent2 = new Intent(Registrarse.this, RecortarImagen.class);
-                            intent2.putExtra("data", String.valueOf(imagen));
-                            startActivityForResult(intent2,101);
-                        }
-                    }
-                });
-
-        ContentValues cv = new ContentValues();
-        //informacion de la imagen
-        cv.put(MediaStore.Images.Media.TITLE, "Nueva Imagen");
-        cv.put(MediaStore.Images.Media.DESCRIPTION, "Nueva Imagen sacada con la cámara");
-        //uri de la imagen
-        imagen = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
-        //crear intent para la camara
-        Intent camarai = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        camarai.putExtra(MediaStore.EXTRA_OUTPUT, imagen);
+        imagenPerfil = (ImageView) findViewById(R.id.fotoPerfilImageViewR);
+        carnetFrontal = (ImageView) findViewById(R.id.fotoCarnetFrontalImageView);
+        carnetReverso = (ImageView) findViewById(R.id.fotoCarnetReversoImageView);
 
         activityResultLauncherSacarFoto = registerForActivityResult(
                 new ActivityResultContracts.TakePicture(),
@@ -176,21 +141,66 @@ public class Registrarse extends AppCompatActivity {
                         }
                         Intent intent2 = new Intent(Registrarse.this, RecortarImagen.class);
                         intent2.putExtra("data", String.valueOf(imagen));
+                        if(target == F_PERFIL){
+                            intent2.putExtra("formato", "11");
+                        }else{
+                            intent2.putExtra("formato", "169");
+                        }
                         startActivityForResult(intent2,101);
                     }
                 });
 
 
-        anadirFotoButton = (Button) findViewById(R.id.anadirFotoButtonR);
+        activityResultLauncherElegirFoto = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri data) {
+                        if (data != null && !data.equals(Uri.EMPTY)){
+                            imagen = data;
+                            //imagenPerfil.setImageURI(imagen);
+
+                            Intent intent2 = new Intent(Registrarse.this, RecortarImagen.class);
+                            intent2.putExtra("data", String.valueOf(imagen));
+                            if(target == F_PERFIL){
+                                intent2.putExtra("formato", "11");
+                            }else{
+                                intent2.putExtra("formato", "169");
+                            }
+                            startActivityForResult(intent2,101);
+                        }
+                    }
+                });
+
+        anadirFotoButton = (Button) findViewById(R.id.anadirFotoPerfilButtonR);
         anadirFotoButton.bringToFront();
         anadirFotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                target = F_PERFIL;
                 mostrarDialogoSeleccion();
-
             }
         });
 
+        anadirCarnetFrontal = (Button) findViewById(R.id.fotoCarnetFrontalAnadirButton);
+        anadirCarnetFrontal.bringToFront();
+        anadirCarnetFrontal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                target = F_FRONTAL;
+                mostrarDialogoSeleccion();
+            }
+        });
+
+        anadirCarnetReverso = (Button) findViewById(R.id.fotoCarnetReversoAnadirButton);
+        anadirCarnetReverso.bringToFront();
+        anadirCarnetReverso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                target = F_REVERSO;
+                mostrarDialogoSeleccion();
+            }
+        });
 
         contrasenaEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -228,8 +238,16 @@ public class Registrarse extends AppCompatActivity {
         outState.putBoolean("contrasenaVisible", contrasenaVisible);
         contrasenaEditText = (EditText) findViewById(R.id.contrasenaEditTextR);
 
-        if(imagen != null && !imagen.equals(Uri.EMPTY)) {
-            outState.putParcelable("imagen", imagen);
+        if(perfil != null && !perfil.equals(Uri.EMPTY)) {
+            outState.putParcelable("perfil", perfil);
+        }
+
+        if(frontal != null && !frontal.equals(Uri.EMPTY)) {
+            outState.putParcelable("frontal", frontal);
+        }
+
+        if(reverso != null && !reverso.equals(Uri.EMPTY)) {
+            outState.putParcelable("reverso", reverso);
         }
     }
 
@@ -255,8 +273,20 @@ public class Registrarse extends AppCompatActivity {
         contrasenaEditText.setSelection(seleccion);
         contrasenaEditText = (EditText) findViewById(R.id.contrasenaEditTextR);
 
-        imagen=savedInstanceState.getParcelable("imagen");
-        imagenPerfil.setImageURI(savedInstanceState.getParcelable("imagen"));
+        perfil = savedInstanceState.getParcelable("perfil");
+        if(perfil != null && !perfil.equals(Uri.EMPTY)) {
+            imagenPerfil.setImageURI(savedInstanceState.getParcelable("perfil"));
+        }
+
+        frontal = savedInstanceState.getParcelable("frontal");
+        if(frontal != null && !frontal.equals(Uri.EMPTY)) {
+            carnetFrontal.setImageURI(savedInstanceState.getParcelable("frontal"));
+        }
+
+        reverso = savedInstanceState.getParcelable("reverso");
+        if(reverso != null && !reverso.equals(Uri.EMPTY)) {
+            carnetReverso.setImageURI(savedInstanceState.getParcelable("reverso"));
+        }
     }
 
     private void mostrarDialogoSeleccion(){
@@ -308,6 +338,16 @@ public class Registrarse extends AppCompatActivity {
 
     //metodo para cuando se usa la camara
     private void abrirCamara() {
+        ContentValues cv = new ContentValues();
+        //informacion de la imagen
+        cv.put(MediaStore.Images.Media.TITLE, "Nueva Imagen");
+        cv.put(MediaStore.Images.Media.DESCRIPTION, "Nueva Imagen sacada con la cámara");
+        //uri de la imagen
+        imagen = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
+        //crear intent para la camara
+        Intent camarai = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        camarai.putExtra(MediaStore.EXTRA_OUTPUT, imagen);
+
         activityResultLauncherSacarFoto.launch(imagen);
     }
 
@@ -462,6 +502,12 @@ public class Registrarse extends AppCompatActivity {
             avisoTextView.setText("Rellene todos los campos antes de continuar.");
         }
 
+        if(String.valueOf(frontal).isEmpty() || String.valueOf(reverso).isEmpty() || frontal == null || reverso == null){
+            camposValidos = false;
+            avisoTextView.setVisibility(View.VISIBLE);
+            avisoTextView.setText("Las fotos del carnet de conducir son obligatorias.");
+        }
+
         return camposValidos;
     }
 
@@ -475,8 +521,17 @@ public class Registrarse extends AppCompatActivity {
 
             if (resultadoRecorte != null){
                 uriResultadoRecorte = Uri.parse(resultadoRecorte);
-                imagen = uriResultadoRecorte;
-                imagenPerfil.setImageURI(uriResultadoRecorte);
+
+                if (target == F_PERFIL){
+                    perfil = uriResultadoRecorte;
+                    imagenPerfil.setImageURI(perfil);
+                }else if(target == F_FRONTAL){
+                    frontal = uriResultadoRecorte;
+                    carnetFrontal.setImageURI(frontal);
+                }else if(target == F_REVERSO){
+                    reverso = uriResultadoRecorte;
+                    carnetReverso.setImageURI(reverso);
+                }
             }
         }
 
