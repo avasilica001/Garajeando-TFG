@@ -36,4 +36,7 @@ public class AdministradorPeticiones {
         getRequestQueue().add(req);
     }
 
+    public void cancelAll(String peticion) {
+        peticionCola.cancelAll(peticion);
+    }
 }
