@@ -6,4 +6,6 @@ public class Constantes {
     public static final String URL_CREARUSUARIO = URL_PRINCIPAL+"CrearUsuario.php";
     public static final String URL_VERIFICARUSUARIO = URL_PRINCIPAL+"VerificarUsuario.php";
     public static final String URL_OBTENERCOMUNIDADES = URL_PRINCIPAL+"ObtenerComunidades.php";
+    public static final String URL_UNIRSEACOMUNIDAD = URL_PRINCIPAL+"UnirseAComunidad.php";
+    public static final String URL_CREARCOMUNIDAD = URL_PRINCIPAL+"CrearComunidad.php";
     }

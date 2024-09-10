@@ -2,10 +2,14 @@ package com.example.garajeando;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -26,10 +30,16 @@ import java.util.Map;
 
 public class Principal extends AppCompatActivity {
 
-    String idUsuario;
-    TextView pruebaTextView;
+    String idUsuario, codInvitacion, nombreComunidad, codInvitacionComunidadCreada;
+
+    TextView pruebaTextView, codigoComunidadCreadaTextView, avisoCodInvitacionTextView, sinComunidadesTextView;
+    EditText codigoInvitacionEditText, nombreComunidadEditText;
+    Button unirseComunidadButton, crearUnaComunidadButton, crearComunidadButton;
+
     Context context = this;
-    int numComunidades;
+
+    int numComunidades = -1;
+    Boolean numComunidadesObtenido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +54,101 @@ public class Principal extends AppCompatActivity {
 
         idUsuario = getIntent().getExtras().getString("idUsuario");
 
+        if(numComunidades == -1){
+            obtenerComunidades();
+        }
+
         pruebaTextView = (TextView) findViewById(R.id.prueba);
         pruebaTextView.setText(String.valueOf(idUsuario));
 
-        obtenerComunidades();
-        numComunidades = Integer.parseInt(String.valueOf(pruebaTextView.getText()));
+        sinComunidadesTextView = (TextView) findViewById(R.id.SinComunidadesTextView);
+        avisoCodInvitacionTextView = (TextView) findViewById(R.id.avisoCodInvitacionTextView);
 
-        if (numComunidades == 0){
+        codigoComunidadCreadaTextView = (TextView) findViewById(R.id.codigoInvitacionComunidadCreadaTextView);
 
+
+        codigoInvitacionEditText = (EditText) findViewById(R.id.invitacionComunidadEditText);
+        nombreComunidadEditText = (EditText) findViewById(R.id.nombreComunidadEditText);
+
+        unirseComunidadButton = (Button) findViewById(R.id.unirseComunidadButton);
+        unirseComunidadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unirseAComunidad();
+            }
+        });
+
+        crearUnaComunidadButton = (Button) findViewById(R.id.crearUnaComunidadButton);
+        crearUnaComunidadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sinComunidadesTextView.setVisibility(View.GONE);
+                codigoInvitacionEditText.setVisibility(View.GONE);
+                unirseComunidadButton.setVisibility(View.GONE);
+                crearUnaComunidadButton.setVisibility(View.GONE);
+                nombreComunidadEditText.setVisibility(View.VISIBLE);
+                crearComunidadButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+        crearComunidadButton = (Button) findViewById(R.id.crearComunidadButton);
+        crearComunidadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                crearComunidad();
+            }
+        });
+
+        if(numComunidades > 0){
+            avisoCodInvitacionTextView.setVisibility(View.GONE);
+            codigoComunidadCreadaTextView.setVisibility(View.GONE);
+            nombreComunidadEditText.setVisibility(View.GONE);
+            crearComunidadButton.setVisibility(View.GONE);
+            crearUnaComunidadButton.setVisibility(View.GONE);
+            sinComunidadesTextView.setVisibility(View.GONE);
+            codigoInvitacionEditText.setVisibility(View.GONE);
+            unirseComunidadButton.setVisibility(View.GONE);
         }
+        else{
+            avisoCodInvitacionTextView.setVisibility(View.GONE);
+            codigoComunidadCreadaTextView.setVisibility(View.GONE);
+            sinComunidadesTextView.setVisibility(View.VISIBLE);
+            codigoInvitacionEditText.setVisibility(View.VISIBLE);
+            unirseComunidadButton.setVisibility(View.VISIBLE);
+            crearUnaComunidadButton.setVisibility(View.VISIBLE);
+            nombreComunidadEditText.setVisibility(View.GONE);
+            crearComunidadButton.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("numComunidades", numComunidades);
+        outState.putBoolean("avisoCodInvitacionVisible", avisoCodInvitacionTextView.getVisibility() == View.VISIBLE);
+        outState.putBoolean("codigoComunidadCreada", codigoComunidadCreadaTextView.getVisibility() == View.VISIBLE);
+        outState.putBoolean("sinComunidades", sinComunidadesTextView.getVisibility() == View.VISIBLE);
+        outState.putBoolean("codigoInvitacion", codigoInvitacionEditText.getVisibility() == View.VISIBLE);
+        outState.putBoolean("unirseComunidad", unirseComunidadButton.getVisibility() == View.VISIBLE);
+        outState.putBoolean("crearUnaComunidad", crearUnaComunidadButton.getVisibility() == View.VISIBLE);
+        outState.putBoolean("nombreComunidad", nombreComunidadEditText.getVisibility() == View.VISIBLE);
+        outState.putBoolean("crearComunidad", crearComunidadButton.getVisibility() == View.VISIBLE);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        numComunidades = savedInstanceState.getInt("numComunidades");
+        if(savedInstanceState.getBoolean("avisoCodInvitacionVisible")){avisoCodInvitacionTextView.setVisibility(View.VISIBLE);}else{avisoCodInvitacionTextView.setVisibility(View.GONE);}
+        if(savedInstanceState.getBoolean("codigoComunidadCreada")){codigoComunidadCreadaTextView.setVisibility(View.VISIBLE);}else{codigoComunidadCreadaTextView.setVisibility(View.GONE);}
+        if(savedInstanceState.getBoolean("sinComunidades")){sinComunidadesTextView.setVisibility(View.VISIBLE);}else{sinComunidadesTextView.setVisibility(View.GONE);}
+        if(savedInstanceState.getBoolean("codigoInvitacion")){codigoInvitacionEditText.setVisibility(View.VISIBLE);}else{codigoInvitacionEditText.setVisibility(View.GONE);}
+        if(savedInstanceState.getBoolean("unirseComunidad")){unirseComunidadButton.setVisibility(View.VISIBLE);}else{unirseComunidadButton.setVisibility(View.GONE);}
+        if(savedInstanceState.getBoolean("crearUnaComunidad")){crearUnaComunidadButton.setVisibility(View.VISIBLE);}else{crearUnaComunidadButton.setVisibility(View.GONE);}
+        if(savedInstanceState.getBoolean("nombreComunidad")){nombreComunidadEditText.setVisibility(View.VISIBLE);}else{nombreComunidadEditText.setVisibility(View.GONE);}
+        if(savedInstanceState.getBoolean("crearComunidad")){crearComunidadButton.setVisibility(View.VISIBLE);}else{crearComunidadButton.setVisibility(View.GONE);}
     }
 
     public void obtenerComunidades(){
@@ -64,7 +160,29 @@ public class Principal extends AppCompatActivity {
                         try {
                             JSONObject objetoJSON = new JSONObject(respuesta);
                             pruebaTextView.setText(String.valueOf(objetoJSON.getJSONArray("mensaje").length()));
+                            numComunidades = Integer.parseInt(String.valueOf(objetoJSON.getJSONArray("mensaje").length()));
                             AdministradorPeticiones.getInstance(context).cancelAll("peticion");
+
+                            /*if (numComunidades > 0){
+                                avisoCodInvitacionTextView.setVisibility(View.GONE);
+                                codigoComunidadCreadaTextView.setVisibility(View.GONE);
+                                nombreComunidadEditText.setVisibility(View.GONE);
+                                crearComunidadButton.setVisibility(View.GONE);
+                                crearUnaComunidadButton.setVisibility(View.GONE);
+                                sinComunidadesTextView.setVisibility(View.GONE);
+                                codigoInvitacionEditText.setVisibility(View.GONE);
+                                unirseComunidadButton.setVisibility(View.GONE);
+                            }
+                            else{
+                                avisoCodInvitacionTextView.setVisibility(View.GONE);
+                                codigoComunidadCreadaTextView.setVisibility(View.GONE);
+                                sinComunidadesTextView.setVisibility(View.VISIBLE);
+                                codigoInvitacionEditText.setVisibility(View.VISIBLE);
+                                unirseComunidadButton.setVisibility(View.VISIBLE);
+                                crearUnaComunidadButton.setVisibility(View.VISIBLE);
+                                nombreComunidadEditText.setVisibility(View.GONE);
+                                crearComunidadButton.setVisibility(View.GONE);
+                            }*/
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
@@ -90,5 +208,101 @@ public class Principal extends AppCompatActivity {
 
         peticion.setTag("peticion");
         AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
+    }
+
+    public void unirseAComunidad() {
+        codInvitacion = codigoInvitacionEditText.getText().toString().trim();
+        if (!String.valueOf(codInvitacion).isEmpty()) {
+            codInvitacion = codigoInvitacionEditText.getText().toString().trim();
+            StringRequest peticion = new StringRequest(Request.Method.POST,
+                    Constantes.URL_UNIRSEACOMUNIDAD,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String respuesta) {
+                            try {
+                                JSONObject objetoJSON = new JSONObject(respuesta);
+                                pruebaTextView.setText(objetoJSON.getString("mensaje"));
+                                AdministradorPeticiones.getInstance(context).cancelAll("peticion");
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            pruebaTextView.setVisibility(View.VISIBLE);
+                            pruebaTextView.setText("ERROR");
+
+                        }
+                    }) {
+                @Nullable
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> parametros = new HashMap<>();
+                    parametros.put("IdUsuario", idUsuario);
+                    parametros.put("CodInvitacion", codInvitacion);
+
+                    return parametros;
+                }
+            };
+
+            peticion.setTag("peticion");
+            AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
+        }else{
+            pruebaTextView.setText("Es necesario introducir un código para poder unirse a una comunidad.");
+        }
+    }
+
+    public void crearComunidad(){
+        nombreComunidad = nombreComunidadEditText.getText().toString().trim();
+        if (!String.valueOf(nombreComunidad).isEmpty()) {
+            codInvitacion = codigoInvitacionEditText.getText().toString().trim();
+            StringRequest peticion = new StringRequest(Request.Method.POST,
+                    Constantes.URL_CREARCOMUNIDAD,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String respuesta) {
+                            try {
+                                JSONObject objetoJSON = new JSONObject(respuesta);
+                                if (String.valueOf(objetoJSON.getJSONObject("mensaje")).startsWith("{")){
+                                    codInvitacionComunidadCreada = String.valueOf(objetoJSON.getJSONObject("mensaje").getString("CodInvitacion"));
+                                }
+                                codigoComunidadCreadaTextView.setText(String.valueOf(codInvitacionComunidadCreada));
+                                AdministradorPeticiones.getInstance(context).cancelAll("peticion");
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            pruebaTextView.setVisibility(View.VISIBLE);
+                            pruebaTextView.setText("ERROR");
+
+                        }
+                    }) {
+                @Nullable
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> parametros = new HashMap<>();
+                    parametros.put("IdUsuario", idUsuario);
+                    parametros.put("NombreComunidad", nombreComunidad);
+
+                    return parametros;
+                }
+            };
+
+            peticion.setTag("peticion");
+            AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
+
+            codigoComunidadCreadaTextView.setVisibility(View.VISIBLE);
+            avisoCodInvitacionTextView.setVisibility(View.VISIBLE);
+
+
+        }else{
+            pruebaTextView.setText("Es necesario introducir un nombre para poder crear una comunidad.");
+        }
     }
 }

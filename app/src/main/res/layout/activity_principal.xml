@@ -20,11 +20,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/prueba">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/LayoutDentroScroll"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="100dp">
 
             <TextView
                 android:id="@+id/SinComunidadesTextView"
@@ -35,15 +39,15 @@
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="0dp" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/InvitacionComunidadeditText"
+                android:id="@+id/invitacionComunidadEditText"
                 style="@style/EditTextBasico"
                 android:layout_width="0dp"
                 android:layout_height="55dp"
                 android:layout_marginHorizontal="25dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/fondo_personalizado_elemento"
                 android:drawableStart="@drawable/comunidad"
                 android:drawablePadding="12dp"
@@ -67,7 +71,36 @@
                 android:text="UNIRSE A LA COMUNIDAD"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/InvitacionComunidadeditText" />
+                app:layout_constraintTop_toBottomOf="@id/invitacionComunidadEditText" />
+
+            <Button
+                android:id="@+id/crearUnaComunidadButton"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/fondo_personalizado_elemento"
+                android:text="CREAR UNA COMUNIDAD"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/unirseComunidadButton" />
+
+            <EditText
+                android:id="@+id/nombreComunidadEditText"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/fondo_personalizado_elemento"
+                android:drawableStart="@drawable/texto"
+                android:ems="10"
+                android:hint="Nombre Comunidad"
+                android:inputType="text"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/crearUnaComunidadButton" />
 
             <Button
                 android:id="@+id/crearComunidadButton"
@@ -79,7 +112,33 @@
                 android:text="CREAR COMUNIDAD"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/unirseComunidadButton" />
+                app:layout_constraintTop_toBottomOf="@+id/nombreComunidadEditText" />
+
+            <TextView
+                android:id="@+id/avisoCodInvitacionTextView"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:text="Invita a más personas a la comunidad utilizando el siguiente código:"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/crearComunidadButton" />
+
+            <TextView
+                android:id="@+id/codigoInvitacionComunidadCreadaTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textSize="34sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/avisoCodInvitacionTextView" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
