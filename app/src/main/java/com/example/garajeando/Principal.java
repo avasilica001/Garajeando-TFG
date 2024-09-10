@@ -38,7 +38,6 @@ public class Principal extends AppCompatActivity {
     Context context = this;
 
     int numComunidades = -1;
-    Boolean numComunidadesObtenido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,77 +52,55 @@ public class Principal extends AppCompatActivity {
 
         idUsuario = getIntent().getExtras().getString("idUsuario");
 
-        if(numComunidades == -1){
-            obtenerComunidades();
-        }
-
-        avisoUnirseComunidadTextView = (TextView) findViewById(R.id.avisoUnirseComunidadTextView);
-
-        sinComunidadesTextView = (TextView) findViewById(R.id.SinComunidadesTextView);
-        avisoCodInvitacionTextView = (TextView) findViewById(R.id.avisoCodInvitacionTextView);
-
-        codigoComunidadCreadaTextView = (TextView) findViewById(R.id.codigoInvitacionComunidadCreadaTextView);
-
-
-        codigoInvitacionEditText = (EditText) findViewById(R.id.invitacionComunidadEditText);
-        nombreComunidadEditText = (EditText) findViewById(R.id.nombreComunidadEditText);
-
-        unirseComunidadButton = (Button) findViewById(R.id.unirseComunidadButton);
-        unirseComunidadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                unirseAComunidad();
+            if (savedInstanceState == null & numComunidades == -1) {
+                    obtenerComunidades();
             }
-        });
 
-        crearUnaComunidadButton = (Button) findViewById(R.id.crearUnaComunidadButton);
-        crearUnaComunidadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sinComunidadesTextView.setVisibility(View.GONE);
-                codigoInvitacionEditText.setVisibility(View.GONE);
-                unirseComunidadButton.setVisibility(View.GONE);
-                crearUnaComunidadButton.setVisibility(View.GONE);
-                nombreComunidadEditText.setVisibility(View.VISIBLE);
-                crearComunidadButton.setVisibility(View.VISIBLE);
-                avisoUnirseComunidadTextView.setVisibility(View.GONE);
-            }
-        });
+            avisoUnirseComunidadTextView = (TextView) findViewById(R.id.avisoUnirseComunidadTextView);
 
-        crearComunidadButton = (Button) findViewById(R.id.crearComunidadButton);
-        crearComunidadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                crearComunidad();
-            }
-        });
+            sinComunidadesTextView = (TextView) findViewById(R.id.SinComunidadesTextView);
+            avisoCodInvitacionTextView = (TextView) findViewById(R.id.avisoCodInvitacionTextView);
 
-        if(numComunidades > 0){
-            avisoCodInvitacionTextView.setVisibility(View.GONE);
-            codigoComunidadCreadaTextView.setVisibility(View.GONE);
-            nombreComunidadEditText.setVisibility(View.GONE);
-            crearComunidadButton.setVisibility(View.GONE);
-            crearUnaComunidadButton.setVisibility(View.GONE);
-            sinComunidadesTextView.setVisibility(View.GONE);
-            codigoInvitacionEditText.setVisibility(View.GONE);
-            unirseComunidadButton.setVisibility(View.GONE);
-            avisoUnirseComunidadTextView.setVisibility(View.GONE);
-        }
-        else{
-            avisoCodInvitacionTextView.setVisibility(View.GONE);
-            codigoComunidadCreadaTextView.setVisibility(View.GONE);
-            sinComunidadesTextView.setVisibility(View.VISIBLE);
-            codigoInvitacionEditText.setVisibility(View.VISIBLE);
-            unirseComunidadButton.setVisibility(View.VISIBLE);
-            crearUnaComunidadButton.setVisibility(View.VISIBLE);
-            nombreComunidadEditText.setVisibility(View.GONE);
-            crearComunidadButton.setVisibility(View.GONE);
-            avisoUnirseComunidadTextView.setVisibility(View.GONE);
-        }
+            codigoComunidadCreadaTextView = (TextView) findViewById(R.id.codigoInvitacionComunidadCreadaTextView);
+
+
+            codigoInvitacionEditText = (EditText) findViewById(R.id.invitacionComunidadEditText);
+            nombreComunidadEditText = (EditText) findViewById(R.id.nombreComunidadEditText);
+
+            unirseComunidadButton = (Button) findViewById(R.id.unirseComunidadButton);
+            unirseComunidadButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    unirseAComunidad();
+                }
+            });
+
+            crearUnaComunidadButton = (Button) findViewById(R.id.crearUnaComunidadButton);
+            crearUnaComunidadButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sinComunidadesTextView.setVisibility(View.GONE);
+                    codigoInvitacionEditText.setVisibility(View.GONE);
+                    unirseComunidadButton.setVisibility(View.GONE);
+                    crearUnaComunidadButton.setVisibility(View.GONE);
+                    nombreComunidadEditText.setVisibility(View.VISIBLE);
+                    crearComunidadButton.setVisibility(View.VISIBLE);
+                    avisoUnirseComunidadTextView.setVisibility(View.GONE);
+                }
+            });
+
+            crearComunidadButton = (Button) findViewById(R.id.crearComunidadButton);
+            crearComunidadButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    crearComunidad();
+                }
+            });
+
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putInt("numComunidades", numComunidades);
@@ -175,6 +152,30 @@ public class Principal extends AppCompatActivity {
                             JSONObject objetoJSON = new JSONObject(respuesta);
                             numComunidades = Integer.parseInt(String.valueOf(objetoJSON.getJSONArray("mensaje").length()));
                             AdministradorPeticiones.getInstance(context).cancelAll("peticion");
+
+                            if(numComunidades > 0){
+                                avisoCodInvitacionTextView.setVisibility(View.GONE);
+                                codigoComunidadCreadaTextView.setVisibility(View.GONE);
+                                nombreComunidadEditText.setVisibility(View.GONE);
+                                crearComunidadButton.setVisibility(View.GONE);
+                                crearUnaComunidadButton.setVisibility(View.GONE);
+                                sinComunidadesTextView.setVisibility(View.GONE);
+                                codigoInvitacionEditText.setVisibility(View.GONE);
+                                unirseComunidadButton.setVisibility(View.GONE);
+                                avisoUnirseComunidadTextView.setVisibility(View.GONE);
+                            }
+                            else{
+                                avisoCodInvitacionTextView.setVisibility(View.GONE);
+                                codigoComunidadCreadaTextView.setVisibility(View.GONE);
+                                sinComunidadesTextView.setVisibility(View.VISIBLE);
+                                codigoInvitacionEditText.setVisibility(View.VISIBLE);
+                                unirseComunidadButton.setVisibility(View.VISIBLE);
+                                crearUnaComunidadButton.setVisibility(View.VISIBLE);
+                                nombreComunidadEditText.setVisibility(View.GONE);
+                                crearComunidadButton.setVisibility(View.GONE);
+                                avisoUnirseComunidadTextView.setVisibility(View.GONE);
+                            }
+
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
