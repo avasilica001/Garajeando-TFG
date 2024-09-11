@@ -191,7 +191,7 @@ public class IniciarSesion extends AppCompatActivity {
                             JSONObject objetoJSON = new JSONObject(respuesta);
                             //avisoTextView.setText(objetoJSON.getString("mensaje"));
 
-                            Intent intent = new Intent(IniciarSesion.this, Principal.class);
+                            Intent intent = new Intent(IniciarSesion.this, TusComunidades.class);
                             intent.putExtra("idUsuario", objetoJSON.getString("mensaje"));
                             startActivityForResult(intent,1);
 
@@ -221,6 +221,5 @@ public class IniciarSesion extends AppCompatActivity {
 
         AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
     }
-
 
 }

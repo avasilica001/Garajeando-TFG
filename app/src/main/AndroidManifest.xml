@@ -24,7 +24,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".Principal"
+            android:name=".ComunidadElegida"
+            android:exported="false" />
+        <activity
+            android:name=".ComunidadPrincipal"
+            android:exported="false" />
+        <activity
+            android:name=".TusComunidades"
             android:exported="false" />
         <activity
             android:name=".RecortarImagen"
