@@ -6,6 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+
 public class AdministradorPeticiones {
     private static AdministradorPeticiones miAdministradorPeticiones;
     private  RequestQueue peticionCola;
@@ -38,5 +39,9 @@ public class AdministradorPeticiones {
 
     public void cancelAll(String peticion) {
         peticionCola.cancelAll(peticion);
+    }
+
+    public interface VolleyCallBack {
+        void onSuccess();
     }
 }

@@ -2,6 +2,8 @@ package com.example.garajeando;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.Toolbar;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -39,9 +42,10 @@ public class ComunidadElegida extends AppCompatActivity {
 
     private String usuario, idComunidad, nombreComunidad, codInvitacion, rolComunidad;
 
-    private int numCoches;
+    private int numCoches, numCochesOtrasComunidades;
 
     private ArrayList<Coche> coches = new ArrayList<Coche>();
+    private ArrayList<Coche> cochesOtrasComunidades = new ArrayList<Coche>();
 
     private ListaCochesAdapter adapterCo;
 
@@ -51,11 +55,13 @@ public class ComunidadElegida extends AppCompatActivity {
     private Toolbar miComunidadToolbar;
     private RecyclerView misCochesRecyclerView;
 
-    JSONArray respuestaCoches;
+    JSONArray respuestaCoches, respuestaCochesOtrasComunidades;
 
     ListView l_coches;
 
     LinearLayoutManager linearLayoutManagerCoches;
+
+    String[] opciones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +114,7 @@ public class ComunidadElegida extends AppCompatActivity {
 
     private void limpiarArrayListsCoches(){
         coches.clear();
+        cochesOtrasComunidades.clear();
     }
 
     private void guardarCoches(){
@@ -117,6 +124,25 @@ public class ComunidadElegida extends AppCompatActivity {
                 JSONObject jsonCoches = respuestaCoches.getJSONObject(i);
 
                 coches.add(new Coche(jsonCoches.getString("IdCoche"),
+                        jsonCoches.getString("Propietario"),
+                        jsonCoches.getString("Matricula"),
+                        jsonCoches.getString("Marca"),
+                        jsonCoches.getString("Modelo"),
+                        jsonCoches.getString("Transmision"),
+                        jsonCoches.getString("Combustible"),
+                        jsonCoches.getString("Descripcion"),
+                        Integer.parseInt(jsonCoches.getString("Plazas")),
+                        Integer.parseInt(jsonCoches.getString("Puertas")),
+                        Boolean.parseBoolean(jsonCoches.getString("AireAcondicionado")),
+                        Boolean.parseBoolean(jsonCoches.getString("Bluetooth")),
+                        Boolean.parseBoolean(jsonCoches.getString("GPS"))));
+            }
+
+            for (int i = 0; i < respuestaCochesOtrasComunidades.length(); i++)
+            {
+                JSONObject jsonCoches = respuestaCochesOtrasComunidades.getJSONObject(i);
+
+                cochesOtrasComunidades.add(new Coche(jsonCoches.getString("IdCoche"),
                         jsonCoches.getString("Propietario"),
                         jsonCoches.getString("Matricula"),
                         jsonCoches.getString("Marca"),
@@ -144,16 +170,19 @@ public class ComunidadElegida extends AppCompatActivity {
                         try {
                             JSONObject objetoJSON = new JSONObject(respuesta);
                             numCoches = Integer.parseInt(String.valueOf(objetoJSON.getJSONArray("mensaje").length()));
+                            numCochesOtrasComunidades = Integer.parseInt(String.valueOf(objetoJSON.getJSONArray("cochesOtrasComunidades").length()));
 
                             limpiarArrayListsCoches();
                             respuestaCoches = objetoJSON.getJSONArray("mensaje");
+                            respuestaCochesOtrasComunidades = objetoJSON.getJSONArray("cochesOtrasComunidades");;
                             guardarCoches();
 
 
                             linearLayoutManagerCoches = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
-                            adapterCo = new ListaCochesAdapter(activity, activity, coches, usuario, idComunidad);
+                            adapterCo = new ListaCochesAdapter(activity, activity, coches, usuario, idComunidad, numCoches, opciones);
                             misCochesRecyclerView.setLayoutManager(linearLayoutManagerCoches);
                             misCochesRecyclerView.setAdapter(adapterCo);
+                            adapterCo.notifyDataSetChanged();
 
                             //se crea el adaptar propio
                             //adapterCo = new ListaCochesAdapter(activity, activity, p_ids, p_propietarios, p_matriculas, p_marcas, p_modelos, p_plazas, p_puertas, p_transmisiones, p_combustibles, p_airesacondicionados, p_bluetooths, p_gpss, p_descripciones, usuario);
@@ -189,4 +218,78 @@ public class ComunidadElegida extends AppCompatActivity {
         peticion.setTag("peticion");
         AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
     }
+
+    public void dialogoAnadirCoche(){
+        opciones = new String[numCochesOtrasComunidades+1];
+        opciones[0] = "Añade un coche nuevo";
+
+        for (int i = 1; i < numCochesOtrasComunidades+1; i++) {
+            opciones[i] = cochesOtrasComunidades.get(i-1).getMatricula();
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        if (numCochesOtrasComunidades > 0){
+            builder.setTitle("Selecciona un coche ya existente o crea uno nuevo");
+            builder.setItems(opciones, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    if(i == 0){
+                        Intent intent = new Intent(context, AnadirCoche.class);
+
+                        intent.putExtra("usuario", usuario);
+                        intent.putExtra("idComunidad", idComunidad);
+                        activity.startActivityForResult(intent, 3);
+                    } else {
+                        anadirCocheAComunidad(cochesOtrasComunidades.get(i-1).getIdCoche());
+                        coches.add(cochesOtrasComunidades.get(i-1));
+                        cochesOtrasComunidades.remove(i-1);
+                        numCochesOtrasComunidades=numCochesOtrasComunidades-1;
+                        adapterCo.notifyDataSetChanged();
+                    }
+                }});
+            builder.create().show();
+        } else {
+            Intent intent = new Intent(context, AnadirCoche.class);
+
+            intent.putExtra("usuario", usuario);
+            intent.putExtra("idComunidad", idComunidad);
+            activity.startActivityForResult(intent, 3);
+        }
+    }
+
+    private void anadirCocheAComunidad(String idCocheAnadido){
+        StringRequest peticion = new StringRequest(Request.Method.POST,
+                Constantes.URL_ANADIRCOCHEACOMUNIDAD,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String respuesta) {
+                        try {
+                            JSONObject objetoJSON = new JSONObject(respuesta);
+                            AdministradorPeticiones.getInstance(context).cancelAll("peticion");
+                        } catch (JSONException e) {
+                            //throw new RuntimeException(e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //
+                    }
+                }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("IdCoche", idCocheAnadido);
+                parametros.put("IdComunidad", idComunidad);
+
+                return parametros;
+            }
+        };
+
+        peticion.setTag("peticion");
+        AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
+    }
+
 }

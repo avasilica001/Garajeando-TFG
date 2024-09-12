@@ -1,7 +1,11 @@
 package com.example.garajeando;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +18,39 @@ import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.StringRequest;
 import com.google.common.math.PairedStatsAccumulator;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import com.bumptech.glide.Glide;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.CocheHolder> {
 
@@ -31,19 +60,27 @@ public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.
 
     //arraylist para cada columna en la bd
     private ArrayList<Coche> coches=new ArrayList<Coche>();
+    private ArrayList<String> idCoches = new ArrayList<String>();
+    private ArrayList<String> matriculas = new ArrayList<String>();
 
     CardView l_coches;
 
     String usuario, idComunidad;
+    Integer numCochesOtrasComunidades;
+    JSONArray respuestaComunidades;
+
+    String[] opciones;
 
 
 
-    public ListaCochesAdapter(Activity activity, Activity context, ArrayList<Coche> coches, String usuario, String idComunidad) {
+    public ListaCochesAdapter(Activity activity, Activity context, ArrayList<Coche> coches, String usuario, String idComunidad, Integer numCochesOtrasComunidades, String[] opciones) {
         this.context = context;
         this.activity = activity;
         this.coches=coches;
         this.usuario=usuario;
         this.idComunidad=idComunidad;
+        this.numCochesOtrasComunidades=numCochesOtrasComunidades;
+        this.opciones=opciones;
     }
 
     @NonNull
@@ -84,18 +121,12 @@ public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.
             holder.descripcion = coches.get(p).getDescripcion();
         }
 
-        //listener cuando se pulsa la pelicula
         holder.card_coche.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if ((getItemCount() - 1) == p){
-                    Intent intent = new Intent(context, AnadirCoche.class);
-
-                    intent.putExtra("usuario", usuario);
-                    intent.putExtra("idComunidad", idComunidad);
-                    activity.startActivityForResult(intent, 3);
-
+                    ((ComunidadElegida) activity).dialogoAnadirCoche();
                 }else{
                     Intent intent = new Intent(context, CocheElegido.class);
 
@@ -144,8 +175,6 @@ public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.
             imagenCocheImageView = (ImageView) itemView.findViewById(R.id.imagenPreviaCocheImageView);
             anadirCocheButton = (Button) itemView.findViewById(R.id.anadirCocheButton);
             card_coche = (CardView) itemView.findViewById(R.id.card_coche);
-
-
         }
     }
 }
