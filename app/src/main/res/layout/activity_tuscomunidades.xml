@@ -40,9 +40,11 @@
                 android:layout_height="wrap_content"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="10dp"
-                tools:layout_editor_absoluteX="25dp"
-                tools:listitem="@layout/layout_comunidades"
-                android:nestedScrollingEnabled="true"></ListView>
+                android:nestedScrollingEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/layout_comunidades"></ListView>
 
 
             <TextView

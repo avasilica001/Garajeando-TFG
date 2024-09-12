@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ListaComunidadesAdapter extends ArrayAdapter<String> {
 
@@ -20,10 +22,7 @@ public class ListaComunidadesAdapter extends ArrayAdapter<String> {
     private Activity activity;
 
     //arraylist para cada columna en la bd
-    private ArrayList<String> ids=new ArrayList<>();
-    private ArrayList<String> nombres=new ArrayList<>();
-    private ArrayList<String> codInvitaciones=new ArrayList<>();
-    private ArrayList<String> roles=new ArrayList<>();
+    private ArrayList<Comunidad> comunidades=new ArrayList<Comunidad>();
 
     CardView l_comunidades;
 
@@ -31,14 +30,12 @@ public class ListaComunidadesAdapter extends ArrayAdapter<String> {
 
 
 
-    public ListaComunidadesAdapter(Activity activity, Activity context, ArrayList<String> ids, ArrayList<String> nombres, ArrayList<String> codInvitaciones, ArrayList<String> roles, String usuario) {
-        super(context, R.layout.layout_comunidades, nombres);
+    public ListaComunidadesAdapter(Activity activity, Activity context, ArrayList<Comunidad> comunidades, String usuario) {
+        super(context, R.layout.layout_comunidades, comunidades.stream().map(Comunidad::getNombre).collect(Collectors.toList()));
         this.context = context;
         this.activity = activity;
-        this.ids=ids;
-        this.nombres=nombres;
-        this.codInvitaciones=codInvitaciones;
-        this.roles=roles;
+        this.comunidades=comunidades;
+        this.usuario=usuario;
     }
 
     public View getView(int p, View view, ViewGroup parent) {
@@ -50,7 +47,7 @@ public class ListaComunidadesAdapter extends ArrayAdapter<String> {
         l_comunidades= l.findViewById(R.id.card_comunidad);
 
         //se muestran los elementos de la peliculas en la posicion que se ha pasado
-        t_titulo.setText(String.valueOf(nombres.get(p)));
+        t_titulo.setText(comunidades.get(p).getNombre());
 
         //listener cuando se pulsa la pelicula
         l_comunidades.setOnClickListener(new View.OnClickListener() {
@@ -58,10 +55,10 @@ public class ListaComunidadesAdapter extends ArrayAdapter<String> {
             public void onClick(View v) {
                 //se pasan todos los datos para ver la pelicula
                 Intent intent = new Intent(context, ComunidadElegida.class);
-                intent.putExtra("idComunidad", String.valueOf(ids.get(p)));
-                intent.putExtra("nombreComunidad", String.valueOf(nombres.get(p)));
-                intent.putExtra("codInvitacion", String.valueOf(codInvitaciones.get(p)));
-                intent.putExtra("rolComunidad", String.valueOf(roles.get(p)));
+                intent.putExtra("idComunidad", comunidades.get(p).getIdComunidad());
+                intent.putExtra("nombreComunidad", comunidades.get(p).getNombre());
+                intent.putExtra("codInvitacion", comunidades.get(p).getCodInvitacion());
+                intent.putExtra("rolComunidad", comunidades.get(p).getRol());
                 intent.putExtra("usuario", usuario);
 
                 activity.startActivityForResult(intent, 1);

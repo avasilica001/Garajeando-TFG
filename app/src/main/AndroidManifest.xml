@@ -24,6 +24,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".AnadirCoche"
+            android:exported="false" />
+        <activity
+            android:name=".CocheElegido"
+            android:exported="false" />
+        <activity
             android:name=".ComunidadElegida"
             android:exported="false" />
         <activity

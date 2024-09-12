@@ -49,11 +49,7 @@ public class TusComunidades extends AppCompatActivity {
     int numComunidades = -1;
     JSONArray respuestaComunidades;
 
-    //arraylist con las columnas de la tabla comunidades
-    private ArrayList<String> p_idComunidad=new ArrayList<>();
-    private ArrayList<String> p_nombreComunidad=new ArrayList<>();
-    private ArrayList<String> p_codInvitacionComunidad=new ArrayList<>();
-    private ArrayList<String> p_rolComunidad=new ArrayList<>();
+    private ArrayList<Comunidad> comunidades=new ArrayList<Comunidad>();
 
     private ListaComunidadesAdapter adapterC;
 
@@ -120,6 +116,7 @@ public class TusComunidades extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
+        outState.putString("usuario", idUsuario);
         outState.putInt("numComunidades", numComunidades);
         outState.putBoolean("comunidadCreada", comunidadCreada);
         outState.putBoolean("avisoCodInvitacion", avisoCodInvitacionTextView.getVisibility() == View.VISIBLE);
@@ -140,6 +137,7 @@ public class TusComunidades extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
+        idUsuario = savedInstanceState.getString("usuario");
         numComunidades = savedInstanceState.getInt("numComunidades");
         comunidadCreada = savedInstanceState.getBoolean("comunidadCreada");
 
@@ -183,7 +181,7 @@ public class TusComunidades extends AppCompatActivity {
                             guardarComunidades();
 
                             //se crea el adaptar propio
-                            adapterC = new ListaComunidadesAdapter(activity, activity, p_idComunidad, p_nombreComunidad, p_codInvitacionComunidad, p_rolComunidad, idUsuario);
+                            adapterC = new ListaComunidadesAdapter(activity, activity, comunidades, idUsuario);
                             l = (ListView) findViewById(R.id.listaComunidadesListViewC);
                             l.setAdapter(adapterC);
 
@@ -329,10 +327,7 @@ public class TusComunidades extends AppCompatActivity {
             {
                 JSONObject json = respuestaComunidades.getJSONObject(i);
                 //se obtienen los datos del json y se setean para poder verse
-                p_idComunidad.add(json.getString("IdComunidad"));
-                p_nombreComunidad.add(json.getString("Nombre"));
-                p_codInvitacionComunidad.add(json.getString("CodInvitacion"));
-                p_rolComunidad.add(json.getString("Rol"));
+                comunidades.add(new Comunidad(json.getString("IdComunidad"),json.getString("Nombre"),json.getString("CodInvitacion"),json.getString("Rol")));
             }
         }catch (Exception e){
             //no hace nada
@@ -342,9 +337,6 @@ public class TusComunidades extends AppCompatActivity {
     //vaciar elementos de los arraylists
     public void limpiarArrayLists(){
         //vaciar todos los elementos del array
-        p_idComunidad.clear();
-        p_nombreComunidad.clear();
-        p_codInvitacionComunidad.clear();
-        p_rolComunidad.clear();
+        comunidades.clear();
     }
 }

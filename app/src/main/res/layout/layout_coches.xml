@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_coche"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    app:cardElevation="0dp">
+
+    <RelativeLayout
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@drawable/fondo_personalizado_elemento">
+
+        <Button
+            android:id="@+id/anadirCocheButton"
+            android:layout_width="48dp"
+            android:layout_height="55dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginHorizontal="53dp"
+            android:layout_marginVertical="50dp"
+            android:clickable="false"
+            android:contextClickable="false"
+            android:foreground="@drawable/mas"
+            android:linksClickable="false"
+            android:longClickable="false"
+            app:toggleCheckedStateOnClick="false" />
+
+        <ImageView
+            android:id="@+id/imagenPreviaCocheImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginVertical="12dp"
+            app:srcCompat="@drawable/coche" />
+
+        <TextView
+            android:id="@+id/matriculaCocheTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imagenPreviaCocheImageView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="0dp"
+            android:text="TextView"
+            android:textAlignment="center" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

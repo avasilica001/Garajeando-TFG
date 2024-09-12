@@ -18,16 +18,6 @@
         android:layout_marginHorizontal="25dp"
         android:background="@drawable/fondo_personalizado_elemento">
 
-        <ImageView
-            android:id="@+id/comunidadesImagenC"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:visibility="visible"
-            app:layout_constraintDimensionRatio="1:1"
-            app:srcCompat="@drawable/comunidad" />
-
         <TextView
             android:id="@+id/nombreComunidadTextViewC"
             android:layout_width="0dp"
