@@ -16,6 +16,7 @@ composeBom = "2024.04.01"
 picasso = "2.5.2"
 playServicesCastFramework = "21.5.0"
 media3Common = "1.4.1"
+gridlayout = "1.0.0"
 
 [libraries]
 android-image-cropper = { module = "com.theartofdev.edmodo:android-image-cropper", version.ref = "androidImageCropper" }
@@ -40,6 +41,7 @@ ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
 play-services-cast-framework = { group = "com.google.android.gms", name = "play-services-cast-framework", version.ref = "playServicesCastFramework" }
 media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3Common" }
+gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version.ref = "gridlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

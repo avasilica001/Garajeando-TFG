@@ -10,4 +10,5 @@ public class Constantes {
     public static final String URL_CREARCOMUNIDAD = URL_PRINCIPAL+"CrearComunidad.php";
     public static final String URL_OBTENERCOCHES = URL_PRINCIPAL+"ObtenerCoches.php";
     public static final String URL_ANADIRCOCHEACOMUNIDAD = URL_PRINCIPAL+"AnadirCocheExistenteAComunidad.php";
+    public static final String URL_OBTENERFOTOSCOCHE = URL_PRINCIPAL+"ObtenerFotosCoche.php";
     }
