@@ -108,6 +108,8 @@ public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.
 
             holder.id = coches.get(p).getIdCoche();
             holder.propietario = coches.get(p).getPropietario();
+            holder.nombrePropietario = coches.get(p).getNombrePropietario();
+            holder.apellidosPropietario = coches.get(p).getApellidosPropietario();
             holder.matricula = coches.get(p).getMatricula();
             holder.marca = coches.get(p).getMarca();
             holder.modelo = coches.get(p).modelo;
@@ -134,6 +136,8 @@ public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.
                     intent.putExtra("idComunidad", idComunidad);
                     intent.putExtra("idCoche", coches.get(p).getIdCoche());
                     intent.putExtra("propietario", coches.get(p).getPropietario());
+                    intent.putExtra("nombrePropietario", coches.get(p).getNombrePropietario());
+                    intent.putExtra("apellidosPropietario", coches.get(p).getApellidosPropietario());
                     intent.putExtra("matricula", coches.get(p).getMatricula());
                     intent.putExtra("marca", coches.get(p).getMarca());
                     intent.putExtra("modelo", coches.get(p).getModelo());
@@ -165,7 +169,7 @@ public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.
         Button anadirCocheButton;
         CardView card_coche;
 
-        String id, propietario, matricula, marca, modelo, transmision, combustible, descripcion;
+        String id, propietario, nombrePropietario, apellidosPropietario, matricula, marca, modelo, transmision, combustible, descripcion;
         Integer plazas, puertas;
         Boolean aireacondicionado, bluetooth, gps;
 

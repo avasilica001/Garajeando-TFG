@@ -125,6 +125,8 @@ public class ComunidadElegida extends AppCompatActivity {
 
                 coches.add(new Coche(jsonCoches.getString("IdCoche"),
                         jsonCoches.getString("Propietario"),
+                        jsonCoches.getString("NombrePropietario"),
+                        jsonCoches.getString("ApellidosPropietario"),
                         jsonCoches.getString("Matricula"),
                         jsonCoches.getString("Marca"),
                         jsonCoches.getString("Modelo"),
@@ -144,6 +146,8 @@ public class ComunidadElegida extends AppCompatActivity {
 
                 cochesOtrasComunidades.add(new Coche(jsonCoches.getString("IdCoche"),
                         jsonCoches.getString("Propietario"),
+                        jsonCoches.getString("NombrePropietario"),
+                        jsonCoches.getString("ApellidosPropietario"),
                         jsonCoches.getString("Matricula"),
                         jsonCoches.getString("Marca"),
                         jsonCoches.getString("Modelo"),
@@ -183,14 +187,6 @@ public class ComunidadElegida extends AppCompatActivity {
                             misCochesRecyclerView.setLayoutManager(linearLayoutManagerCoches);
                             misCochesRecyclerView.setAdapter(adapterCo);
                             adapterCo.notifyDataSetChanged();
-
-                            //se crea el adaptar propio
-                            //adapterCo = new ListaCochesAdapter(activity, activity, p_ids, p_propietarios, p_matriculas, p_marcas, p_modelos, p_plazas, p_puertas, p_transmisiones, p_combustibles, p_airesacondicionados, p_bluetooths, p_gpss, p_descripciones, usuario);
-                            //l_coches = (ListView) findViewById(R.id.listaCochesListView);
-                            //l_coches.setAdapter(adapterCo);
-
-                            //cuando se modifican datos notificar para que actualice
-                            //adapterCo.notifyDataSetChanged();
 
                             AdministradorPeticiones.getInstance(context).cancelAll("peticion");
                         } catch (JSONException e) {

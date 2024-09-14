@@ -1,9 +1,11 @@
 package com.example.garajeando;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -31,7 +33,7 @@ public class CocheElegido extends AppCompatActivity {
 
     private String usuario, idComunidad;
 
-    String idCoche, propietario, matricula, marca, modelo, transmision, combustible, descripcion;
+    String idCoche, propietario, nombrePropietario, apellidosPropietario, matricula, marca, modelo, transmision, combustible, descripcion;
     Integer plazas, puertas;
     Boolean aireAcondicionado, bluetooth, gps;
 
@@ -44,8 +46,10 @@ public class CocheElegido extends AppCompatActivity {
     private JSONArray respuestaFotos;
 
     ImageView imagenPrincipalImageView;
+    TextView propietarioTextView, marcaTextView, modeloTextView, plazasTextView, puertasTextView, transmisionTextView, combustibleTextView, aireAcondicionadoTextView, bluetoothTextView, gpsTextView, descripcionTextView;
     String nombreFotoPrincipal;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +69,13 @@ public class CocheElegido extends AppCompatActivity {
         obtenerFotosCoche();
 
         propietario = getIntent().getExtras().getString("propietario");
+        nombrePropietario = getIntent().getExtras().getString("nombrePropietario");
+        apellidosPropietario = getIntent().getExtras().getString("apellidosPropietario");
         matricula = getIntent().getExtras().getString("matricula");
+
+        setSupportActionBar(findViewById(R.id.matriculaCocheElegidoToolbar));
+        getSupportActionBar().setTitle(matricula);
+
         marca = getIntent().getExtras().getString("marca");
         modelo = getIntent().getExtras().getString("modelo");
         plazas = getIntent().getExtras().getInt("plazas");
@@ -78,8 +88,31 @@ public class CocheElegido extends AppCompatActivity {
         descripcion = getIntent().getExtras().getString("descripcion");
 
         imagenPrincipalImageView = (ImageView) findViewById(R.id.imagenPrincipalCocheImageView);
+        propietarioTextView = (TextView) findViewById(R.id.propietarioTextView);
+        propietarioTextView.setText(nombrePropietario + " " + apellidosPropietario);
+        marcaTextView = (TextView) findViewById(R.id.marcaTextView);
+        marcaTextView.setText(marca);
+        modeloTextView = (TextView) findViewById(R.id.modeloTextView);
+        modeloTextView.setText(modelo);
+        plazasTextView = (TextView) findViewById(R.id.plazasTextView);
+        plazasTextView.setText(String.valueOf(plazas));
+        puertasTextView = (TextView) findViewById(R.id.puertasTextView);
+        puertasTextView.setText(String.valueOf(puertas));
+        transmisionTextView = (TextView) findViewById(R.id.transmisionTextView);
+        transmisionTextView.setText(transmision);
+        combustibleTextView = (TextView) findViewById(R.id.combustibleTextView);
+        combustibleTextView.setText(combustible);
+        aireAcondicionadoTextView = (TextView) findViewById(R.id.aireAcondicionadoTextView);
+        if(aireAcondicionado){aireAcondicionadoTextView.setText("Sí");} else{aireAcondicionadoTextView.setText("No");}
+        bluetoothTextView = (TextView) findViewById(R.id.bluetoothTextView);
+        if(bluetooth){bluetoothTextView.setText("Sí");} else{bluetoothTextView.setText("No");}
+        gpsTextView = (TextView) findViewById(R.id.gpsTextView);
+        if(gps){gpsTextView.setText("Sí");} else{gpsTextView.setText("No");}
+        descripcionTextView = (TextView) findViewById(R.id.descripcionTextView);
+        descripcionTextView.setText(descripcion);
 
         fotosGridView = (GridView) findViewById(R.id.imagenesSecundariasCocheGridView);
+
 
     }
 
@@ -100,14 +133,6 @@ public class CocheElegido extends AppCompatActivity {
                             fotosCocheAdapter = new FotosCocheAdapter(context, nombreFotosCoche, numFotos);
                             fotosGridView.setAdapter(fotosCocheAdapter);
                             //fotosCocheAdapter.notifyDataSetChanged();
-
-                            //se crea el adaptar propio
-                            //adapterCo = new ListaCochesAdapter(activity, activity, p_ids, p_propietarios, p_matriculas, p_marcas, p_modelos, p_plazas, p_puertas, p_transmisiones, p_combustibles, p_airesacondicionados, p_bluetooths, p_gpss, p_descripciones, usuario);
-                            //l_coches = (ListView) findViewById(R.id.listaCochesListView);
-                            //l_coches.setAdapter(adapterCo);
-
-                            //cuando se modifican datos notificar para que actualice
-                            //adapterCo.notifyDataSetChanged();
 
                             AdministradorPeticiones.getInstance(context).cancelAll("peticion");
                         } catch (JSONException e) {

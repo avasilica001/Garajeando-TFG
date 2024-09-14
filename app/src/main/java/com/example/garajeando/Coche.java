@@ -2,13 +2,15 @@ package com.example.garajeando;
 
 public class Coche {
 
-    String idCoche, propietario, matricula, marca, modelo, transmision, combustible, descripcion;
+    String idCoche, propietario, nombrePropietario, apellidosPropietario, matricula, marca, modelo, transmision, combustible, descripcion;
     Integer plazas, puertas;
     Boolean aireAcondicionado, bluetooth, gps;
 
-    public Coche(String idCoche, String propietario, String matricula, String marca, String modelo, String transmision, String combustible, String descripcion, Integer plazas, Integer puertas, Boolean aireAcondicionado, Boolean bluetooth, Boolean gps) {
+    public Coche(String idCoche, String propietario, String nombrePropietario, String apellidosPropietario, String matricula, String marca, String modelo, String transmision, String combustible, String descripcion, Integer plazas, Integer puertas, Boolean aireAcondicionado, Boolean bluetooth, Boolean gps) {
         this.idCoche=idCoche;
         this.propietario=propietario;
+        this.nombrePropietario=nombrePropietario;
+        this.apellidosPropietario=apellidosPropietario;
         this.matricula=matricula;
         this.marca=marca;
         this.modelo=modelo;
@@ -64,6 +66,14 @@ public class Coche {
 
     public void setAireAcondicionado(Boolean aireAcondicionado) {
         this.aireAcondicionado = aireAcondicionado;
+    }
+
+    public String getNombrePropietario() {
+        return nombrePropietario;
+    }
+
+    public void setNombrePropietario(String nombrePropietario) {
+        this.nombrePropietario = nombrePropietario;
     }
 
     public void setBluetooth(Boolean bluetooth) {
@@ -124,5 +134,13 @@ public class Coche {
 
     public Boolean getGps() {
         return gps;
+    }
+
+    public String getApellidosPropietario() {
+        return apellidosPropietario;
+    }
+
+    public void setApellidosPropietario(String apellidosPropietario) {
+        this.apellidosPropietario = apellidosPropietario;
     }
 }
