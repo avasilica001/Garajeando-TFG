@@ -117,9 +117,9 @@ public class CocheElegido extends AppCompatActivity {
                             puertasTextView.setText(String.valueOf(puertas));
                             transmisionTextView.setText(transmision);
                             combustibleTextView.setText(combustible);
-                            if(aireAcondicionado){aireAcondicionadoTextView.setText("Sí");} else{aireAcondicionadoTextView.setText("No");}
-                            if(bluetooth){bluetoothTextView.setText("Sí");} else{bluetoothTextView.setText("No");}
-                            if(gps){gpsTextView.setText("Sí");} else{gpsTextView.setText("No");}
+                            if(aireAcondicionado){aireAcondicionadoTextView.setText("Sí");}else{aireAcondicionadoTextView.setText("No");}
+                            if(bluetooth){bluetoothTextView.setText("Sí");}else{bluetoothTextView.setText("No");}
+                            if(gps){gpsTextView.setText("Sí");}else{gpsTextView.setText("No");}
                             descripcionTextView.setText(descripcion);
 
                             AdministradorPeticiones.getInstance(context).cancelAll("peticion");
