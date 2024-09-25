@@ -53,7 +53,6 @@ public class ListaComunidadesAdapter extends ArrayAdapter<String> {
         l_comunidades.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //se pasan todos los datos para ver la pelicula
                 Intent intent = new Intent(context, ComunidadElegida.class);
                 intent.putExtra("idComunidad", comunidades.get(p).getIdComunidad());
                 intent.putExtra("nombreComunidad", comunidades.get(p).getNombre());

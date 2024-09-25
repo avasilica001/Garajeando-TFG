@@ -67,6 +67,25 @@
                 app:layout_constraintTop_toBottomOf="@+id/imagenPrincipalCocheImageView" />
 
             <EditText
+                android:id="@+id/matriculaEditText"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/fondo_personalizado_elemento"
+                android:drawableStart="@drawable/texto"
+                android:drawablePadding="12dp"
+                android:ems="10"
+                android:hint="Matrícula"
+                android:inputType="text"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imagenesSecundariasCocheGridView" />
+
+            <EditText
                 android:id="@+id/marcaEditText"
                 android:layout_width="0dp"
                 android:layout_height="55dp"
@@ -83,7 +102,7 @@
                 android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imagenesSecundariasCocheGridView" />
+                app:layout_constraintTop_toBottomOf="@id/matriculaEditText" />
 
             <EditText
                 android:id="@+id/modeloEditText"
@@ -273,19 +292,30 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bluetoothCheckBox" />
 
+            <TextView
+                android:id="@+id/informacionDatosCocheTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/gpsCheckBox" />
+
             <Button
-                android:id="@+id/modificarButton"
+                android:id="@+id/guardarInformacionButton"
                 android:layout_width="0dp"
                 android:layout_height="55dp"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="25dp"
                 android:background="@drawable/fondo_personalizado_elemento"
-                android:text="GUARDAR CAMBIOS"
+                android:text="GUARDAR INFORMACIÓN"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/gpsCheckBox" />
+                app:layout_constraintTop_toBottomOf="@id/informacionDatosCocheTextView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

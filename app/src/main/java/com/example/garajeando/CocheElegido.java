@@ -1,7 +1,9 @@
 package com.example.garajeando;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +34,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CocheElegido extends AppCompatActivity {
+
+    Activity activity = this;
 
     private String usuario, idComunidad;
 
@@ -86,6 +90,19 @@ public class CocheElegido extends AppCompatActivity {
         fotosGridView = (GridView) findViewById(R.id.imagenesSecundariasCocheGridView);
 
         modificarInformacionInfo = (Button) findViewById(R.id.modificarDatosCocheButton);
+        modificarInformacionInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //se pasan todos los datos para ver la pelicula
+                Intent intent = new Intent(context, ModificarCoche.class);
+                intent.putExtra("idComunidad", idComunidad);
+                intent.putExtra("usuario", usuario);
+                intent.putExtra("idCoche", idCoche);
+                intent.putExtra("accion", "modificar");
+
+                activity.startActivityForResult(intent, 2);
+            }
+        });
     }
 
     private void obtenerInfoCoche(){
@@ -175,9 +192,9 @@ public class CocheElegido extends AppCompatActivity {
             puertas = Integer.parseInt(respuestaInfo.getJSONObject(0).getString("Puertas"));
             transmision = respuestaInfo.getJSONObject(0).getString("Transmision");
             combustible = respuestaInfo.getJSONObject(0).getString("Combustible");
-            aireAcondicionado = Boolean.parseBoolean(respuestaInfo.getJSONObject(0).getString("AireAcondicionado"));
-            bluetooth = Boolean.parseBoolean(respuestaInfo.getJSONObject(0).getString("Bluetooth"));
-            gps = Boolean.parseBoolean(respuestaInfo.getJSONObject(0).getString("GPS"));
+            if(respuestaInfo.getJSONObject(0).getString("AireAcondicionado").equals("1")){aireAcondicionado = true;}else{aireAcondicionado = false;}
+            if(respuestaInfo.getJSONObject(0).getString("Bluetooth").equals("1")){bluetooth = true;} else{bluetooth = false;}
+            if(respuestaInfo.getJSONObject(0).getString("GPS").equals("1")){gps = true;} else{gps = false;}
             descripcion = respuestaInfo.getJSONObject(0).getString("Descripcion");
 
             if(propietario.equals(usuario)){
@@ -188,6 +205,15 @@ public class CocheElegido extends AppCompatActivity {
 
         }catch (Exception e){
             //no hace nada
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == 2){
+             obtenerInfoCoche();
         }
     }
 }

@@ -47,7 +47,12 @@ public class FotosCocheAdapter extends BaseAdapter {
         }
 
         ImageView imagen = (ImageView) view.findViewById(R.id.imagenCocheImageView);
-        Glide.with(this.context).load("http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotoscarnet/"+nombreFotos[i]).into(imagen);
+
+        if(numFotos == 9 && (nombreFotos[i].isEmpty() || nombreFotos[i] == null)){
+            imagen.setImageResource(R.drawable.coche);
+        }else{
+            Glide.with(this.context).load("http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotoscarnet/"+nombreFotos[i]).into(imagen);
+        }
 
         return view;
     }

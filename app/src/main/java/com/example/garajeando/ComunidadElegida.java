@@ -5,10 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.Toolbar;
 
@@ -36,7 +32,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class ComunidadElegida extends AppCompatActivity {
 
@@ -230,7 +225,7 @@ public class ComunidadElegida extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     if(i == 0){
-                        Intent intent = new Intent(context, AnadirCoche.class);
+                        Intent intent = new Intent(context, ModificarCoche.class);
 
                         intent.putExtra("usuario", usuario);
                         intent.putExtra("idComunidad", idComunidad);
@@ -245,7 +240,7 @@ public class ComunidadElegida extends AppCompatActivity {
                 }});
             builder.create().show();
         } else {
-            Intent intent = new Intent(context, AnadirCoche.class);
+            Intent intent = new Intent(context, ModificarCoche.class);
 
             intent.putExtra("usuario", usuario);
             intent.putExtra("idComunidad", idComunidad);
