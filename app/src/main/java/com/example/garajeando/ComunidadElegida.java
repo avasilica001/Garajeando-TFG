@@ -225,10 +225,12 @@ public class ComunidadElegida extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     if(i == 0){
+                        //se pasan todos los datos para ver la pelicula
                         Intent intent = new Intent(context, ModificarCoche.class);
-
-                        intent.putExtra("usuario", usuario);
                         intent.putExtra("idComunidad", idComunidad);
+                        intent.putExtra("usuario", usuario);
+                        intent.putExtra("accion", "aniadir");
+
                         activity.startActivityForResult(intent, 3);
                     } else {
                         anadirCocheAComunidad(cochesOtrasComunidades.get(i-1).getIdCoche());
@@ -240,10 +242,12 @@ public class ComunidadElegida extends AppCompatActivity {
                 }});
             builder.create().show();
         } else {
+            //se pasan todos los datos para ver la pelicula
             Intent intent = new Intent(context, ModificarCoche.class);
-
-            intent.putExtra("usuario", usuario);
             intent.putExtra("idComunidad", idComunidad);
+            intent.putExtra("usuario", usuario);
+            intent.putExtra("accion", "aniadir");
+
             activity.startActivityForResult(intent, 3);
         }
     }
@@ -283,4 +287,12 @@ public class ComunidadElegida extends AppCompatActivity {
         AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == 3){
+            obtenerCoches();
+        }
+    }
 }

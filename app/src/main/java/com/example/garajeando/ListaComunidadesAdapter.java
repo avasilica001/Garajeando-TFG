@@ -49,7 +49,7 @@ public class ListaComunidadesAdapter extends ArrayAdapter<String> {
         //se muestran los elementos de la peliculas en la posicion que se ha pasado
         t_titulo.setText(comunidades.get(p).getNombre());
 
-        //listener cuando se pulsa la pelicula
+        //listener cuando se pulsa la comunidad
         l_comunidades.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

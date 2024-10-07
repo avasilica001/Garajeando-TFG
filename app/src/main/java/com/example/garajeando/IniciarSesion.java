@@ -189,11 +189,14 @@ public class IniciarSesion extends AppCompatActivity {
 
                         try {
                             JSONObject objetoJSON = new JSONObject(respuesta);
-                            //avisoTextView.setText(objetoJSON.getString("mensaje"));
 
-                            Intent intent = new Intent(IniciarSesion.this, TusComunidades.class);
-                            intent.putExtra("idUsuario", objetoJSON.getString("mensaje"));
-                            startActivityForResult(intent,1);
+                            if(objetoJSON.getString("error").equals("false")){
+                                Intent intent = new Intent(IniciarSesion.this, TusComunidades.class);
+                                intent.putExtra("idUsuario", objetoJSON.getString("mensaje"));
+                                startActivityForResult(intent,1);
+                            }else {
+                                avisoTextView.setText("El correo electrónico o la contraseña introducidos son incorrectos.");
+                            }
 
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
