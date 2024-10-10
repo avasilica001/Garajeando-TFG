@@ -311,16 +311,30 @@
                 app:layout_constraintTop_toBottomOf="@id/descripcionTituloTextView" />
 
             <Button
-                android:id="@+id/modificarDatosCocheButton"
+                android:id="@+id/crearOfertaButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/fondo_personalizado_elemento"
-                android:text="MODIFICAR DATOS"
+                android:text="CREAR OFERTA"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/descripcionTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/descripcionTextView" />
+
+            <Button
+                android:id="@+id/modificarDatosCocheButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/fondo_personalizado_elemento"
+                android:text="MODIFICAR DATOS"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/crearOfertaButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

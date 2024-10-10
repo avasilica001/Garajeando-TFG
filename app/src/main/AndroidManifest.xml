@@ -24,6 +24,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".CrearOferta"
+            android:exported="false" />
+        <activity
             android:name=".ModificarCoche"
             android:exported="false" />
         <activity
@@ -31,9 +34,6 @@
             android:exported="false" />
         <activity
             android:name=".ComunidadElegida"
-            android:exported="false" />
-        <activity
-            android:name=".ComunidadPrincipal"
             android:exported="false" />
         <activity
             android:name=".TusComunidades"

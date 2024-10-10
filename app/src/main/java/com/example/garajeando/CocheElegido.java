@@ -54,7 +54,7 @@ public class CocheElegido extends AppCompatActivity {
 
     ImageView imagenPrincipalImageView;
     TextView propietarioTextView, marcaTextView, modeloTextView, plazasTextView, puertasTextView, transmisionTextView, combustibleTextView, aireAcondicionadoTextView, bluetoothTextView, gpsTextView, descripcionTextView;
-    Button modificarInformacionInfo;
+    Button modificarInformacionButton, crearOfertaButton;
     String nombreFotoPrincipal;
 
     @SuppressLint("MissingInflatedId")
@@ -90,8 +90,8 @@ public class CocheElegido extends AppCompatActivity {
 
         fotosGridView = (GridView) findViewById(R.id.imagenesSecundariasCocheGridView);
 
-        modificarInformacionInfo = (Button) findViewById(R.id.modificarDatosCocheButton);
-        modificarInformacionInfo.setOnClickListener(new View.OnClickListener() {
+        modificarInformacionButton = (Button) findViewById(R.id.modificarDatosCocheButton);
+        modificarInformacionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //se pasan todos los datos para ver la pelicula
@@ -102,6 +102,20 @@ public class CocheElegido extends AppCompatActivity {
                 intent.putExtra("accion", "modificar");
 
                 activity.startActivityForResult(intent, 2);
+            }
+        });
+
+        crearOfertaButton = (Button) findViewById(R.id.crearOfertaButton);
+        crearOfertaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //se pasan todos los datos para ver la pelicula
+                Intent intent = new Intent(context, CrearOferta.class);
+                intent.putExtra("idComunidad", idComunidad);
+                intent.putExtra("usuario", usuario);
+                intent.putExtra("idCoche", idCoche);
+
+                activity.startActivityForResult(intent, 3);
             }
         });
 
@@ -210,9 +224,11 @@ public class CocheElegido extends AppCompatActivity {
             descripcion = respuestaInfo.getJSONObject(0).getString("Descripcion");
 
             if(propietario.equals(usuario)){
-                modificarInformacionInfo.setVisibility(View.VISIBLE);
+                modificarInformacionButton.setVisibility(View.VISIBLE);
+                crearOfertaButton.setVisibility(View.VISIBLE);
             }else{
-                modificarInformacionInfo.setVisibility(View.GONE);
+                modificarInformacionButton.setVisibility(View.GONE);
+                crearOfertaButton.setVisibility(View.GONE);
             }
 
         }catch (Exception e){
