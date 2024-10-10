@@ -17,8 +17,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -30,7 +32,8 @@ public class CrearOferta extends AppCompatActivity {
     Button publicarOfertaButton;
     
     Calendar inicioCalendario, finalCalendario;
-    private static final String zonaHorariaEspania = "Europe/Paris"; // Central European Standard Time
+    TimeZone zonaHorariaMovil = TimeZone.getDefault();
+    TimeZone zonaHorariaLondres = TimeZone.getTimeZone("Europe/London");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +53,8 @@ public class CrearOferta extends AppCompatActivity {
         setSupportActionBar(findViewById(R.id.crearOfertaToolbar));
         getSupportActionBar().setTitle("CREAR OFERTA");
 
-        inicioCalendario = Calendar.getInstance(TimeZone.getTimeZone(zonaHorariaEspania));
-        finalCalendario = Calendar.getInstance(TimeZone.getTimeZone(zonaHorariaEspania));
+        inicioCalendario = Calendar.getInstance(zonaHorariaMovil);
+        finalCalendario = Calendar.getInstance(zonaHorariaMovil);
 
         fechaInicioEditText = (EditText) findViewById(R.id.fechaInicioEditText);
         fechaFinalEditText = (EditText) findViewById(R.id.fechaFinalEditText);
@@ -107,16 +110,16 @@ public class CrearOferta extends AppCompatActivity {
                         calendario.set(Calendar.DAY_OF_MONTH, dia);
 
                         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                        sdf.setTimeZone(TimeZone.getTimeZone(zonaHorariaEspania));
+                        sdf.setTimeZone(zonaHorariaMovil);
                         editText.setText(sdf.format(calendario.getTime()));
 
-                        if (!comienzo && finalCalendario.getTime().before(inicioCalendario.getTime())) {
+                        if (!comienzo && finalCalendario.getTime().before(inicioCalendario.getTime()) && !fechaInicioEditText.getText().toString().trim().isEmpty()) {
                             Toast.makeText(CrearOferta.this, "La fecha final no puede ser anterior a la fecha inicial", Toast.LENGTH_SHORT).show();
                             editText.setText("");
                         }
 
                         // Validate that the start date is not before the finish date if both dates are set
-                        if (comienzo && !finalCalendario.equals(Calendar.getInstance())) {
+                        if (comienzo && !finalCalendario.equals(Calendar.getInstance())  && !fechaFinalEditText.getText().toString().trim().isEmpty()) {
                             if (calendario.getTime().after(finalCalendario.getTime())) {
                                 Toast.makeText(CrearOferta.this, "La fecha inical no puede ser posterior a la fecha final", Toast.LENGTH_SHORT).show();
                                 editText.setText("");
@@ -135,7 +138,7 @@ public class CrearOferta extends AppCompatActivity {
     }
 
     private void mostrarDialogoHora(Calendar calendario, EditText editText, boolean comienzo) {
-        final Calendar horaActual = Calendar.getInstance(TimeZone.getTimeZone(zonaHorariaEspania));
+        final Calendar horaActual = Calendar.getInstance(zonaHorariaMovil);
 
         int hora = calendario.get(Calendar.HOUR_OF_DAY);
         int minuto = calendario.get(Calendar.MINUTE);
@@ -156,20 +159,20 @@ public class CrearOferta extends AppCompatActivity {
                         calendario.set(Calendar.MINUTE, minutoDia);
 
                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                        sdf.setTimeZone(TimeZone.getTimeZone(zonaHorariaEspania));
+                        sdf.setTimeZone(zonaHorariaMovil);
                         editText.setText(sdf.format(calendario.getTime()));
 
                         if (!comienzo) {
                             boolean mismoDia = finalCalendario.get(Calendar.YEAR) == inicioCalendario.get(Calendar.YEAR) &&
                                     finalCalendario.get(Calendar.DAY_OF_YEAR) == inicioCalendario.get(Calendar.DAY_OF_YEAR);
-                            if (mismoDia && finalCalendario.getTime().compareTo(inicioCalendario.getTime()) <= 0) {
-                                Toast.makeText(CrearOferta.this, "La hora final no puede ser anterior o igual a la hora inicial si se trata del mismo día", Toast.LENGTH_SHORT).show();
+                            if (mismoDia && finalCalendario.getTime().compareTo(inicioCalendario.getTime()) <= 0 && !horaInicioEditText.getText().toString().trim().isEmpty()) {
+                                Toast.makeText(CrearOferta.this, "La hora final no puede ser igual o anterior a la hora inicial si se trata del mismo día", Toast.LENGTH_SHORT).show();
                                 editText.setText("");
                             }
                         }
 
                         if (comienzo && !finalCalendario.equals(Calendar.getInstance())) {
-                            if (calendario.getTime().after(finalCalendario.getTime())) {
+                            if (calendario.getTime().after(finalCalendario.getTime()) && !horaFinalEditText.getText().toString().trim().isEmpty()) {
                                 Toast.makeText(CrearOferta.this, "La hora inicial no puede ser posterior a la hora final si se trata del mismo día", Toast.LENGTH_SHORT).show();
                                 editText.setText("");
                             }
@@ -180,13 +183,13 @@ public class CrearOferta extends AppCompatActivity {
     }
 
     private boolean esHoy(Calendar calendario) {
-        Calendar hoy = Calendar.getInstance(TimeZone.getTimeZone(zonaHorariaEspania));
+        Calendar hoy = Calendar.getInstance(zonaHorariaMovil);
         return hoy.get(Calendar.YEAR) == calendario.get(Calendar.YEAR) &&
                 hoy.get(Calendar.DAY_OF_YEAR) == calendario.get(Calendar.DAY_OF_YEAR);
     }
 
     private void guardarFechas() {
-        Calendar tiempoActual = Calendar.getInstance(TimeZone.getTimeZone(zonaHorariaEspania));
+        Calendar tiempoActual = Calendar.getInstance(zonaHorariaMovil);
 
         if (fechaInicioEditText.getText().toString().trim().isEmpty() || fechaFinalEditText.getText().toString().trim().isEmpty() || horaInicioEditText.getText().toString().trim().isEmpty() || horaFinalEditText.getText().toString().trim().isEmpty()) {
             Toast.makeText(CrearOferta.this, "Debe rellenar todos los campos para poder continuar", Toast.LENGTH_SHORT).show();
@@ -217,5 +220,41 @@ public class CrearOferta extends AppCompatActivity {
         }
 
         //si no enseña ningun mensaje es ok
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        sdf.setTimeZone(zonaHorariaLondres);
+
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        sdf2.setTimeZone(zonaHorariaLondres);
+
+
+        String fechaHoraInicioOriginal = fechaInicioEditText.getText().toString().trim() + " " + horaInicioEditText.getText().toString().trim();
+        String fechaHoraFinalOriginal = fechaFinalEditText.getText().toString().trim() + " " + horaFinalEditText.getText().toString().trim();
+        SimpleDateFormat formatoOriginal = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        formatoOriginal.setTimeZone(zonaHorariaMovil);
+
+        try {
+
+            // 1. Parse the string to a Date object
+            Date  fechaHoraInicioFormatoOriginal = formatoOriginal.parse(fechaHoraInicioOriginal);
+
+            // 2. Convert the Date object to London's timezone
+            SimpleDateFormat formatoLondresInicio = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            formatoLondresInicio.setTimeZone(zonaHorariaLondres);
+
+            Date fechaHoraFinalFormatoOriginal = formatoOriginal.parse(fechaHoraFinalOriginal);
+
+
+            // 2. Convert the Date object to London's timezone
+            SimpleDateFormat formatoLondresFinal = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            formatoLondresFinal.setTimeZone(zonaHorariaLondres);
+
+            // 3. Display the original date/time and the converted date/time
+            Toast.makeText(this, "Londres inicio: " + formatoLondresInicio.format(fechaHoraInicioFormatoOriginal), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Londres final: " + formatoLondresFinal.format(fechaHoraFinalFormatoOriginal), Toast.LENGTH_SHORT).show();
+
+        } catch (ParseException e) {
+            //e.printStackTrace();
+        }
+
     }
 }
