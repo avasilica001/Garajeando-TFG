@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -45,7 +46,7 @@ public class CocheElegido extends AppCompatActivity {
 
     private GridView fotosGridView;
     private String[] nombreFotosCoche = new String[9];
-    private static String URL_BASE_FOTOS = "http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotoscarnet/";
+    private static String URL_BASE_FOTOS = "http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotoscoches/";
     private FotosCocheAdapter fotosCocheAdapter;
     private Context context = this;
     private Integer numFotos;
@@ -103,6 +104,17 @@ public class CocheElegido extends AppCompatActivity {
                 activity.startActivityForResult(intent, 2);
             }
         });
+
+        OnBackPressedCallback volverActividadAnterior = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                setResult(3);
+
+                finish();
+            }
+        };
+
+        getOnBackPressedDispatcher().addCallback(this, volverActividadAnterior);
     }
 
     private void obtenerInfoCoche(){
@@ -216,6 +228,5 @@ public class CocheElegido extends AppCompatActivity {
              obtenerInfoCoche();
         }
     }
-
 
 }

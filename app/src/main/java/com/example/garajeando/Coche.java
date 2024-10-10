@@ -2,11 +2,11 @@ package com.example.garajeando;
 
 public class Coche {
 
-    String idCoche, propietario, nombrePropietario, apellidosPropietario, matricula, marca, modelo, transmision, combustible, descripcion;
+    String idCoche, propietario, nombrePropietario, apellidosPropietario, matricula, marca, modelo, transmision, combustible, descripcion, nombreFotoPrincipal;
     Integer plazas, puertas;
     Boolean aireAcondicionado, bluetooth, gps;
 
-    public Coche(String idCoche, String propietario, String nombrePropietario, String apellidosPropietario, String matricula, String marca, String modelo, String transmision, String combustible, String descripcion, Integer plazas, Integer puertas, Boolean aireAcondicionado, Boolean bluetooth, Boolean gps) {
+    public Coche(String idCoche, String propietario, String nombrePropietario, String apellidosPropietario, String matricula, String marca, String modelo, String transmision, String combustible, String descripcion, Integer plazas, Integer puertas, Boolean aireAcondicionado, Boolean bluetooth, Boolean gps, String nombreFotoPrincipal) {
         this.idCoche=idCoche;
         this.propietario=propietario;
         this.nombrePropietario=nombrePropietario;
@@ -22,6 +22,7 @@ public class Coche {
         this.aireAcondicionado=aireAcondicionado;
         this.bluetooth=bluetooth;
         this.gps=gps;
+        this.nombreFotoPrincipal=nombreFotoPrincipal;
     }
 
     public void setIdCoche(String idCoche) {
@@ -142,5 +143,13 @@ public class Coche {
 
     public void setApellidosPropietario(String apellidosPropietario) {
         this.apellidosPropietario = apellidosPropietario;
+    }
+
+    public void setNombreFotoPrincipal(String nombreFotoPrincipal) {
+        this.nombreFotoPrincipal = nombreFotoPrincipal;
+    }
+
+    public String getNombreFotoPrincipal() {
+        return nombreFotoPrincipal;
     }
 }

@@ -62,6 +62,7 @@ public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.
     private ArrayList<Coche> coches=new ArrayList<Coche>();
     private ArrayList<String> idCoches = new ArrayList<String>();
     private ArrayList<String> matriculas = new ArrayList<String>();
+    private ArrayList<String> nombresFotosPrincipales = new ArrayList<String>();
 
     CardView l_coches;
 
@@ -104,7 +105,7 @@ public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.
             holder.anadirCocheButton.setVisibility(View.GONE);
 
             holder.matriculaTextView.setText(String.valueOf(coches.get(p).matricula));
-            Glide.with(this.context).load("http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotoscarnet/IMG_20240910_170324_1.png").into(holder.imagenCocheImageView);
+            Glide.with(this.context).load("http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotoscoches/"+String.valueOf(coches.get(p).nombreFotoPrincipal)).into(holder.imagenCocheImageView);
 
             holder.id = coches.get(p).getIdCoche();
             holder.propietario = coches.get(p).getPropietario();

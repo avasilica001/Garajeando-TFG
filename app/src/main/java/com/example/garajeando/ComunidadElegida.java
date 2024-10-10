@@ -132,7 +132,8 @@ public class ComunidadElegida extends AppCompatActivity {
                         Integer.parseInt(jsonCoches.getString("Puertas")),
                         Boolean.parseBoolean(jsonCoches.getString("AireAcondicionado")),
                         Boolean.parseBoolean(jsonCoches.getString("Bluetooth")),
-                        Boolean.parseBoolean(jsonCoches.getString("GPS"))));
+                        Boolean.parseBoolean(jsonCoches.getString("GPS")),
+                        jsonCoches.getString("FotoCochePrincipal")));
             }
 
             for (int i = 0; i < respuestaCochesOtrasComunidades.length(); i++)
@@ -153,7 +154,8 @@ public class ComunidadElegida extends AppCompatActivity {
                         Integer.parseInt(jsonCoches.getString("Puertas")),
                         Boolean.parseBoolean(jsonCoches.getString("AireAcondicionado")),
                         Boolean.parseBoolean(jsonCoches.getString("Bluetooth")),
-                        Boolean.parseBoolean(jsonCoches.getString("GPS"))));
+                        Boolean.parseBoolean(jsonCoches.getString("GPS")),
+                        jsonCoches.getString("FotoCochePrincipal")));
             }
         }catch (Exception e){
             //no hace nada
@@ -242,7 +244,7 @@ public class ComunidadElegida extends AppCompatActivity {
                 }});
             builder.create().show();
         } else {
-            //se pasan todos los datos para ver la pelicula
+            //se pasan todos los datos para ver el coche
             Intent intent = new Intent(context, ModificarCoche.class);
             intent.putExtra("idComunidad", idComunidad);
             intent.putExtra("usuario", usuario);

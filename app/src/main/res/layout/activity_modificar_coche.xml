@@ -34,16 +34,16 @@
 
             <ImageView
                 android:id="@+id/imagenPrincipalCocheImageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
                 android:layout_marginHorizontal="25dp"
                 android:foregroundGravity="center"
+                android:scaleType="fitCenter"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/coche"
-                android:scaleType="fitCenter" />
+                app:srcCompat="@drawable/coche" />
 
             <GridView
                 android:id="@+id/imagenesSecundariasCocheGridView"

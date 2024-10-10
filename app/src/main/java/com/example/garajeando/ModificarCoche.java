@@ -7,11 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -49,7 +51,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ModificarCoche extends AppCompatActivity {
@@ -71,11 +78,11 @@ public class ModificarCoche extends AppCompatActivity {
 
     JSONArray respuestaFotos, respuestaInfo;
     private String[] nombreFotosCoche = new String[9];
-    private static String URL_BASE_FOTOS = "http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotoscarnet/";
+    private static String URL_BASE_FOTOS = "http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotoscoches/";
     FotosCocheAdapter fotosCocheAdapter;
     String nombreFotoPrincipal;
 
-    Uri imagenPrincipalUri, imagenDialogoUri, imagen;
+    Uri imagenPrincipalUriCambio, imagenDialogoUri, imagen;
 
     private static final int IMAGE_CODE=112;
     private static final int PHOTO_CODE=111;
@@ -84,6 +91,7 @@ public class ModificarCoche extends AppCompatActivity {
     ActivityResultLauncher<Uri> activityResultLauncherSacarFoto;
 
     private int F_PRINCIPAL = 0, F_FRONTAL = 1, F_REVERSO = 2, target;
+
 
 
     @Override
@@ -222,10 +230,14 @@ public class ModificarCoche extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
         outState.putString("nombreFotoPrincipal", nombreFotoPrincipal);
+
+        if(imagenPrincipalUriCambio != null && !imagenPrincipalUriCambio.equals(Uri.EMPTY)) {
+            outState.putParcelable("imagenPrincipalUriCambio", imagenPrincipalUriCambio);
+        }
     }
 
     @Override
@@ -233,6 +245,11 @@ public class ModificarCoche extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
 
         nombreFotoPrincipal = savedInstanceState.getString("nombreFotoPrincipal");
+
+        imagenPrincipalUriCambio = savedInstanceState.getParcelable("imagenPrincipalUriCambio");
+        if(imagenPrincipalUriCambio != null && !imagenPrincipalUriCambio.equals(Uri.EMPTY)) {
+            imagenPrincipalImageView.setImageURI(savedInstanceState.getParcelable("imagenPrincipalUriCambio"));
+        }
     }
 
     private void obtenerInfoCoche(){
@@ -307,8 +324,10 @@ public class ModificarCoche extends AppCompatActivity {
 
     private void guardarInfo(){
         try{
-            nombreFotoPrincipal = respuestaFotos.getJSONObject(0).getString("FotoCoche");
-            Glide.with(this.context).load(URL_BASE_FOTOS+nombreFotoPrincipal).into(imagenPrincipalImageView);
+            if(imagenPrincipalUriCambio==null){
+                nombreFotoPrincipal = respuestaFotos.getJSONObject(0).getString("FotoCoche");
+                Glide.with(this.context).load(URL_BASE_FOTOS+nombreFotoPrincipal).into(imagenPrincipalImageView);
+            }
             for (int i = 1; i < respuestaFotos.length(); i++)
             {
                 JSONObject jsonCoches = respuestaFotos.getJSONObject(i);
@@ -397,7 +416,22 @@ public class ModificarCoche extends AppCompatActivity {
                     parametros.put("Bluetooth", bluetoothString);
                     parametros.put("GPS", gpsString);
                     parametros.put("Descripcion", descripcion);
-
+                        if(imagenPrincipalUriCambio != null){
+                            try {
+                                Bitmap bprincipal = MediaStore.Images.Media.getBitmap(getContentResolver(),imagenPrincipalUriCambio);
+                                ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+                                bprincipal.compress(Bitmap.CompressFormat.PNG, 100, baos1);
+                                byte[] b1= baos1.toByteArray();
+                                String b64p = Base64.encodeToString(b1, Base64.DEFAULT);
+                                String tiempo = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+                                String nombreFotoPrincipal = "IMG_" + tiempo + "_P.png";
+                                parametros.put("NombreFotoPrincipal", nombreFotoPrincipal);
+                                parametros.put("FotoPrincipal", b64p);
+                            } catch (IOException e) {}
+                        }else{
+                            parametros.put("NombreFotoPrincipal", "none");
+                            parametros.put("FotoPrincipal", "none");
+                        }
                     return parametros;
                 }
             };
@@ -419,11 +453,11 @@ public class ModificarCoche extends AppCompatActivity {
 
         ImageView imagenGrandeImageView = dialog.findViewById(R.id.imagenGrandeImageView);
 
-        if(F_PRINCIPAL == 0 && nombreFotoPrincipal!=null && imagenPrincipalUri == null){
+        if(target == 0 && nombreFotoPrincipal!=null && imagenPrincipalUriCambio == null){
             String urlCompleta= URL_BASE_FOTOS+nombreFotoPrincipal;
             Glide.with(this.context).load(urlCompleta).into(imagenGrandeImageView);
-        } else if (imagenPrincipalUri != null ) {
-            imagenDialogoUri = imagenPrincipalUri;
+        } else if (imagenPrincipalUriCambio != null ) {
+            imagenDialogoUri = imagenPrincipalUriCambio;
             imagenGrandeImageView.setImageURI(imagenDialogoUri);
         } else {
             imagenDialogoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.coche);
@@ -547,8 +581,8 @@ public class ModificarCoche extends AppCompatActivity {
                 uriResultadoRecorte = Uri.parse(resultadoRecorte);
 
                 if (target == F_PRINCIPAL) {
-                    imagenPrincipalUri = uriResultadoRecorte;
-                    imagenPrincipalImageView.setImageURI(imagenPrincipalUri);
+                    imagenPrincipalUriCambio = uriResultadoRecorte;
+                    imagenPrincipalImageView.setImageURI(imagenPrincipalUriCambio);
                 } else {
                 }
             }
