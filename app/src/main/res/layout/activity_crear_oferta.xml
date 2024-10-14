@@ -143,6 +143,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fechaFinalEditText" />
 
+            <TextView
+                android:id="@+id/avisoCrearOfertaTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="5dp"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/horaFinalEditText" />
+
             <Button
                 android:id="@+id/publicarOfertaButton"
                 android:layout_width="0dp"
@@ -155,7 +166,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/horaFinalEditText" />
+                app:layout_constraintTop_toBottomOf="@id/avisoCrearOfertaTextView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

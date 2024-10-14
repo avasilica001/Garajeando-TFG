@@ -109,7 +109,6 @@ public class CocheElegido extends AppCompatActivity {
         crearOfertaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //se pasan todos los datos para ver la pelicula
                 Intent intent = new Intent(context, CrearOferta.class);
                 intent.putExtra("idComunidad", idComunidad);
                 intent.putExtra("usuario", usuario);

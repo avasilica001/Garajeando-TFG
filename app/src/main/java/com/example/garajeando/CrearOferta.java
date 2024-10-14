@@ -2,33 +2,52 @@ package com.example.garajeando;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class CrearOferta extends AppCompatActivity {
 
-    String usuario, idComunidad, idCoche;
+    Context context = this;
+
+    String usuario, idComunidad, idCoche, fechaInicio, fechaFinal, horaInicio, horaFinal;
 
     EditText fechaInicioEditText, fechaFinalEditText, horaInicioEditText, horaFinalEditText;
+    TextView avisoCrearOfertaTextView;
     Button publicarOfertaButton;
     
     Calendar inicioCalendario, finalCalendario;
@@ -61,6 +80,9 @@ public class CrearOferta extends AppCompatActivity {
 
         horaInicioEditText = (EditText) findViewById(R.id.horaInicioEditText);
         horaFinalEditText = (EditText) findViewById(R.id.horaFinalEditText);
+
+        avisoCrearOfertaTextView = (TextView) findViewById(R.id.avisoCrearOfertaTextView);
+        avisoCrearOfertaTextView.setVisibility(View.GONE);
 
         publicarOfertaButton = (Button) findViewById(R.id.publicarOfertaButton);
 
@@ -100,6 +122,38 @@ public class CrearOferta extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("aviso", avisoCrearOfertaTextView.getText().toString().trim());
+        outState.putBoolean("avisoVisible",avisoCrearOfertaTextView.getVisibility() == View.VISIBLE);
+        outState.putString("fechaInicio", fechaInicioEditText.getText().toString().trim());
+        outState.putString("fechaFinal", fechaFinalEditText.getText().toString().trim());
+        outState.putString("horaInicio",horaInicioEditText.getText().toString().trim());
+        outState.putString("horaFinal", horaFinalEditText.getText().toString().trim());
+
+        outState.putLong("inicioCalendario", inicioCalendario.getTimeInMillis());
+        outState.putLong("finalCalendario", finalCalendario.getTimeInMillis());
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        avisoCrearOfertaTextView.setText(String.valueOf(savedInstanceState.getString("aviso")));
+        if(savedInstanceState.getBoolean("avisoVisible")){avisoCrearOfertaTextView.setVisibility(View.VISIBLE);}
+
+        fechaInicioEditText.setText(String.valueOf(savedInstanceState.getString("fechaInicio")));
+        fechaFinalEditText.setText(String.valueOf(savedInstanceState.getString("fechaFinal")));
+        horaInicioEditText.setText(String.valueOf(savedInstanceState.getString("horaInicio")));
+        horaFinalEditText.setText(String.valueOf(savedInstanceState.getString("horaFinal")));
+
+        inicioCalendario.setTimeInMillis(savedInstanceState.getLong("inicioCalendario"));
+        finalCalendario.setTimeInMillis(savedInstanceState.getLong("finalCalendario"));
+    }
+
     private void mostrarDialogoFecha(Calendar calendario, EditText editText, boolean comienzo) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(CrearOferta.this,
                 new DatePickerDialog.OnDateSetListener() {
@@ -114,15 +168,14 @@ public class CrearOferta extends AppCompatActivity {
                         editText.setText(sdf.format(calendario.getTime()));
 
                         if (!comienzo && finalCalendario.getTime().before(inicioCalendario.getTime()) && !fechaInicioEditText.getText().toString().trim().isEmpty()) {
-                            Toast.makeText(CrearOferta.this, "La fecha final no puede ser anterior a la fecha inicial", Toast.LENGTH_SHORT).show();
-                            editText.setText("");
+                            avisoCrearOfertaTextView.setVisibility(View.VISIBLE);
+                            avisoCrearOfertaTextView.setText("La fecha final no puede ser anterior a la fecha inicial");
                         }
 
-                        // Validate that the start date is not before the finish date if both dates are set
                         if (comienzo && !finalCalendario.equals(Calendar.getInstance())  && !fechaFinalEditText.getText().toString().trim().isEmpty()) {
                             if (calendario.getTime().after(finalCalendario.getTime())) {
-                                Toast.makeText(CrearOferta.this, "La fecha inical no puede ser posterior a la fecha final", Toast.LENGTH_SHORT).show();
-                                editText.setText("");
+                                avisoCrearOfertaTextView.setVisibility(View.VISIBLE);
+                                avisoCrearOfertaTextView.setText("La fecha inical no puede ser posterior a la fecha final");
                             }
                         }
                     }
@@ -150,7 +203,8 @@ public class CrearOferta extends AppCompatActivity {
                         if (comienzo && esHoy(calendario)) {
                             if (horaDia < horaActual.get(Calendar.HOUR_OF_DAY) ||
                                     (horaDia == horaActual.get(Calendar.HOUR_OF_DAY) && minutoDia < horaActual.get(Calendar.MINUTE))) {
-                                Toast.makeText(CrearOferta.this, "La hora inicial no puede ser anterior a la hora actual", Toast.LENGTH_SHORT).show();
+                                avisoCrearOfertaTextView.setVisibility(View.VISIBLE);
+                                avisoCrearOfertaTextView.setText("La hora inicial no puede ser anterior a la hora actual");
                                 return;
                             }
                         }
@@ -166,15 +220,15 @@ public class CrearOferta extends AppCompatActivity {
                             boolean mismoDia = finalCalendario.get(Calendar.YEAR) == inicioCalendario.get(Calendar.YEAR) &&
                                     finalCalendario.get(Calendar.DAY_OF_YEAR) == inicioCalendario.get(Calendar.DAY_OF_YEAR);
                             if (mismoDia && finalCalendario.getTime().compareTo(inicioCalendario.getTime()) <= 0 && !horaInicioEditText.getText().toString().trim().isEmpty()) {
-                                Toast.makeText(CrearOferta.this, "La hora final no puede ser igual o anterior a la hora inicial si se trata del mismo día", Toast.LENGTH_SHORT).show();
-                                editText.setText("");
+                                avisoCrearOfertaTextView.setVisibility(View.VISIBLE);
+                                avisoCrearOfertaTextView.setText("La hora final no puede ser igual o anterior a la hora inicial si se trata del mismo día");
                             }
                         }
 
                         if (comienzo && !finalCalendario.equals(Calendar.getInstance())) {
                             if (calendario.getTime().after(finalCalendario.getTime()) && !horaFinalEditText.getText().toString().trim().isEmpty()) {
-                                Toast.makeText(CrearOferta.this, "La hora inicial no puede ser posterior a la hora final si se trata del mismo día", Toast.LENGTH_SHORT).show();
-                                editText.setText("");
+                                avisoCrearOfertaTextView.setVisibility(View.VISIBLE);
+                                avisoCrearOfertaTextView.setText("La hora inicial no puede ser posterior a la hora final si se trata del mismo día");
                             }
                         }
                     }
@@ -192,22 +246,26 @@ public class CrearOferta extends AppCompatActivity {
         Calendar tiempoActual = Calendar.getInstance(zonaHorariaMovil);
 
         if (fechaInicioEditText.getText().toString().trim().isEmpty() || fechaFinalEditText.getText().toString().trim().isEmpty() || horaInicioEditText.getText().toString().trim().isEmpty() || horaFinalEditText.getText().toString().trim().isEmpty()) {
-            Toast.makeText(CrearOferta.this, "Debe rellenar todos los campos para poder continuar", Toast.LENGTH_SHORT).show();
+            avisoCrearOfertaTextView.setVisibility(View.VISIBLE);
+            avisoCrearOfertaTextView.setText("Debe rellenar todos los campos para poder continuar");
             return;
         }
 
         if (inicioCalendario.before(tiempoActual)) {
-            Toast.makeText(this, "La fecha y hora de inicio no pueden estar en el pasado", Toast.LENGTH_SHORT).show();
+            avisoCrearOfertaTextView.setVisibility(View.VISIBLE);
+            avisoCrearOfertaTextView.setText("La fecha y hora de inicio no pueden estar en el pasado");
             return;
         }
 
         if (finalCalendario.before(tiempoActual)) {
-            Toast.makeText(this, "La fecha y hora finales no pueden estar en el pasado", Toast.LENGTH_SHORT).show();
+            avisoCrearOfertaTextView.setVisibility(View.VISIBLE);
+            avisoCrearOfertaTextView.setText("La fecha y hora finales no pueden estar en el pasado");
             return;
         }
 
         if (finalCalendario.before(inicioCalendario)) {
-            Toast.makeText(this, "La fecha final no puede ser anterior a la fecha inicial", Toast.LENGTH_SHORT).show();
+            avisoCrearOfertaTextView.setVisibility(View.VISIBLE);
+            avisoCrearOfertaTextView.setText("La fecha final no puede ser anterior a la fecha inicial");
             return;
         }
 
@@ -215,16 +273,20 @@ public class CrearOferta extends AppCompatActivity {
         long diferenciaHoras = diferenciaMillis / (1000 * 60 * 60);
 
         if (diferenciaHoras < 1) {
-            Toast.makeText(this, "La diferencia mínima de oferta debe ser de una hora", Toast.LENGTH_SHORT).show();
+            avisoCrearOfertaTextView.setVisibility(View.VISIBLE);
+            avisoCrearOfertaTextView.setText("La diferencia mínima de oferta debe ser de una hora");
             return;
         }
+        //caso cuando es todo ok
+        avisoCrearOfertaTextView.setVisibility(View.GONE);
 
-        //si no enseña ningun mensaje es ok
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         sdf.setTimeZone(zonaHorariaLondres);
 
-        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         sdf2.setTimeZone(zonaHorariaLondres);
+
+
 
 
         String fechaHoraInicioOriginal = fechaInicioEditText.getText().toString().trim() + " " + horaInicioEditText.getText().toString().trim();
@@ -233,24 +295,63 @@ public class CrearOferta extends AppCompatActivity {
         formatoOriginal.setTimeZone(zonaHorariaMovil);
 
         try {
-
-            // 1. Parse the string to a Date object
             Date  fechaHoraInicioFormatoOriginal = formatoOriginal.parse(fechaHoraInicioOriginal);
 
-            // 2. Convert the Date object to London's timezone
-            SimpleDateFormat formatoLondresInicio = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            SimpleDateFormat formatoLondresInicio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             formatoLondresInicio.setTimeZone(zonaHorariaLondres);
 
             Date fechaHoraFinalFormatoOriginal = formatoOriginal.parse(fechaHoraFinalOriginal);
 
-
-            // 2. Convert the Date object to London's timezone
-            SimpleDateFormat formatoLondresFinal = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            SimpleDateFormat formatoLondresFinal = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             formatoLondresFinal.setTimeZone(zonaHorariaLondres);
 
-            // 3. Display the original date/time and the converted date/time
-            Toast.makeText(this, "Londres inicio: " + formatoLondresInicio.format(fechaHoraInicioFormatoOriginal), Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "Londres final: " + formatoLondresFinal.format(fechaHoraFinalFormatoOriginal), Toast.LENGTH_SHORT).show();
+            String fechaHoraInicio = String.valueOf(formatoLondresInicio.format(fechaHoraInicioFormatoOriginal));
+            String fechaHoraFinal = String.valueOf(formatoLondresFinal.format(fechaHoraFinalFormatoOriginal));
+
+            StringRequest peticion = new StringRequest(Request.Method.POST,
+                    Constantes.URL_CREAROFERTA,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String respuesta) {
+                            try {
+                                JSONObject objetoJSON = new JSONObject(respuesta);
+
+                                if (objetoJSON.getString("error").equals("true")){
+                                    avisoCrearOfertaTextView.setVisibility(View.VISIBLE);
+                                    avisoCrearOfertaTextView.setText("Ya existe una oferta dentro de ese rango de fechas");
+                                }else{
+                                    avisoCrearOfertaTextView.setVisibility(View.GONE);
+                                    setResult(3);
+                                    finish();
+                                }
+
+                                AdministradorPeticiones.getInstance(context).cancelAll("peticion");
+                            } catch (JSONException e) {
+                                //throw new RuntimeException(e);
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //
+                        }
+                    }) {
+                @Nullable
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> parametros = new HashMap<>();
+                    parametros.put("IdCoche", idCoche);
+                    parametros.put("IdComunidad", idComunidad);
+                    parametros.put("FechaHoraInicio", fechaHoraInicio);
+                    parametros.put("FechaHoraFin", fechaHoraFinal);
+
+                      return parametros;
+                }
+            };
+
+            peticion.setTag("peticion");
+            AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
 
         } catch (ParseException e) {
             //e.printStackTrace();
