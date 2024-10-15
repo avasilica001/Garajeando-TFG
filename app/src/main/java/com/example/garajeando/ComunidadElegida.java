@@ -216,12 +216,12 @@ public class ComunidadElegida extends AppCompatActivity {
         opciones = new String[numCochesOtrasComunidades+1];
         opciones[0] = "Añade un coche nuevo";
 
-        for (int i = 1; i < numCochesOtrasComunidades+1; i++) {
-            opciones[i] = cochesOtrasComunidades.get(i-1).getMatricula();
-        }
-
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (numCochesOtrasComunidades > 0){
+            for (int i = 1; i < numCochesOtrasComunidades+1; i++) {
+                opciones[i] = cochesOtrasComunidades.get(i-1).getMatricula();
+            }
+
             builder.setTitle("Selecciona un coche ya existente o crea uno nuevo");
             builder.setItems(opciones, new DialogInterface.OnClickListener() {
                 @Override

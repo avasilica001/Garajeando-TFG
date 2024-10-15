@@ -1,5 +1,7 @@
 package com.example.garajeando;
 
+import static android.icu.lang.UCharacter.toUpperCase;
+
 import android.Manifest;
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -72,7 +74,7 @@ public class ModificarCoche extends AppCompatActivity {
     GridView fotosGridView;
     Button guardarInformacion;
 
-    String idComunidad, usuario, idCoche, accion, matricula, marca, modelo, descripcion, transmision, combustible;
+    String idComunidad, usuario, idCoche, accion, matricula, marca, modelo, descripcion, transmision, combustible, aireAcondicionadoString, bluetoothString, gpsString, b64p, nombreFotoPrincipal;
     Integer plazas, puertas, numFotos;
     Boolean aireAcondicionado, bluetooth, gps;
 
@@ -80,7 +82,6 @@ public class ModificarCoche extends AppCompatActivity {
     private String[] nombreFotosCoche = new String[9];
     private static String URL_BASE_FOTOS = "http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotoscoches/";
     FotosCocheAdapter fotosCocheAdapter;
-    String nombreFotoPrincipal;
 
     Uri imagenPrincipalUriCambio, imagenDialogoUri, imagen;
 
@@ -164,10 +165,62 @@ public class ModificarCoche extends AppCompatActivity {
         guardarInformacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (accion.equals("modificar")){
-                    actualizarDatosCoche();
+
+                matricula = matriculaEditText.getText().toString().trim();
+                marca = marcaEditText.getText().toString().trim();
+                modelo = modeloEditText.getText().toString().trim();
+
+                if(plazasEditText.getText().toString().trim().equals("")){plazas = 0;} else{plazas = Integer.parseInt(plazasEditText.getText().toString().trim());}
+                if(puertasEditText.getText().toString().trim().equals("")){puertas = 0;} else{puertas = Integer.parseInt(puertasEditText.getText().toString().trim());}
+
+                if(manualRadioButton.isChecked()){
+                    transmision = "Manual";
+                }else if(automaticoRadioButton.isChecked()){
+                    transmision = "Automático";
+                }
+                if(dieselRadioButton.isChecked()){
+                    combustible = "Diesel";
+                }else if(gasolinaRadioButton.isChecked()){
+                    combustible = "Gasolina";
+                }else if(electricoRadioButton.isChecked()){
+                    combustible = "Eléctrico";
+                }
+                if(aireAcondicionadoCheckBox.isChecked()){aireAcondicionadoString="1";}else{aireAcondicionadoString="0";}
+                if(bluetoothCheckBox.isChecked()){bluetoothString="1";}else{bluetoothString="0";}
+                if(gpsCheckBox.isChecked()){gpsString="1";}else{gpsString="0";}
+                descripcion = descripcionEditText.getText().toString().trim();
+
+                if(imagenPrincipalUriCambio != null){
+                    try {
+                        Bitmap bprincipal = MediaStore.Images.Media.getBitmap(getContentResolver(),imagenPrincipalUriCambio);
+                        ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+                        bprincipal.compress(Bitmap.CompressFormat.PNG, 100, baos1);
+                        byte[] b1= baos1.toByteArray();
+                        b64p = Base64.encodeToString(b1, Base64.DEFAULT);
+                        String tiempo = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+                        nombreFotoPrincipal = "IMG_" + tiempo + "_P.png";
+                    } catch (IOException e) {}
                 }else{
-                    //anadirCoche();
+                    nombreFotoPrincipal = "none";
+                    b64p = "none";
+                }
+
+                if((!marca.isEmpty() && !modelo.isEmpty() && plazas > 0 && puertas > 0 && !transmision.isEmpty() && !combustible.isEmpty() && !aireAcondicionadoString.isEmpty() && !bluetoothString.isEmpty() && !gpsString.isEmpty() && !descripcion.isEmpty()) || (accion.equals("aniadir") && !matricula.isEmpty())) {
+
+                    if (accion.equals("modificar")){
+                        actualizarDatosCoche();
+                    }else{
+                        if(imagenPrincipalUriCambio != null){
+                            anadirCoche();
+                        }else{
+                            informacionDatosCocheTextView.setText("Debe añadir una foto del coche para poder continuar.");
+                            informacionDatosCocheTextView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+                else{
+                    informacionDatosCocheTextView.setText("Debe rellenar todos los campos para poder continuar.");
+                    informacionDatosCocheTextView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -350,100 +403,110 @@ public class ModificarCoche extends AppCompatActivity {
         }
     }
 
-    private void actualizarDatosCoche(){
-        marca = marcaEditText.getText().toString().trim();
-        modelo = modeloEditText.getText().toString().trim();
-        plazas = Integer.parseInt(plazasEditText.getText().toString().trim());
-        puertas = Integer.parseInt(puertasEditText.getText().toString().trim());
-        if(manualRadioButton.isChecked()){
-            transmision = "Manual";
-        }else if(automaticoRadioButton.isChecked()){
-            transmision = "Automático";
-        }
-        if(dieselRadioButton.isChecked()){
-            combustible = "Diesel";
-        }else if(gasolinaRadioButton.isChecked()){
-            combustible = "Gasolina";
-        }else if(electricoRadioButton.isChecked()){
-            combustible = "Eléctrico";
-        }
-        String aireAcondicionadoString;
-        if(aireAcondicionadoCheckBox.isChecked()){aireAcondicionadoString="1";}else{aireAcondicionadoString="0";}
-        String bluetoothString;
-        if(bluetoothCheckBox.isChecked()){bluetoothString="1";}else{bluetoothString="0";}
-        String gpsString;
-        if(gpsCheckBox.isChecked()){gpsString="1";}else{gpsString="0";}
-        descripcion = descripcionEditText.getText().toString().trim();
+    private void anadirCoche(){
+        StringRequest peticion = new StringRequest(Request.Method.POST,
+                Constantes.URL_ANADIRCOCHE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String respuesta) {
+                        try {
+                            JSONObject objetoJSON = new JSONObject(respuesta);
+                            informacionDatosCocheTextView.setText(objetoJSON.getString("mensaje"));
+                            informacionDatosCocheTextView.setVisibility(View.VISIBLE);
 
-        if(!marca.isEmpty() && !modelo.isEmpty() && plazas > 0 && puertas > 0 && !transmision.isEmpty() && !combustible.isEmpty() && !aireAcondicionadoString.isEmpty() && !bluetoothString.isEmpty() && !gpsString.isEmpty() && !descripcion.isEmpty()){
-            StringRequest peticion = new StringRequest(Request.Method.POST,
-                    Constantes.URL_ACTUALIZARINFOCOCHE,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String respuesta) {
-                            try {
-                                JSONObject objetoJSON = new JSONObject(respuesta);
-
+                            if(objetoJSON.getString("error").equals("false")){
                                 Intent intentResultado = new Intent();
-                                setResult(2, intentResultado);
+                                setResult(3, intentResultado);
                                 finish();
-                                //devolver a la otra actividad
-
-                                AdministradorPeticiones.getInstance(context).cancelAll("peticion");
-                            } catch (JSONException e) {
-                                //throw new RuntimeException(e);
                             }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            //
-                        }
-                    }) {
-                @Nullable
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> parametros = new HashMap<>();
-                    parametros.put("IdCoche", idCoche);
-                    parametros.put("Marca", marca);
-                    parametros.put("Modelo", modelo);
-                    parametros.put("Plazas", String.valueOf(plazas));
-                    parametros.put("Puertas", String.valueOf(puertas));
-                    parametros.put("Transmision", transmision);
-                    parametros.put("Combustible", combustible);
-                    parametros.put("AireAcondicionado", aireAcondicionadoString);
-                    parametros.put("Bluetooth", bluetoothString);
-                    parametros.put("GPS", gpsString);
-                    parametros.put("Descripcion", descripcion);
-                        if(imagenPrincipalUriCambio != null){
-                            try {
-                                Bitmap bprincipal = MediaStore.Images.Media.getBitmap(getContentResolver(),imagenPrincipalUriCambio);
-                                ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
-                                bprincipal.compress(Bitmap.CompressFormat.PNG, 100, baos1);
-                                byte[] b1= baos1.toByteArray();
-                                String b64p = Base64.encodeToString(b1, Base64.DEFAULT);
-                                String tiempo = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-                                String nombreFotoPrincipal = "IMG_" + tiempo + "_P.png";
-                                parametros.put("NombreFotoPrincipal", nombreFotoPrincipal);
-                                parametros.put("FotoPrincipal", b64p);
-                            } catch (IOException e) {}
-                        }else{
-                            parametros.put("NombreFotoPrincipal", "none");
-                            parametros.put("FotoPrincipal", "none");
-                        }
-                    return parametros;
-                }
-            };
 
-            peticion.setTag("peticion");
-            AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
+                            AdministradorPeticiones.getInstance(context).cancelAll("peticion");
+                        } catch (JSONException e) {
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //
+                    }
+                }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("IdComunidad", idComunidad);
+                parametros.put("Propietario", usuario);
+                parametros.put("Matricula", toUpperCase(matricula));
+                parametros.put("Marca", marca);
+                parametros.put("Modelo", modelo);
+                parametros.put("Plazas", String.valueOf(plazas));
+                parametros.put("Puertas", String.valueOf(puertas));
+                parametros.put("Transmision", transmision);
+                parametros.put("Combustible", combustible);
+                parametros.put("AireAcondicionado", aireAcondicionadoString);
+                parametros.put("Bluetooth", bluetoothString);
+                parametros.put("GPS", gpsString);
+                parametros.put("Descripcion", descripcion);
+                parametros.put("NombreFotoPrincipal", nombreFotoPrincipal);
+                parametros.put("FotoPrincipal", b64p);
+                return parametros;
+            }
+        };
 
-        }
-        else{
-            informacionDatosCocheTextView.setText("Debe rellenar todos los campos para poder continuar.");
-            informacionDatosCocheTextView.setVisibility(View.VISIBLE);
-        }
+        peticion.setTag("peticion");
+        AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
+    }
+
+    private void actualizarDatosCoche(){
+        StringRequest peticion = new StringRequest(Request.Method.POST,
+                Constantes.URL_ACTUALIZARINFOCOCHE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String respuesta) {
+                        try {
+                            JSONObject objetoJSON = new JSONObject(respuesta);
+
+                            Intent intentResultado = new Intent();
+                            setResult(3, intentResultado);
+                            finish();
+                            //devolver a la otra actividad
+
+                            AdministradorPeticiones.getInstance(context).cancelAll("peticion");
+                        } catch (JSONException e) {
+                            //throw new RuntimeException(e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //
+                    }
+                }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("IdCoche", idCoche);
+                parametros.put("Marca", marca);
+                parametros.put("Modelo", modelo);
+                parametros.put("Plazas", String.valueOf(plazas));
+                parametros.put("Puertas", String.valueOf(puertas));
+                parametros.put("Transmision", transmision);
+                parametros.put("Combustible", combustible);
+                parametros.put("AireAcondicionado", aireAcondicionadoString);
+                parametros.put("Bluetooth", bluetoothString);
+                parametros.put("GPS", gpsString);
+                parametros.put("Descripcion", descripcion);
+                parametros.put("NombreFotoPrincipal", nombreFotoPrincipal);
+                parametros.put("FotoPrincipal", b64p);
+                return parametros;
+            }
+        };
+
+        peticion.setTag("peticion");
+        AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
     }
 
     private void verImagenenGrande() {
@@ -453,7 +516,7 @@ public class ModificarCoche extends AppCompatActivity {
 
         ImageView imagenGrandeImageView = dialog.findViewById(R.id.imagenGrandeImageView);
 
-        if(target == 0 && nombreFotoPrincipal!=null && imagenPrincipalUriCambio == null){
+        if(target == 0 && nombreFotoPrincipal!=null && imagenPrincipalUriCambio == null && accion.equals("modificar")){
             String urlCompleta= URL_BASE_FOTOS+nombreFotoPrincipal;
             Glide.with(this.context).load(urlCompleta).into(imagenGrandeImageView);
         } else if (imagenPrincipalUriCambio != null ) {
@@ -474,7 +537,7 @@ public class ModificarCoche extends AppCompatActivity {
             }
         });
 
-        dialog.show(); // Show the dialog
+        dialog.show();
     }
 
     private void mostrarDialogoSeleccion(){
