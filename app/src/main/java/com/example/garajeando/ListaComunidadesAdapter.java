@@ -19,7 +19,7 @@ public class ListaComunidadesAdapter extends ArrayAdapter<String> {
 
     private final Activity context;
 
-    private Activity activity;
+    private final Activity activity;
 
     //arraylist para cada columna en la bd
     private ArrayList<Comunidad> comunidades=new ArrayList<Comunidad>();
@@ -64,5 +64,5 @@ public class ListaComunidadesAdapter extends ArrayAdapter<String> {
             }
         });
         return l;
-    };
+    }
 }

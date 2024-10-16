@@ -44,12 +44,12 @@ public class TusComunidades extends AppCompatActivity {
     private ListView comunidadesListView;
 
     private final Activity activity=this;
-    private Context context = this;
+    private final Context context = this;
 
     int numComunidades = -1;
     JSONArray respuestaComunidades;
 
-    private ArrayList<Comunidad> comunidades=new ArrayList<Comunidad>();
+    private final ArrayList<Comunidad> comunidades=new ArrayList<Comunidad>();
 
     private ListaComunidadesAdapter adapterC;
 
@@ -76,20 +76,20 @@ public class TusComunidades extends AppCompatActivity {
         limpiarArrayLists();
         obtenerComunidades();
 
-        comunidadesListView = (ListView) findViewById(R.id.listaComunidadesListViewC);
+        comunidadesListView = findViewById(R.id.listaComunidadesListViewC);
 
-        avisoUnirseComunidadTextView = (TextView) findViewById(R.id.avisoUnirseComunidadTextView);
+        avisoUnirseComunidadTextView = findViewById(R.id.avisoUnirseComunidadTextView);
 
-        sinComunidadesTextView = (TextView) findViewById(R.id.SinComunidadesTextView);
-        avisoCodInvitacionTextView = (TextView) findViewById(R.id.avisoCodInvitacionTextView);
+        sinComunidadesTextView = findViewById(R.id.SinComunidadesTextView);
+        avisoCodInvitacionTextView = findViewById(R.id.avisoCodInvitacionTextView);
 
-        codigoComunidadCreadaTextView = (TextView) findViewById(R.id.codigoInvitacionComunidadCreadaTextView);
+        codigoComunidadCreadaTextView = findViewById(R.id.codigoInvitacionComunidadCreadaTextView);
 
 
-        codigoInvitacionEditText = (EditText) findViewById(R.id.invitacionComunidadEditText);
-        nombreComunidadEditText = (EditText) findViewById(R.id.nombreComunidadEditText);
+        codigoInvitacionEditText = findViewById(R.id.invitacionComunidadEditText);
+        nombreComunidadEditText = findViewById(R.id.nombreComunidadEditText);
 
-        unirseComunidadButton = (Button) findViewById(R.id.unirseComunidadButton);
+        unirseComunidadButton = findViewById(R.id.unirseComunidadButton);
         unirseComunidadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +97,7 @@ public class TusComunidades extends AppCompatActivity {
             }
         });
 
-        crearComunidadButton = (Button) findViewById(R.id.crearComunidadButton);
+        crearComunidadButton = findViewById(R.id.crearComunidadButton);
         crearComunidadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,7 +182,7 @@ public class TusComunidades extends AppCompatActivity {
 
                             //se crea el adaptar propio
                             adapterC = new ListaComunidadesAdapter(activity, activity, comunidades, idUsuario);
-                            l = (ListView) findViewById(R.id.listaComunidadesListViewC);
+                            l = findViewById(R.id.listaComunidadesListViewC);
                             l.setAdapter(adapterC);
 
                             //cuando se modifican datos notificar para que actualice
@@ -224,7 +224,7 @@ public class TusComunidades extends AppCompatActivity {
 
     public void unirseAComunidad() {
         codInvitacion = codigoInvitacionEditText.getText().toString().trim();
-        if (!String.valueOf(codInvitacion).isEmpty()) {
+        if (!codInvitacion.isEmpty()) {
             StringRequest peticion = new StringRequest(Request.Method.POST,
                     Constantes.URL_UNIRSEACOMUNIDAD,
                     new Response.Listener<String>() {
@@ -267,7 +267,7 @@ public class TusComunidades extends AppCompatActivity {
 
     public void crearComunidad(){
         nombreComunidad = nombreComunidadEditText.getText().toString().trim();
-        if (!String.valueOf(nombreComunidad).isEmpty()) {
+        if (!nombreComunidad.isEmpty()) {
             StringRequest peticion = new StringRequest(Request.Method.POST,
                     Constantes.URL_CREARCOMUNIDAD,
                     new Response.Listener<String>() {
@@ -276,7 +276,7 @@ public class TusComunidades extends AppCompatActivity {
                             try {
                                 JSONObject objetoJSON = new JSONObject(respuesta);
                                 if (String.valueOf(objetoJSON.getJSONObject("mensaje")).startsWith("{")){
-                                    codInvitacionComunidadCreada = String.valueOf(objetoJSON.getJSONObject("mensaje").getString("CodInvitacion"));
+                                    codInvitacionComunidadCreada = objetoJSON.getJSONObject("mensaje").getString("CodInvitacion");
                                 }
                                 avisoCodInvitacionTextView.setText("Invita a más personas a la comunidad utilizando el siguiente código:");
                                 codigoComunidadCreadaTextView.setText(String.valueOf(codInvitacionComunidadCreada));

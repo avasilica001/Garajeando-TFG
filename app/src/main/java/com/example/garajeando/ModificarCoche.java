@@ -79,8 +79,8 @@ public class ModificarCoche extends AppCompatActivity {
     Boolean aireAcondicionado, bluetooth, gps;
 
     JSONArray respuestaFotos, respuestaInfo;
-    private String[] nombreFotosCoche = new String[9];
-    private static String URL_BASE_FOTOS = "http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotoscoches/";
+    private final String[] nombreFotosCoche = new String[9];
+    private static final String URL_BASE_FOTOS = "http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotoscoches/";
     FotosCocheAdapter fotosCocheAdapter;
 
     Uri imagenPrincipalUriCambio, imagenDialogoUri, imagen;
@@ -91,7 +91,10 @@ public class ModificarCoche extends AppCompatActivity {
     ActivityResultLauncher<String> activityResultLauncherElegirFoto;
     ActivityResultLauncher<Uri> activityResultLauncherSacarFoto;
 
-    private int F_PRINCIPAL = 0, F_FRONTAL = 1, F_REVERSO = 2, target;
+    private final int F_PRINCIPAL = 0;
+    private final int F_FRONTAL = 1;
+    private final int F_REVERSO = 2;
+    private int target;
 
 
 
@@ -111,33 +114,33 @@ public class ModificarCoche extends AppCompatActivity {
         accion = getIntent().getExtras().getString("accion");
         idCoche = getIntent().getExtras().getString("idCoche");
 
-        matriculaEditText = (EditText) findViewById(R.id.matriculaEditText);
-        marcaEditText = (EditText) findViewById(R.id.marcaEditText);
-        modeloEditText = (EditText) findViewById(R.id.modeloEditText);
-        plazasEditText = (EditText) findViewById(R.id.plazasEditText);
-        puertasEditText = (EditText) findViewById(R.id.puertasEditText);
-        descripcionEditText = (EditText) findViewById(R.id.descripcionEditText);
-        informacionDatosCocheTextView = (TextView) findViewById(R.id.informacionDatosCocheTextView);
+        matriculaEditText = findViewById(R.id.matriculaEditText);
+        marcaEditText = findViewById(R.id.marcaEditText);
+        modeloEditText = findViewById(R.id.modeloEditText);
+        plazasEditText = findViewById(R.id.plazasEditText);
+        puertasEditText = findViewById(R.id.puertasEditText);
+        descripcionEditText = findViewById(R.id.descripcionEditText);
+        informacionDatosCocheTextView = findViewById(R.id.informacionDatosCocheTextView);
         informacionDatosCocheTextView.setVisibility(View.GONE);
 
-        transmisionRadioGroup = (RadioGroup) findViewById(R.id.transmisionRadioGroup);
-        automaticoRadioButton = (RadioButton) findViewById(R.id.automaticoRadioButton);
-        manualRadioButton = (RadioButton) findViewById(R.id.manualRadioButton);
+        transmisionRadioGroup = findViewById(R.id.transmisionRadioGroup);
+        automaticoRadioButton = findViewById(R.id.automaticoRadioButton);
+        manualRadioButton = findViewById(R.id.manualRadioButton);
 
-        combustibleRadioGroup = (RadioGroup) findViewById(R.id.combustibleRadioGroup);
-        dieselRadioButton = (RadioButton) findViewById(R.id.dieselRadioButton);
-        gasolinaRadioButton = (RadioButton) findViewById(R.id.gasolinaRadioButton);
-        electricoRadioButton = (RadioButton) findViewById(R.id.electricoRadioButton);
+        combustibleRadioGroup = findViewById(R.id.combustibleRadioGroup);
+        dieselRadioButton = findViewById(R.id.dieselRadioButton);
+        gasolinaRadioButton = findViewById(R.id.gasolinaRadioButton);
+        electricoRadioButton = findViewById(R.id.electricoRadioButton);
 
-        aireAcondicionadoCheckBox = (CheckBox) findViewById(R.id.aireAcondicionadoCheckBox);
-        bluetoothCheckBox = (CheckBox) findViewById(R.id.bluetoothCheckBox);
-        gpsCheckBox = (CheckBox) findViewById(R.id.gpsCheckBox);
+        aireAcondicionadoCheckBox = findViewById(R.id.aireAcondicionadoCheckBox);
+        bluetoothCheckBox = findViewById(R.id.bluetoothCheckBox);
+        gpsCheckBox = findViewById(R.id.gpsCheckBox);
 
-        imagenPrincipalImageView = (ImageView) findViewById(R.id.imagenPrincipalCocheImageView);
+        imagenPrincipalImageView = findViewById(R.id.imagenPrincipalCocheImageView);
 
-        fotosGridView = (GridView) findViewById(R.id.imagenesSecundariasCocheGridView);
+        fotosGridView = findViewById(R.id.imagenesSecundariasCocheGridView);
 
-        guardarInformacion = (Button) findViewById(R.id.guardarInformacionButton);
+        guardarInformacion = findViewById(R.id.guardarInformacionButton);
 
         setSupportActionBar(findViewById(R.id.matriculaCocheElegidoToolbar));
 
@@ -344,9 +347,9 @@ public class ModificarCoche extends AppCompatActivity {
                             else if (combustible.equals("Eléctrico")){
                                 electricoRadioButton.setChecked(true);
                             }
-                            if(aireAcondicionado){aireAcondicionadoCheckBox.setChecked(true);}else{aireAcondicionadoCheckBox.setChecked(false);}
-                            if(bluetooth){bluetoothCheckBox.setChecked(true);}else{bluetoothCheckBox.setChecked(false);}
-                            if(gps){gpsCheckBox.setChecked(true);}else{gpsCheckBox.setChecked(false);}
+                            aireAcondicionadoCheckBox.setChecked(aireAcondicionado);
+                            bluetoothCheckBox.setChecked(bluetooth);
+                            gpsCheckBox.setChecked(gps);
                             descripcionEditText.setText(descripcion);
 
                             AdministradorPeticiones.getInstance(context).cancelAll("peticion");
@@ -394,9 +397,9 @@ public class ModificarCoche extends AppCompatActivity {
             puertas = Integer.parseInt(respuestaInfo.getJSONObject(0).getString("Puertas"));
             transmision = respuestaInfo.getJSONObject(0).getString("Transmision");
             combustible = respuestaInfo.getJSONObject(0).getString("Combustible");
-            if(respuestaInfo.getJSONObject(0).getString("AireAcondicionado").equals("1")){aireAcondicionado = true;}else{aireAcondicionado = false;}
-            if(respuestaInfo.getJSONObject(0).getString("Bluetooth").equals("1")){bluetooth = true;} else{bluetooth = false;}
-            if(respuestaInfo.getJSONObject(0).getString("GPS").equals("1")){gps = true;} else{gps = false;}
+            aireAcondicionado = respuestaInfo.getJSONObject(0).getString("AireAcondicionado").equals("1");
+            bluetooth = respuestaInfo.getJSONObject(0).getString("Bluetooth").equals("1");
+            gps = respuestaInfo.getJSONObject(0).getString("GPS").equals("1");
             descripcion = respuestaInfo.getJSONObject(0).getString("Descripcion");
         }catch (Exception e){
             //no hace nada
@@ -541,7 +544,7 @@ public class ModificarCoche extends AppCompatActivity {
     }
 
     private void mostrarDialogoSeleccion(){
-        String opciones[] = {"Sacar una foto","Seleccionar de la galería"};
+        String[] opciones = {"Sacar una foto","Seleccionar de la galería"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Selecciona una opción para tu foto de perfil");
         builder.setItems(opciones, new DialogInterface.OnClickListener() {

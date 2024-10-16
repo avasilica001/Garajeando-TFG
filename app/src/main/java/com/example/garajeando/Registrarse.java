@@ -70,7 +70,10 @@ public class Registrarse extends AppCompatActivity {
     private Uri imagen, frontal, reverso, perfil;
     private Uri CarnetFrontal;
     private Uri CarnetReverso;
-    private int F_PERFIL = 0, F_FRONTAL = 1, F_REVERSO = 2, target;
+    private final int F_PERFIL = 0;
+    private final int F_FRONTAL = 1;
+    private final int F_REVERSO = 2;
+    private int target;
 
     private Bitmap bperfil, bfrontal, breverso;
     private String b64p, b64f, b64r;
@@ -102,16 +105,16 @@ public class Registrarse extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-        correoElectronicoEditText = (EditText) findViewById(R.id.correoElectronicoEditTextR);
-        contrasenaEditText = (EditText) findViewById(R.id.contrasenaEditTextR);
+        correoElectronicoEditText = findViewById(R.id.correoElectronicoEditTextR);
+        contrasenaEditText = findViewById(R.id.contrasenaEditTextR);
         contrasenaVisible = false;
-        repetirContrasenaEditText = (EditText) findViewById(R.id.repetirContrasenaEditText);
-        nombreEditText = (EditText) findViewById(R.id.nombreEditText);
-        apellidosEditText = (EditText) findViewById(R.id.apellidosEditText);
+        repetirContrasenaEditText = findViewById(R.id.repetirContrasenaEditText);
+        nombreEditText = findViewById(R.id.nombreEditText);
+        apellidosEditText = findViewById(R.id.apellidosEditText);
 
-        avisoTextView = (TextView) findViewById(R.id.avisoTextViewR);
+        avisoTextView = findViewById(R.id.avisoTextViewR);
 
-        registrarseButton = (Button) findViewById(R.id.registrarseButtonR);
+        registrarseButton = findViewById(R.id.registrarseButtonR);
         registrarseButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -120,9 +123,9 @@ public class Registrarse extends AppCompatActivity {
             }
         });
 
-        imagenPerfil = (ImageView) findViewById(R.id.fotoPerfilImageViewR);
-        carnetFrontal = (ImageView) findViewById(R.id.fotoCarnetFrontalImageView);
-        carnetReverso = (ImageView) findViewById(R.id.fotoCarnetReversoImageView);
+        imagenPerfil = findViewById(R.id.fotoPerfilImageViewR);
+        carnetFrontal = findViewById(R.id.fotoCarnetFrontalImageView);
+        carnetReverso = findViewById(R.id.fotoCarnetReversoImageView);
 
         activityResultLauncherSacarFoto = registerForActivityResult(
                 new ActivityResultContracts.TakePicture(),
@@ -171,7 +174,7 @@ public class Registrarse extends AppCompatActivity {
                     }
                 });
 
-        anadirFotoButton = (Button) findViewById(R.id.anadirFotoPerfilButtonR);
+        anadirFotoButton = findViewById(R.id.anadirFotoPerfilButtonR);
         anadirFotoButton.bringToFront();
         anadirFotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,7 +184,7 @@ public class Registrarse extends AppCompatActivity {
             }
         });
 
-        anadirCarnetFrontal = (Button) findViewById(R.id.fotoCarnetFrontalAnadirButton);
+        anadirCarnetFrontal = findViewById(R.id.fotoCarnetFrontalAnadirButton);
         anadirCarnetFrontal.bringToFront();
         anadirCarnetFrontal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,7 +194,7 @@ public class Registrarse extends AppCompatActivity {
             }
         });
 
-        anadirCarnetReverso = (Button) findViewById(R.id.fotoCarnetReversoAnadirButton);
+        anadirCarnetReverso = findViewById(R.id.fotoCarnetReversoAnadirButton);
         anadirCarnetReverso.bringToFront();
         anadirCarnetReverso.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,7 +238,7 @@ public class Registrarse extends AppCompatActivity {
         outState.putString("aviso", aviso);
         outState.putBoolean("avisoVisible",avisoTextView.getVisibility() == View.VISIBLE);
         outState.putBoolean("contrasenaVisible", contrasenaVisible);
-        contrasenaEditText = (EditText) findViewById(R.id.contrasenaEditTextR);
+        contrasenaEditText = findViewById(R.id.contrasenaEditTextR);
 
         if(perfil != null && !perfil.equals(Uri.EMPTY)) {
             outState.putParcelable("perfil", perfil);
@@ -270,7 +273,7 @@ public class Registrarse extends AppCompatActivity {
             contrasenaVisible = false;
         }
         contrasenaEditText.setSelection(seleccion);
-        contrasenaEditText = (EditText) findViewById(R.id.contrasenaEditTextR);
+        contrasenaEditText = findViewById(R.id.contrasenaEditTextR);
 
         perfil = savedInstanceState.getParcelable("perfil");
         if(perfil != null && !perfil.equals(Uri.EMPTY)) {
@@ -289,7 +292,7 @@ public class Registrarse extends AppCompatActivity {
     }
 
     private void mostrarDialogoSeleccion(){
-        String opciones[] = {"Sacar una foto","Seleccionar de la galería"};
+        String[] opciones = {"Sacar una foto","Seleccionar de la galería"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Selecciona una opción para tu foto de perfil");
         builder.setItems(opciones, new DialogInterface.OnClickListener() {

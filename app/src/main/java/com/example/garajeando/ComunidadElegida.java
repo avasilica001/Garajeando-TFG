@@ -39,13 +39,13 @@ public class ComunidadElegida extends AppCompatActivity {
 
     private int numCoches, numCochesOtrasComunidades;
 
-    private ArrayList<Coche> coches = new ArrayList<Coche>();
-    private ArrayList<Coche> cochesOtrasComunidades = new ArrayList<Coche>();
+    private final ArrayList<Coche> coches = new ArrayList<Coche>();
+    private final ArrayList<Coche> cochesOtrasComunidades = new ArrayList<Coche>();
 
     private ListaCochesAdapter adapterCo;
 
     private final Activity activity=this;
-    private Context context = this;
+    private final Context context = this;
 
     private Toolbar miComunidadToolbar;
     private RecyclerView misCochesRecyclerView;
@@ -78,7 +78,7 @@ public class ComunidadElegida extends AppCompatActivity {
         setSupportActionBar(findViewById(R.id.ComunidadElegidaToolbar));
         getSupportActionBar().setTitle(nombreComunidad);
 
-        misCochesRecyclerView = (RecyclerView) findViewById(R.id.misCochesRecyclerView);
+        misCochesRecyclerView = findViewById(R.id.misCochesRecyclerView);
 
         limpiarArrayListsCoches();
         obtenerCoches();
@@ -112,35 +112,12 @@ public class ComunidadElegida extends AppCompatActivity {
         cochesOtrasComunidades.clear();
     }
 
-    private void guardarCoches(){
+    private void guardarCochesEstaComunidad(){
         try{
-            for (int i = 0; i < respuestaCoches.length(); i++)
-            {
+            for (int i = 0; i < respuestaCoches.length(); i++) {
                 JSONObject jsonCoches = respuestaCoches.getJSONObject(i);
 
                 coches.add(new Coche(jsonCoches.getString("IdCoche"),
-                        jsonCoches.getString("Propietario"),
-                        jsonCoches.getString("NombrePropietario"),
-                        jsonCoches.getString("ApellidosPropietario"),
-                        jsonCoches.getString("Matricula"),
-                        jsonCoches.getString("Marca"),
-                        jsonCoches.getString("Modelo"),
-                        jsonCoches.getString("Transmision"),
-                        jsonCoches.getString("Combustible"),
-                        jsonCoches.getString("Descripcion"),
-                        Integer.parseInt(jsonCoches.getString("Plazas")),
-                        Integer.parseInt(jsonCoches.getString("Puertas")),
-                        Boolean.parseBoolean(jsonCoches.getString("AireAcondicionado")),
-                        Boolean.parseBoolean(jsonCoches.getString("Bluetooth")),
-                        Boolean.parseBoolean(jsonCoches.getString("GPS")),
-                        jsonCoches.getString("FotoCochePrincipal")));
-            }
-
-            for (int i = 0; i < respuestaCochesOtrasComunidades.length(); i++)
-            {
-                JSONObject jsonCoches = respuestaCochesOtrasComunidades.getJSONObject(i);
-
-                cochesOtrasComunidades.add(new Coche(jsonCoches.getString("IdCoche"),
                         jsonCoches.getString("Propietario"),
                         jsonCoches.getString("NombrePropietario"),
                         jsonCoches.getString("ApellidosPropietario"),
@@ -162,6 +139,33 @@ public class ComunidadElegida extends AppCompatActivity {
         }
     }
 
+    private void guardarCochesOtrasComunidades(){
+        try{
+            for (int j = 0; j < respuestaCochesOtrasComunidades.length(); j++){
+                JSONObject jsonCochesOtrasComunidades = respuestaCochesOtrasComunidades.getJSONObject(j);
+
+                cochesOtrasComunidades.add(new Coche(jsonCochesOtrasComunidades.getString("IdCoche"),
+                jsonCochesOtrasComunidades.getString("Propietario"),
+                jsonCochesOtrasComunidades.getString("NombrePropietario"),
+                jsonCochesOtrasComunidades.getString("ApellidosPropietario"),
+                jsonCochesOtrasComunidades.getString("Matricula"),
+                jsonCochesOtrasComunidades.getString("Marca"),
+                jsonCochesOtrasComunidades.getString("Modelo"),
+                jsonCochesOtrasComunidades.getString("Transmision"),
+                jsonCochesOtrasComunidades.getString("Combustible"),
+                jsonCochesOtrasComunidades.getString("Descripcion"),
+                Integer.parseInt(jsonCochesOtrasComunidades.getString("Plazas")),
+                Integer.parseInt(jsonCochesOtrasComunidades.getString("Puertas")),
+                Boolean.parseBoolean(jsonCochesOtrasComunidades.getString("AireAcondicionado")),
+                Boolean.parseBoolean(jsonCochesOtrasComunidades.getString("Bluetooth")),
+                Boolean.parseBoolean(jsonCochesOtrasComunidades.getString("GPS")),
+                jsonCochesOtrasComunidades.getString("FotoCochePrincipal")));
+            }
+        }catch (Exception e){
+            //no hace nada
+        }
+    }
+
     private void obtenerCoches(){
         StringRequest peticion = new StringRequest(Request.Method.POST,
                 Constantes.URL_OBTENERCOCHES,
@@ -175,8 +179,9 @@ public class ComunidadElegida extends AppCompatActivity {
 
                             limpiarArrayListsCoches();
                             respuestaCoches = objetoJSON.getJSONArray("mensaje");
-                            respuestaCochesOtrasComunidades = objetoJSON.getJSONArray("cochesOtrasComunidades");;
-                            guardarCoches();
+                            respuestaCochesOtrasComunidades = objetoJSON.getJSONArray("cochesOtrasComunidades");
+                            guardarCochesEstaComunidad();
+                            guardarCochesOtrasComunidades();
 
 
                             linearLayoutManagerCoches = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
@@ -262,6 +267,8 @@ public class ComunidadElegida extends AppCompatActivity {
                     public void onResponse(String respuesta) {
                         try {
                             JSONObject objetoJSON = new JSONObject(respuesta);
+
+
                             AdministradorPeticiones.getInstance(context).cancelAll("peticion");
                         } catch (JSONException e) {
                             //throw new RuntimeException(e);

@@ -2,7 +2,10 @@ package com.example.garajeando;
 
 public class Comunidad {
 
-    private String idComunidad, nombre, codInvitacion, rol;
+    private String idComunidad;
+    private final String nombre;
+    private String codInvitacion;
+    private String rol;
 
     public Comunidad (String idComunidad, String nombre, String codInvitacion, String Rol){
         this.idComunidad=idComunidad;

@@ -75,16 +75,16 @@ public class CrearOferta extends AppCompatActivity {
         inicioCalendario = Calendar.getInstance(zonaHorariaMovil);
         finalCalendario = Calendar.getInstance(zonaHorariaMovil);
 
-        fechaInicioEditText = (EditText) findViewById(R.id.fechaInicioEditText);
-        fechaFinalEditText = (EditText) findViewById(R.id.fechaFinalEditText);
+        fechaInicioEditText = findViewById(R.id.fechaInicioEditText);
+        fechaFinalEditText = findViewById(R.id.fechaFinalEditText);
 
-        horaInicioEditText = (EditText) findViewById(R.id.horaInicioEditText);
-        horaFinalEditText = (EditText) findViewById(R.id.horaFinalEditText);
+        horaInicioEditText = findViewById(R.id.horaInicioEditText);
+        horaFinalEditText = findViewById(R.id.horaFinalEditText);
 
-        avisoCrearOfertaTextView = (TextView) findViewById(R.id.avisoCrearOfertaTextView);
+        avisoCrearOfertaTextView = findViewById(R.id.avisoCrearOfertaTextView);
         avisoCrearOfertaTextView.setVisibility(View.GONE);
 
-        publicarOfertaButton = (Button) findViewById(R.id.publicarOfertaButton);
+        publicarOfertaButton = findViewById(R.id.publicarOfertaButton);
 
         fechaInicioEditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,8 +305,8 @@ public class CrearOferta extends AppCompatActivity {
             SimpleDateFormat formatoLondresFinal = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             formatoLondresFinal.setTimeZone(zonaHorariaLondres);
 
-            String fechaHoraInicio = String.valueOf(formatoLondresInicio.format(fechaHoraInicioFormatoOriginal));
-            String fechaHoraFinal = String.valueOf(formatoLondresFinal.format(fechaHoraFinalFormatoOriginal));
+            String fechaHoraInicio = formatoLondresInicio.format(fechaHoraInicioFormatoOriginal);
+            String fechaHoraFinal = formatoLondresFinal.format(fechaHoraFinalFormatoOriginal);
 
             StringRequest peticion = new StringRequest(Request.Method.POST,
                     Constantes.URL_CREAROFERTA,

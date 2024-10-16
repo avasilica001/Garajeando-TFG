@@ -56,13 +56,13 @@ public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.
 
     private final Activity context;
 
-    private Activity activity;
+    private final Activity activity;
 
     //arraylist para cada columna en la bd
     private ArrayList<Coche> coches=new ArrayList<Coche>();
-    private ArrayList<String> idCoches = new ArrayList<String>();
-    private ArrayList<String> matriculas = new ArrayList<String>();
-    private ArrayList<String> nombresFotosPrincipales = new ArrayList<String>();
+    private final ArrayList<String> idCoches = new ArrayList<String>();
+    private final ArrayList<String> matriculas = new ArrayList<String>();
+    private final ArrayList<String> nombresFotosPrincipales = new ArrayList<String>();
 
     CardView l_coches;
 
@@ -105,7 +105,7 @@ public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.
             holder.anadirCocheButton.setVisibility(View.GONE);
 
             holder.matriculaTextView.setText(String.valueOf(coches.get(p).matricula));
-            Glide.with(this.context).load("http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotoscoches/"+String.valueOf(coches.get(p).nombreFotoPrincipal)).into(holder.imagenCocheImageView);
+            Glide.with(this.context).load("http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotoscoches/"+ coches.get(p).nombreFotoPrincipal).into(holder.imagenCocheImageView);
 
             holder.id = coches.get(p).getIdCoche();
             holder.propietario = coches.get(p).getPropietario();
@@ -176,10 +176,10 @@ public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.
 
         public CocheHolder(@NonNull View itemView) {
             super(itemView);
-            matriculaTextView = (TextView) itemView.findViewById(R.id.matriculaCocheTextView);
-            imagenCocheImageView = (ImageView) itemView.findViewById(R.id.imagenPreviaCocheImageView);
-            anadirCocheButton = (Button) itemView.findViewById(R.id.anadirCocheButton);
-            card_coche = (CardView) itemView.findViewById(R.id.card_coche);
+            matriculaTextView = itemView.findViewById(R.id.matriculaCocheTextView);
+            imagenCocheImageView = itemView.findViewById(R.id.imagenPreviaCocheImageView);
+            anadirCocheButton = itemView.findViewById(R.id.anadirCocheButton);
+            card_coche = itemView.findViewById(R.id.card_coche);
         }
     }
 }

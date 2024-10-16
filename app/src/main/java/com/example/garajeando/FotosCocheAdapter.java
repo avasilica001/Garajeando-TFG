@@ -13,9 +13,9 @@ import com.bumptech.glide.Glide;
 
 public class FotosCocheAdapter extends BaseAdapter {
 
-    private String[] nombreFotos;
-    private Context context;
-    private LayoutInflater layoutInflater;
+    private final String[] nombreFotos;
+    private final Context context;
+    private final LayoutInflater layoutInflater;
     Integer numFotos;
 
     public FotosCocheAdapter(Context context, String[] nombreFotos, Integer numFotos) {
@@ -46,7 +46,7 @@ public class FotosCocheAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.imagen_coche, viewGroup, false);
         }
 
-        ImageView imagen = (ImageView) view.findViewById(R.id.imagenCocheImageView);
+        ImageView imagen = view.findViewById(R.id.imagenCocheImageView);
 
         if(numFotos == 9 && (nombreFotos[i] == null || nombreFotos[i].isEmpty())){
             imagen.setImageResource(R.drawable.coche);

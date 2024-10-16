@@ -57,13 +57,13 @@ public class IniciarSesion extends AppCompatActivity {
         //Setear barra superior
         setSupportActionBar(findViewById(R.id.BarraSuperiorIniciarSesionToolbar));
 
-        correoElectronicoEditText = (EditText) findViewById(R.id.correoElectronicoEditTextIS);
-        contrasenaEditText = (EditText) findViewById(R.id.contrasenaEditTextIS);
+        correoElectronicoEditText = findViewById(R.id.correoElectronicoEditTextIS);
+        contrasenaEditText = findViewById(R.id.contrasenaEditTextIS);
         contrasenaVisible = false;
 
-        avisoTextView = (TextView) findViewById(R.id.avisoTextViewIS);
+        avisoTextView = findViewById(R.id.avisoTextViewIS);
 
-        iniciarSesionButton = (Button) findViewById(R.id.iniciarSesionButton);
+        iniciarSesionButton = findViewById(R.id.iniciarSesionButton);
         iniciarSesionButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -72,7 +72,7 @@ public class IniciarSesion extends AppCompatActivity {
             }
         });
 
-        registrarseButtonIS = (Button) findViewById(R.id.registrarseButtonIS);
+        registrarseButtonIS = findViewById(R.id.registrarseButtonIS);
         registrarseButtonIS.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -115,7 +115,7 @@ public class IniciarSesion extends AppCompatActivity {
         outState.putString("aviso", aviso);
         outState.putBoolean("avisoVisible",avisoTextView.getVisibility() == View.VISIBLE);
         outState.putBoolean("contrasenaVisible", contrasenaVisible);
-        contrasenaEditText = (EditText) findViewById(R.id.contrasenaEditTextIS);
+        contrasenaEditText = findViewById(R.id.contrasenaEditTextIS);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class IniciarSesion extends AppCompatActivity {
             contrasenaVisible = false;
         }
         contrasenaEditText.setSelection(seleccion);
-        contrasenaEditText = (EditText) findViewById(R.id.contrasenaEditTextIS);
+        contrasenaEditText = findViewById(R.id.contrasenaEditTextIS);
     }
 
     private void iniciarSesion(){

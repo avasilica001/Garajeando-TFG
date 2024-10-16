@@ -52,7 +52,7 @@ public class RecortarImagen extends AppCompatActivity {
                 ejeY= 1;
             }
 
-            String uri_destino = new StringBuilder(UUID.randomUUID().toString()).append(".png").toString();
+            String uri_destino = UUID.randomUUID().toString() + ".png";
 
             UCrop.Options opciones = new UCrop.Options();
 

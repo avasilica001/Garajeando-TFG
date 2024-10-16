@@ -46,9 +46,9 @@ public class CocheElegido extends AppCompatActivity {
 
     private GridView fotosGridView;
     private String[] nombreFotosCoche = new String[9];
-    private static String URL_BASE_FOTOS = "http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotoscoches/";
+    private static final String URL_BASE_FOTOS = "http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotoscoches/";
     private FotosCocheAdapter fotosCocheAdapter;
-    private Context context = this;
+    private final Context context = this;
     private Integer numFotos;
     private JSONArray respuestaFotos, respuestaInfo;
 
@@ -75,22 +75,22 @@ public class CocheElegido extends AppCompatActivity {
 
         obtenerInfoCoche();
 
-        imagenPrincipalImageView = (ImageView) findViewById(R.id.imagenPrincipalCocheImageView);
-        propietarioTextView = (TextView) findViewById(R.id.propietarioTextView);
-        marcaTextView = (TextView) findViewById(R.id.marcaTextView);
-        modeloTextView = (TextView) findViewById(R.id.modeloTextView);
-        plazasTextView = (TextView) findViewById(R.id.plazasTextView);
-        puertasTextView = (TextView) findViewById(R.id.puertasTextView);
-        transmisionTextView = (TextView) findViewById(R.id.transmisionTextView);
-        combustibleTextView = (TextView) findViewById(R.id.combustibleTextView);
-        aireAcondicionadoTextView = (TextView) findViewById(R.id.aireAcondicionadoTextView);
-        bluetoothTextView = (TextView) findViewById(R.id.bluetoothTextView);
-        gpsTextView = (TextView) findViewById(R.id.gpsTextView);
-        descripcionTextView = (TextView) findViewById(R.id.descripcionTextView);
+        imagenPrincipalImageView = findViewById(R.id.imagenPrincipalCocheImageView);
+        propietarioTextView = findViewById(R.id.propietarioTextView);
+        marcaTextView = findViewById(R.id.marcaTextView);
+        modeloTextView = findViewById(R.id.modeloTextView);
+        plazasTextView = findViewById(R.id.plazasTextView);
+        puertasTextView = findViewById(R.id.puertasTextView);
+        transmisionTextView = findViewById(R.id.transmisionTextView);
+        combustibleTextView = findViewById(R.id.combustibleTextView);
+        aireAcondicionadoTextView = findViewById(R.id.aireAcondicionadoTextView);
+        bluetoothTextView = findViewById(R.id.bluetoothTextView);
+        gpsTextView = findViewById(R.id.gpsTextView);
+        descripcionTextView = findViewById(R.id.descripcionTextView);
 
-        fotosGridView = (GridView) findViewById(R.id.imagenesSecundariasCocheGridView);
+        fotosGridView = findViewById(R.id.imagenesSecundariasCocheGridView);
 
-        modificarInformacionButton = (Button) findViewById(R.id.modificarDatosCocheButton);
+        modificarInformacionButton = findViewById(R.id.modificarDatosCocheButton);
         modificarInformacionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,7 +105,7 @@ public class CocheElegido extends AppCompatActivity {
             }
         });
 
-        crearOfertaButton = (Button) findViewById(R.id.crearOfertaButton);
+        crearOfertaButton = findViewById(R.id.crearOfertaButton);
         crearOfertaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -217,9 +217,9 @@ public class CocheElegido extends AppCompatActivity {
             puertas = Integer.parseInt(respuestaInfo.getJSONObject(0).getString("Puertas"));
             transmision = respuestaInfo.getJSONObject(0).getString("Transmision");
             combustible = respuestaInfo.getJSONObject(0).getString("Combustible");
-            if(respuestaInfo.getJSONObject(0).getString("AireAcondicionado").equals("1")){aireAcondicionado = true;}else{aireAcondicionado = false;}
-            if(respuestaInfo.getJSONObject(0).getString("Bluetooth").equals("1")){bluetooth = true;} else{bluetooth = false;}
-            if(respuestaInfo.getJSONObject(0).getString("GPS").equals("1")){gps = true;} else{gps = false;}
+            aireAcondicionado = respuestaInfo.getJSONObject(0).getString("AireAcondicionado").equals("1");
+            bluetooth = respuestaInfo.getJSONObject(0).getString("Bluetooth").equals("1");
+            gps = respuestaInfo.getJSONObject(0).getString("GPS").equals("1");
             descripcion = respuestaInfo.getJSONObject(0).getString("Descripcion");
 
             if(propietario.equals(usuario)){
