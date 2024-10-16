@@ -41,6 +41,7 @@ public class ComunidadElegida extends AppCompatActivity {
 
     private final ArrayList<Coche> coches = new ArrayList<Coche>();
     private final ArrayList<Coche> cochesOtrasComunidades = new ArrayList<Coche>();
+    private final ArrayList<Oferta> ofertasFuturas = new ArrayList<Oferta>();
 
     private ListaCochesAdapter adapterCo;
 
@@ -48,9 +49,9 @@ public class ComunidadElegida extends AppCompatActivity {
     private final Context context = this;
 
     private Toolbar miComunidadToolbar;
-    private RecyclerView misCochesRecyclerView;
+    private RecyclerView misCochesRecyclerView, misOfertasFuturasRecyclerView;
 
-    JSONArray respuestaCoches, respuestaCochesOtrasComunidades;
+    JSONArray respuestaCoches, respuestaCochesOtrasComunidades, respuestaOfertasFuturas;
 
     ListView l_coches;
 
@@ -79,9 +80,10 @@ public class ComunidadElegida extends AppCompatActivity {
         getSupportActionBar().setTitle(nombreComunidad);
 
         misCochesRecyclerView = findViewById(R.id.misCochesRecyclerView);
+        misOfertasFuturasRecyclerView = findViewById(R.id.misOfertasFuturasRecyclerView);
 
-        limpiarArrayListsCoches();
-        obtenerCoches();
+        limpiarArrayLists();
+        obtenerInfoPrincipalUsuario();
 
     }
 
@@ -107,9 +109,10 @@ public class ComunidadElegida extends AppCompatActivity {
         rolComunidad = savedInstanceState.getString("rolComunidad");
     }
 
-    private void limpiarArrayListsCoches(){
+    private void limpiarArrayLists(){
         coches.clear();
         cochesOtrasComunidades.clear();
+        ofertasFuturas.clear();
     }
 
     private void guardarCochesEstaComunidad(){
@@ -166,9 +169,26 @@ public class ComunidadElegida extends AppCompatActivity {
         }
     }
 
-    private void obtenerCoches(){
+    private void guardarOfertasFuturas(){
+        try{
+            for (int j = 0; j < respuestaOfertasFuturas.length(); j++){
+                JSONObject jsonOfertasFuturas = respuestaOfertasFuturas.getJSONObject(j);
+
+                ofertasFuturas.add(new Oferta(jsonOfertasFuturas.getString("IdOferta"),
+                        jsonOfertasFuturas.getString("IdCoche"),
+                        jsonOfertasFuturas.getString("IdComunidad"),
+                        jsonOfertasFuturas.getString("FechaHoraInicio"),
+                        jsonOfertasFuturas.getString("FechaHoraFin"),
+                        jsonOfertasFuturas.getString("FotoCoche")));
+            }
+        }catch (Exception e){
+            //no hace nada
+        }
+    }
+
+    private void obtenerInfoPrincipalUsuario(){
         StringRequest peticion = new StringRequest(Request.Method.POST,
-                Constantes.URL_OBTENERCOCHES,
+                Constantes.URL_OBTENERINFOPRINCIPALUSUARIO,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String respuesta) {
@@ -177,11 +197,13 @@ public class ComunidadElegida extends AppCompatActivity {
                             numCoches = Integer.parseInt(String.valueOf(objetoJSON.getJSONArray("mensaje").length()));
                             numCochesOtrasComunidades = Integer.parseInt(String.valueOf(objetoJSON.getJSONArray("cochesOtrasComunidades").length()));
 
-                            limpiarArrayListsCoches();
+                            limpiarArrayLists();
                             respuestaCoches = objetoJSON.getJSONArray("mensaje");
                             respuestaCochesOtrasComunidades = objetoJSON.getJSONArray("cochesOtrasComunidades");
+                            respuestaOfertasFuturas = objetoJSON.getJSONArray("ofertasFuturas");
                             guardarCochesEstaComunidad();
                             guardarCochesOtrasComunidades();
+                            guardarOfertasFuturas();
 
 
                             linearLayoutManagerCoches = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
@@ -301,7 +323,7 @@ public class ComunidadElegida extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == 3){
-            obtenerCoches();
+            obtenerInfoPrincipalUsuario();
         }
     }
 }

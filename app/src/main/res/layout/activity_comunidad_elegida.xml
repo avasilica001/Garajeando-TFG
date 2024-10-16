@@ -58,6 +58,24 @@
                     android:layout_height="match_parent" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/misOfertasFuturasLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/misCochesLinearLayout">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/misOfertasFuturasRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp" />
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

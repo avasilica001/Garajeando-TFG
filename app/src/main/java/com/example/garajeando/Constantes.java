@@ -8,7 +8,7 @@ public class Constantes {
     public static final String URL_OBTENERCOMUNIDADES = URL_PRINCIPAL+"ObtenerComunidades.php";
     public static final String URL_UNIRSEACOMUNIDAD = URL_PRINCIPAL+"UnirseAComunidad.php";
     public static final String URL_CREARCOMUNIDAD = URL_PRINCIPAL+"CrearComunidad.php";
-    public static final String URL_OBTENERCOCHES = URL_PRINCIPAL+"ObtenerCoches.php";
+    public static final String URL_OBTENERINFOPRINCIPALUSUARIO = URL_PRINCIPAL+"ObtenerInfoPrincipalUsuario.php";
     public static final String URL_ANADIRCOCHEACOMUNIDAD = URL_PRINCIPAL+"AnadirCocheExistenteAComunidad.php";
     public static final String URL_OBTENERINFOCOCHE = URL_PRINCIPAL+"ObtenerInfoCoche.php";
     public static final String URL_ACTUALIZARINFOCOCHE = URL_PRINCIPAL+"ActualizarInfoCoche.php";
