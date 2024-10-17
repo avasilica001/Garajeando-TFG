@@ -58,6 +58,18 @@
                     android:layout_height="match_parent" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/misOfertasFuturasTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="20dp"
+                android:text="MIS OFERTAS ACTUALES Y/O FUTURAS"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/misCochesLinearLayout" />
+
             <LinearLayout
                 android:id="@+id/misOfertasFuturasLinearLayout"
                 android:layout_width="match_parent"
@@ -67,7 +79,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/misCochesLinearLayout">
+                app:layout_constraintTop_toBottomOf="@id/misOfertasFuturasTextView">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/misOfertasFuturasRecyclerView"

@@ -1,56 +1,23 @@
 package com.example.garajeando;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.app.Activity;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.RequestFuture;
-import com.android.volley.toolbox.StringRequest;
-import com.google.common.math.PairedStatsAccumulator;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import com.bumptech.glide.Glide;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
 
 public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.CocheHolder> {
 
@@ -60,15 +27,11 @@ public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.
 
     //arraylist para cada columna en la bd
     private ArrayList<Coche> coches=new ArrayList<Coche>();
-    private final ArrayList<String> idCoches = new ArrayList<String>();
-    private final ArrayList<String> matriculas = new ArrayList<String>();
-    private final ArrayList<String> nombresFotosPrincipales = new ArrayList<String>();
 
     CardView l_coches;
 
     String usuario, idComunidad;
     Integer numCochesOtrasComunidades;
-    JSONArray respuestaComunidades;
 
     String[] opciones;
 
@@ -179,7 +142,7 @@ public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.
             matriculaTextView = itemView.findViewById(R.id.matriculaCocheTextView);
             imagenCocheImageView = itemView.findViewById(R.id.imagenPreviaCocheImageView);
             anadirCocheButton = itemView.findViewById(R.id.anadirCocheButton);
-            card_coche = itemView.findViewById(R.id.card_coche);
+            card_coche = itemView.findViewById(R.id.card_oferta);
         }
     }
 }

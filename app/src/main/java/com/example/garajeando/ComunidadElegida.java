@@ -44,6 +44,7 @@ public class ComunidadElegida extends AppCompatActivity {
     private final ArrayList<Oferta> ofertasFuturas = new ArrayList<Oferta>();
 
     private ListaCochesAdapter adapterCo;
+    private ListaOfertasAdapter adapterOf;
 
     private final Activity activity=this;
     private final Context context = this;
@@ -55,7 +56,7 @@ public class ComunidadElegida extends AppCompatActivity {
 
     ListView l_coches;
 
-    LinearLayoutManager linearLayoutManagerCoches;
+    LinearLayoutManager linearLayoutManagerCoches, linearLayoutManagerOfertas;
 
     String[] opciones;
 
@@ -179,7 +180,8 @@ public class ComunidadElegida extends AppCompatActivity {
                         jsonOfertasFuturas.getString("IdComunidad"),
                         jsonOfertasFuturas.getString("FechaHoraInicio"),
                         jsonOfertasFuturas.getString("FechaHoraFin"),
-                        jsonOfertasFuturas.getString("FotoCoche")));
+                        jsonOfertasFuturas.getString("FotoCoche"),
+                        jsonOfertasFuturas.getString("Matricula")));
             }
         }catch (Exception e){
             //no hace nada
@@ -211,6 +213,12 @@ public class ComunidadElegida extends AppCompatActivity {
                             misCochesRecyclerView.setLayoutManager(linearLayoutManagerCoches);
                             misCochesRecyclerView.setAdapter(adapterCo);
                             adapterCo.notifyDataSetChanged();
+
+                            linearLayoutManagerOfertas = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
+                            adapterOf = new ListaOfertasAdapter(activity, activity, ofertasFuturas, usuario, idComunidad);
+                            misOfertasFuturasRecyclerView.setLayoutManager(linearLayoutManagerOfertas);
+                            misOfertasFuturasRecyclerView.setAdapter(adapterOf);
+                            adapterOf.notifyDataSetChanged();
 
                             AdministradorPeticiones.getInstance(context).cancelAll("peticion");
                         } catch (JSONException e) {
