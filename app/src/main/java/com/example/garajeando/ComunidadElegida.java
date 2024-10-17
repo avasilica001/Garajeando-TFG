@@ -42,21 +42,22 @@ public class ComunidadElegida extends AppCompatActivity {
     private final ArrayList<Coche> coches = new ArrayList<Coche>();
     private final ArrayList<Coche> cochesOtrasComunidades = new ArrayList<Coche>();
     private final ArrayList<Oferta> ofertasFuturas = new ArrayList<Oferta>();
+    private final ArrayList<Oferta> ofertasPasadas = new ArrayList<Oferta>();
 
-    private ListaCochesAdapter adapterCo;
-    private ListaOfertasAdapter adapterOf;
+    private ListaCochesAdapter adapterCoches;
+    private ListaOfertasAdapter adapterOfertasFuturas, adapterOfertasPasadas;
 
     private final Activity activity=this;
     private final Context context = this;
 
     private Toolbar miComunidadToolbar;
-    private RecyclerView misCochesRecyclerView, misOfertasFuturasRecyclerView;
+    private RecyclerView misCochesRecyclerView, misOfertasFuturasRecyclerView, misOfertasPasadasRecyclerView;
 
-    JSONArray respuestaCoches, respuestaCochesOtrasComunidades, respuestaOfertasFuturas;
+    JSONArray respuestaCoches, respuestaCochesOtrasComunidades, respuestaOfertasFuturas, respuestaOfertasPasadas;
 
     ListView l_coches;
 
-    LinearLayoutManager linearLayoutManagerCoches, linearLayoutManagerOfertas;
+    LinearLayoutManager linearLayoutManagerCoches, linearLayoutManagerOfertasFuturas, linearLayoutManagerOfertasPasadas;
 
     String[] opciones;
 
@@ -82,6 +83,7 @@ public class ComunidadElegida extends AppCompatActivity {
 
         misCochesRecyclerView = findViewById(R.id.misCochesRecyclerView);
         misOfertasFuturasRecyclerView = findViewById(R.id.misOfertasFuturasRecyclerView);
+        misOfertasPasadasRecyclerView = findViewById(R.id.misOfertasPasadasRecyclerView);
 
         limpiarArrayLists();
         obtenerInfoPrincipalUsuario();
@@ -114,6 +116,7 @@ public class ComunidadElegida extends AppCompatActivity {
         coches.clear();
         cochesOtrasComunidades.clear();
         ofertasFuturas.clear();
+        ofertasPasadas.clear();
     }
 
     private void guardarCochesEstaComunidad(){
@@ -188,6 +191,24 @@ public class ComunidadElegida extends AppCompatActivity {
         }
     }
 
+    private void guardarOfertasPasadas(){
+        try{
+            for (int j = 0; j < respuestaOfertasPasadas.length(); j++){
+                JSONObject jsonOfertasPasadas = respuestaOfertasPasadas.getJSONObject(j);
+
+                ofertasPasadas.add(new Oferta(jsonOfertasPasadas.getString("IdOferta"),
+                        jsonOfertasPasadas.getString("IdCoche"),
+                        jsonOfertasPasadas.getString("IdComunidad"),
+                        jsonOfertasPasadas.getString("FechaHoraInicio"),
+                        jsonOfertasPasadas.getString("FechaHoraFin"),
+                        jsonOfertasPasadas.getString("FotoCoche"),
+                        jsonOfertasPasadas.getString("Matricula")));
+            }
+        }catch (Exception e){
+            //no hace nada
+        }
+    }
+
     private void obtenerInfoPrincipalUsuario(){
         StringRequest peticion = new StringRequest(Request.Method.POST,
                 Constantes.URL_OBTENERINFOPRINCIPALUSUARIO,
@@ -203,22 +224,29 @@ public class ComunidadElegida extends AppCompatActivity {
                             respuestaCoches = objetoJSON.getJSONArray("mensaje");
                             respuestaCochesOtrasComunidades = objetoJSON.getJSONArray("cochesOtrasComunidades");
                             respuestaOfertasFuturas = objetoJSON.getJSONArray("ofertasFuturas");
+                            respuestaOfertasPasadas = objetoJSON.getJSONArray("ofertasPasadas");
                             guardarCochesEstaComunidad();
                             guardarCochesOtrasComunidades();
                             guardarOfertasFuturas();
-
+                            guardarOfertasPasadas();
 
                             linearLayoutManagerCoches = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
-                            adapterCo = new ListaCochesAdapter(activity, activity, coches, usuario, idComunidad, numCoches, opciones);
+                            adapterCoches = new ListaCochesAdapter(activity, activity, coches, usuario, idComunidad, numCoches, opciones);
                             misCochesRecyclerView.setLayoutManager(linearLayoutManagerCoches);
-                            misCochesRecyclerView.setAdapter(adapterCo);
-                            adapterCo.notifyDataSetChanged();
+                            misCochesRecyclerView.setAdapter(adapterCoches);
+                            adapterCoches.notifyDataSetChanged();
 
-                            linearLayoutManagerOfertas = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
-                            adapterOf = new ListaOfertasAdapter(activity, activity, ofertasFuturas, usuario, idComunidad);
-                            misOfertasFuturasRecyclerView.setLayoutManager(linearLayoutManagerOfertas);
-                            misOfertasFuturasRecyclerView.setAdapter(adapterOf);
-                            adapterOf.notifyDataSetChanged();
+                            linearLayoutManagerOfertasFuturas = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
+                            adapterOfertasFuturas = new ListaOfertasAdapter(activity, activity, ofertasFuturas, usuario, idComunidad);
+                            misOfertasFuturasRecyclerView.setLayoutManager(linearLayoutManagerOfertasFuturas);
+                            misOfertasFuturasRecyclerView.setAdapter(adapterOfertasFuturas);
+                            adapterOfertasFuturas.notifyDataSetChanged();
+
+                            linearLayoutManagerOfertasPasadas = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
+                            adapterOfertasPasadas = new ListaOfertasAdapter(activity, activity, ofertasPasadas, usuario, idComunidad);
+                            misOfertasPasadasRecyclerView.setLayoutManager(linearLayoutManagerOfertasPasadas);
+                            misOfertasPasadasRecyclerView.setAdapter(adapterOfertasPasadas);
+                            adapterOfertasPasadas.notifyDataSetChanged();
 
                             AdministradorPeticiones.getInstance(context).cancelAll("peticion");
                         } catch (JSONException e) {
@@ -274,7 +302,7 @@ public class ComunidadElegida extends AppCompatActivity {
                         coches.add(cochesOtrasComunidades.get(i-1));
                         cochesOtrasComunidades.remove(i-1);
                         numCochesOtrasComunidades=numCochesOtrasComunidades-1;
-                        adapterCo.notifyDataSetChanged();
+                        adapterCoches.notifyDataSetChanged();
                     }
                 }});
             builder.create().show();
