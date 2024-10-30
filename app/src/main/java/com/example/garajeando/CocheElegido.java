@@ -36,13 +36,13 @@ import java.util.Map;
 
 public class CocheElegido extends AppCompatActivity {
 
-    Activity activity = this;
+    private  Activity activity = this;
 
     private String usuario, idComunidad;
 
-    String idCoche, propietario, nombrePropietario, apellidosPropietario, matricula, marca, modelo, transmision, combustible, descripcion;
-    Integer plazas, puertas;
-    Boolean aireAcondicionado, bluetooth, gps;
+    private String idCoche, propietario, nombrePropietario, apellidosPropietario, matricula, marca, modelo, transmision, combustible, descripcion;
+    private Integer plazas, puertas;
+    private Boolean aireAcondicionado, bluetooth, gps;
 
     private GridView fotosGridView;
     private String[] nombreFotosCoche = new String[9];
@@ -52,10 +52,10 @@ public class CocheElegido extends AppCompatActivity {
     private Integer numFotos;
     private JSONArray respuestaFotos, respuestaInfo;
 
-    ImageView imagenPrincipalImageView;
-    TextView propietarioTextView, marcaTextView, modeloTextView, plazasTextView, puertasTextView, transmisionTextView, combustibleTextView, aireAcondicionadoTextView, bluetoothTextView, gpsTextView, descripcionTextView;
-    Button modificarInformacionButton, crearOfertaButton;
-    String nombreFotoPrincipal;
+    private  ImageView imagenPrincipalImageView;
+    private  TextView propietarioTextView, marcaTextView, modeloTextView, plazasTextView, puertasTextView, transmisionTextView, combustibleTextView, aireAcondicionadoTextView, bluetoothTextView, gpsTextView, descripcionTextView;
+    private  Button modificarInformacionButton, crearOfertaButton;
+    private  String nombreFotoPrincipal;
 
     @SuppressLint("MissingInflatedId")
     @Override

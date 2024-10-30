@@ -83,12 +83,14 @@ public class ListaOfertasAdapter extends RecyclerView.Adapter<ListaOfertasAdapte
                 if ((getItemCount() - 1) == p){
                     //((ComunidadElegida) activity).dialogoAnadirCoche();
                 }else{
-                    /*Intent intent = new Intent(context, CrearOferta.class);
+                    Intent intent = new Intent(context, OfertaElegida.class);
 
                     intent.putExtra("usuario", usuario);
                     intent.putExtra("idComunidad", idComunidad);
+                    intent.putExtra("idCoche", ofertas.get(p).getIdCoche());
+                    intent.putExtra("idOferta", ofertas.get(p).getIdOferta());
 
-                    activity.startActivityForResult(intent, 2);*/
+                    activity.startActivityForResult(intent, 2);
                 }
             }
         });

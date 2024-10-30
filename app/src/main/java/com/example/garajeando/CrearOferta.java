@@ -44,7 +44,7 @@ public class CrearOferta extends AppCompatActivity {
 
     Context context = this;
 
-    String usuario, idComunidad, idCoche, fechaInicio, fechaFinal, horaInicio, horaFinal;
+    String usuario, idComunidad, idCoche, idOferta, fechaInicio, fechaFinal, horaInicio, horaFinal, accion;
 
     EditText fechaInicioEditText, fechaFinalEditText, horaInicioEditText, horaFinalEditText;
     TextView avisoCrearOfertaTextView;
@@ -68,12 +68,7 @@ public class CrearOferta extends AppCompatActivity {
         usuario = getIntent().getExtras().getString("usuario");
         idComunidad = getIntent().getExtras().getString("idComunidad");
         idCoche = getIntent().getExtras().getString("idCoche");
-
-        setSupportActionBar(findViewById(R.id.crearOfertaToolbar));
-        getSupportActionBar().setTitle("CREAR OFERTA");
-
-        inicioCalendario = Calendar.getInstance(zonaHorariaMovil);
-        finalCalendario = Calendar.getInstance(zonaHorariaMovil);
+        accion = getIntent().getExtras().getString("accion");
 
         fechaInicioEditText = findViewById(R.id.fechaInicioEditText);
         fechaFinalEditText = findViewById(R.id.fechaFinalEditText);
@@ -81,10 +76,41 @@ public class CrearOferta extends AppCompatActivity {
         horaInicioEditText = findViewById(R.id.horaInicioEditText);
         horaFinalEditText = findViewById(R.id.horaFinalEditText);
 
+        publicarOfertaButton = findViewById(R.id.publicarOfertaButton);
+
+        setSupportActionBar(findViewById(R.id.crearOfertaToolbar));
+        if(accion.equals("modificar")){
+            getSupportActionBar().setTitle("MODIFICAR OFERTA");
+            idOferta = getIntent().getExtras().getString("idOferta");
+            fechaInicio = getIntent().getExtras().getString("fechaHoraInicio");
+            fechaFinal = getIntent().getExtras().getString("fechaHoraFin");
+
+            fechaInicioEditText.setText(fechaInicio.split(" ")[0]);
+            horaInicioEditText.setText(fechaInicio.split(" ")[1]);
+
+            fechaFinalEditText.setText(fechaFinal.split(" ")[0]);
+            horaFinalEditText.setText(fechaFinal.split(" ")[1]);
+
+            inicioCalendario = Calendar.getInstance(zonaHorariaMovil);
+            finalCalendario = Calendar.getInstance(zonaHorariaMovil);
+
+            publicarOfertaButton.setText("MODIFICAR OFERTA");
+
+            try {
+                inicioCalendario.setTime(new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).parse(fechaInicio));
+                finalCalendario.setTime(new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).parse(fechaFinal));
+            } catch (Exception e) {
+                //e.printStackTrace();
+            }
+
+        }else{
+            getSupportActionBar().setTitle("CREAR OFERTA");
+            inicioCalendario = Calendar.getInstance(zonaHorariaMovil);
+            finalCalendario = Calendar.getInstance(zonaHorariaMovil);
+        }
+
         avisoCrearOfertaTextView = findViewById(R.id.avisoCrearOfertaTextView);
         avisoCrearOfertaTextView.setVisibility(View.GONE);
-
-        publicarOfertaButton = findViewById(R.id.publicarOfertaButton);
 
         fechaInicioEditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,50 +331,84 @@ public class CrearOferta extends AppCompatActivity {
             String fechaHoraInicio = formatoLondresInicio.format(fechaHoraInicioFormatoOriginal);
             String fechaHoraFinal = formatoLondresFinal.format(fechaHoraFinalFormatoOriginal);
 
-            StringRequest peticion = new StringRequest(Request.Method.POST,
-                    Constantes.URL_CREAROFERTA,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String respuesta) {
-                            try {
-                                JSONObject objetoJSON = new JSONObject(respuesta);
-
-                                if (objetoJSON.getString("error").equals("true")){
-                                    avisoCrearOfertaTextView.setVisibility(View.VISIBLE);
-                                    avisoCrearOfertaTextView.setText("Ya existe una oferta dentro de ese rango de fechas");
-                                }else{
-                                    avisoCrearOfertaTextView.setVisibility(View.GONE);
-                                    setResult(3);
-                                    finish();
-                                }
-
+            if(accion.equals("modificar")){
+                StringRequest peticion = new StringRequest(Request.Method.POST,
+                        Constantes.URL_MODIFICAROFERTA,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String respuesta){
                                 AdministradorPeticiones.getInstance(context).cancelAll("peticion");
-                            } catch (JSONException e) {
-                                //throw new RuntimeException(e);
                             }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            //
-                        }
-                    }) {
-                @Nullable
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> parametros = new HashMap<>();
-                    parametros.put("IdCoche", idCoche);
-                    parametros.put("IdComunidad", idComunidad);
-                    parametros.put("FechaHoraInicio", fechaHoraInicio);
-                    parametros.put("FechaHoraFin", fechaHoraFinal);
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                //
+                            }
+                        }) {
+                    @Nullable
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> parametros = new HashMap<>();
+                        parametros.put("IdOferta", idOferta);
+                        parametros.put("IdCoche", idCoche);
+                        parametros.put("IdComunidad", idComunidad);
+                        parametros.put("FechaHoraInicio", fechaHoraInicio);
+                        parametros.put("FechaHoraFin", fechaHoraFinal);
 
-                      return parametros;
-                }
-            };
+                        return parametros;
+                    }
+                };
 
-            peticion.setTag("peticion");
-            AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
+                peticion.setTag("peticion");
+                AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
+            }else{
+                StringRequest peticion = new StringRequest(Request.Method.POST,
+                        Constantes.URL_CREAROFERTA,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String respuesta) {
+                                try {
+                                    JSONObject objetoJSON = new JSONObject(respuesta);
+
+                                    if (objetoJSON.getString("error").equals("true")){
+                                        avisoCrearOfertaTextView.setVisibility(View.VISIBLE);
+                                        avisoCrearOfertaTextView.setText("Ya existe una oferta dentro de ese rango de fechas");
+                                    }else{
+                                        avisoCrearOfertaTextView.setVisibility(View.GONE);
+                                        setResult(3);
+                                        finish();
+                                    }
+
+                                    AdministradorPeticiones.getInstance(context).cancelAll("peticion");
+                                } catch (JSONException e) {
+                                    //throw new RuntimeException(e);
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                //
+                            }
+                        }) {
+                    @Nullable
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> parametros = new HashMap<>();
+                        parametros.put("IdCoche", idCoche);
+                        parametros.put("IdComunidad", idComunidad);
+                        parametros.put("FechaHoraInicio", fechaHoraInicio);
+                        parametros.put("FechaHoraFin", fechaHoraFinal);
+
+                        return parametros;
+                    }
+                };
+
+                peticion.setTag("peticion");
+                AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
+            }
+
 
         } catch (ParseException e) {
             //e.printStackTrace();
