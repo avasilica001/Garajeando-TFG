@@ -117,6 +117,13 @@ public class OfertaElegida extends AppCompatActivity {
             }
         });
 
+        eliminarOfertaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                asegurarseEliminar();
+            }
+        });
+
         OnBackPressedCallback volverActividadAnterior = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {

@@ -237,13 +237,13 @@ public class ComunidadElegida extends AppCompatActivity {
                             adapterCoches.notifyDataSetChanged();
 
                             linearLayoutManagerOfertasFuturas = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
-                            adapterOfertasFuturas = new ListaOfertasAdapter(activity, activity, ofertasFuturas, usuario, idComunidad);
+                            adapterOfertasFuturas = new ListaOfertasAdapter(activity, activity, ofertasFuturas, usuario, idComunidad, "futuras");
                             misOfertasFuturasRecyclerView.setLayoutManager(linearLayoutManagerOfertasFuturas);
                             misOfertasFuturasRecyclerView.setAdapter(adapterOfertasFuturas);
                             adapterOfertasFuturas.notifyDataSetChanged();
 
                             linearLayoutManagerOfertasPasadas = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
-                            adapterOfertasPasadas = new ListaOfertasAdapter(activity, activity, ofertasPasadas, usuario, idComunidad);
+                            adapterOfertasPasadas = new ListaOfertasAdapter(activity, activity, ofertasPasadas, usuario, idComunidad, "pasadas");
                             misOfertasPasadasRecyclerView.setLayoutManager(linearLayoutManagerOfertasPasadas);
                             misOfertasPasadasRecyclerView.setAdapter(adapterOfertasPasadas);
                             adapterOfertasPasadas.notifyDataSetChanged();
@@ -360,6 +360,34 @@ public class ComunidadElegida extends AppCompatActivity {
 
         if(resultCode == 3){
             obtenerInfoPrincipalUsuario();
+        }
+    }
+
+    public void dialogoAnadirOferta(){
+        opciones = new String[numCoches];
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        if (numCoches > 0){
+            for (int i = 0; i < numCoches; i++) {
+                opciones[i] = coches.get(i).getMatricula();
+            }
+
+            builder.setTitle("Selecciona un coche al que asociar la oferta");
+            builder.setItems(opciones, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //se pasan todos los datos para asociar la oferta al coche
+                    Intent intent = new Intent(context, CrearOferta.class);
+                    intent.putExtra("idComunidad", idComunidad);
+                    intent.putExtra("usuario", usuario);
+                    intent.putExtra("idCoche", coches.get(i).getIdCoche());
+                    intent.putExtra("accion", "aniadir");
+
+                    activity.startActivityForResult(intent, 3);
+                }});
+            builder.create().show();
+        } else {
+            //
         }
     }
 }

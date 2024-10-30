@@ -11,12 +11,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ListaOfertasAdapter extends RecyclerView.Adapter<ListaOfertasAdapter.OfertaHolder> {
 
@@ -27,15 +39,17 @@ public class ListaOfertasAdapter extends RecyclerView.Adapter<ListaOfertasAdapte
     //arraylist para cada columna en la bd
     private ArrayList<Oferta> ofertas=new ArrayList<Oferta>();
 
+    private JSONArray respuestaInfoCoches;
 
-    String usuario, idComunidad;
+    String usuario, idComunidad, tiempo;
 
-    public ListaOfertasAdapter(Activity activity, Activity context,ArrayList<Oferta> ofertas, String usuario, String idComunidad) {
+    public ListaOfertasAdapter(Activity activity, Activity context, ArrayList<Oferta> ofertas, String usuario, String idComunidad, String tiempo) {
         this.context = context;
         this.activity = activity;
         this.ofertas=ofertas;
         this.usuario=usuario;
         this.idComunidad=idComunidad;
+        this.tiempo=tiempo;
     }
 
     @NonNull
@@ -49,7 +63,7 @@ public class ListaOfertasAdapter extends RecyclerView.Adapter<ListaOfertasAdapte
     @Override
     public void onBindViewHolder(@NonNull ListaOfertasAdapter.OfertaHolder holder, @SuppressLint("RecyclerView") int p) {
 
-        if ((getItemCount() - 1) == p){
+        if ((getItemCount() - 1) == p && tiempo.equals("futuras")){
             holder.imagenPreviaCocheOfertaImageView.setVisibility(View.GONE);
             holder.matriculaCocheOfertaTextView.setVisibility(View.GONE);
             holder.inicioOfertaTextView.setVisibility(View.GONE);
@@ -80,8 +94,8 @@ public class ListaOfertasAdapter extends RecyclerView.Adapter<ListaOfertasAdapte
             @Override
             public void onClick(View v) {
 
-                if ((getItemCount() - 1) == p){
-                    //((ComunidadElegida) activity).dialogoAnadirCoche();
+                if ((getItemCount() - 1) == p && tiempo.equals("futuras")){
+                    ((ComunidadElegida) activity).dialogoAnadirOferta();
                 }else{
                     Intent intent = new Intent(context, OfertaElegida.class);
 
@@ -99,7 +113,11 @@ public class ListaOfertasAdapter extends RecyclerView.Adapter<ListaOfertasAdapte
     @Override
     public int getItemCount() {
         // +1 por la card de añadir coche
-        return ofertas.size() + 1;
+        if(tiempo.equals("futuras")){
+            return ofertas.size() + 1;
+        }else{
+            return ofertas.size();
+        }
     }
 
     class OfertaHolder extends RecyclerView.ViewHolder{
