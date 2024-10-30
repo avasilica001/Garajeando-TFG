@@ -3,6 +3,7 @@ package com.example.garajeando;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -337,6 +338,9 @@ public class CrearOferta extends AppCompatActivity {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String respuesta){
+                                Intent intentResultado = new Intent();
+                                setResult(3, intentResultado);
+                                finish();
                                 AdministradorPeticiones.getInstance(context).cancelAll("peticion");
                             }
                         },
@@ -376,7 +380,8 @@ public class CrearOferta extends AppCompatActivity {
                                         avisoCrearOfertaTextView.setText("Ya existe una oferta dentro de ese rango de fechas");
                                     }else{
                                         avisoCrearOfertaTextView.setVisibility(View.GONE);
-                                        setResult(3);
+                                        Intent intentResultado = new Intent();
+                                        setResult(3, intentResultado);
                                         finish();
                                     }
 

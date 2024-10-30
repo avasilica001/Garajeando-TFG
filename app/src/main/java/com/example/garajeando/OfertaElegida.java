@@ -2,6 +2,7 @@ package com.example.garajeando;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -113,6 +116,17 @@ public class OfertaElegida extends AppCompatActivity {
                 activity.startActivityForResult(intent, 2);
             }
         });
+
+        OnBackPressedCallback volverActividadAnterior = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intentResultado = new Intent();
+                setResult(3, intentResultado);
+                finish();
+            }
+        };
+
+        getOnBackPressedDispatcher().addCallback(this, volverActividadAnterior);
 
     }
 
@@ -252,6 +266,69 @@ public class OfertaElegida extends AppCompatActivity {
 
         }catch (Exception e){
             //no hace nada
+        }
+    }
+
+    private void asegurarseEliminar(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(OfertaElegida.this);
+        builder.setTitle("Elige una opción")
+                .setMessage("¿Estás seguro de que quieres eliminar la oferta?")
+
+                // Positive button action
+                .setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogo, int which) {
+                        StringRequest peticion = new StringRequest(Request.Method.POST,
+                                Constantes.URL_ELIMINAROFERTA,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String respuesta){
+
+                                        Intent intentResultado = new Intent();
+                                        setResult(3, intentResultado);
+                                        finish();
+                                        AdministradorPeticiones.getInstance(context).cancelAll("peticion");
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        //
+                                    }
+                                }) {
+                            @Nullable
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> parametros = new HashMap<>();
+                                parametros.put("IdOferta", idOferta);
+
+                                return parametros;
+                            }
+                        };
+
+                        peticion.setTag("peticion");
+                        AdministradorPeticiones.getInstance(context).addToRequestQueue(peticion);
+                    }
+                })
+
+                // Negative button action
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogo, int which) {
+                        dialogo.dismiss();
+                    }
+                });
+
+        AlertDialog dialogo = builder.create();
+        dialogo.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == 3){
+            obtenerInfoOferta();
         }
     }
 }
