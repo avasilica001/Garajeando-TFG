@@ -9,7 +9,7 @@
     tools:context=".Registrarse">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/BarraSuperiorRegistrarseToolbar"
+        android:id="@+id/registrarseToolbar"
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:background="?attr/colorPrimary"

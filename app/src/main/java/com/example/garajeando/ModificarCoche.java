@@ -13,15 +13,12 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -142,7 +139,7 @@ public class ModificarCoche extends AppCompatActivity {
 
         guardarInformacion = findViewById(R.id.guardarInformacionButton);
 
-        setSupportActionBar(findViewById(R.id.matriculaCocheElegidoToolbar));
+        setSupportActionBar(findViewById(R.id.modificarCocheToolbar));
 
         if (accion.equals("modificar")){
             idCoche = getIntent().getExtras().getString("idCoche");
@@ -326,7 +323,7 @@ public class ModificarCoche extends AppCompatActivity {
                             fotosGridView.setAdapter(fotosCocheAdapter);
                             //fotosCocheAdapter.notifyDataSetChanged();
 
-                            setSupportActionBar(findViewById(R.id.matriculaCocheElegidoToolbar));
+                            setSupportActionBar(findViewById(R.id.perfilUsuarioToolbar));
                             getSupportActionBar().setTitle(matricula);
 
                             marcaEditText.setText(marca);

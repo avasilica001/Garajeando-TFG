@@ -135,6 +135,18 @@ public class ReservaElegida extends AppCompatActivity {
             }
         });
 
+        verPerfilUsuarioButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReservaElegida.this, PerfilUsuario.class);
+                intent.putExtra("usuario", usuario);
+                intent.putExtra("idComunidad", idComunidad);
+                intent.putExtra("idUsuarioPerfil", usuarioReserva);
+                startActivityForResult(intent,1);
+            }
+        });
+
     }
 
     private void obtenerInfoReserva(){
@@ -155,7 +167,7 @@ public class ReservaElegida extends AppCompatActivity {
                             //fotosGridView.setAdapter(fotosCocheAdapter);
                             //fotosCocheAdapter.notifyDataSetChanged();
 
-                            setSupportActionBar(findViewById(R.id.matriculaOfertaElegidaToolbar));
+                            setSupportActionBar(findViewById(R.id.matriculaReservaElegidaToolbar));
                             getSupportActionBar().setTitle(matricula);
 
                             propietarioTextView.setText(nombrePropietario + " " + apellidosPropietario);

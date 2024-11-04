@@ -55,7 +55,7 @@ public class IniciarSesion extends AppCompatActivity {
         });
 
         //Setear barra superior
-        setSupportActionBar(findViewById(R.id.BarraSuperiorIniciarSesionToolbar));
+        setSupportActionBar(findViewById(R.id.iniciarSesionToolbar));
 
         correoElectronicoEditText = findViewById(R.id.correoElectronicoEditTextIS);
         contrasenaEditText = findViewById(R.id.contrasenaEditTextIS);

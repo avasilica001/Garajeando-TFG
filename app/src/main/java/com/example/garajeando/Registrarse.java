@@ -100,7 +100,7 @@ public class Registrarse extends AppCompatActivity {
         });
 
         //Setear barra superior
-        setSupportActionBar(findViewById(R.id.BarraSuperiorRegistrarseToolbar));
+        setSupportActionBar(findViewById(R.id.registrarseToolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
