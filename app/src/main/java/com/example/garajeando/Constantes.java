@@ -23,4 +23,5 @@ public class Constantes {
     public static final String URL_OBTENERINFORESERVA = URL_PRINCIPAL+"ObtenerInfoReserva.php";
     public static final String URL_DENEGARRESERVA = URL_PRINCIPAL+"DenegarReserva.php";
     public static final String URL_OBTENERUSUARIO = URL_PRINCIPAL+"ObtenerUsuario.php";
+    public static final String URL_ACTUALIZARINFOUSUARIO = URL_PRINCIPAL+"ActualizarInfoUsuario.php";
     }

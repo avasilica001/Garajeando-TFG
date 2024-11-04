@@ -140,8 +140,11 @@ public class ComunidadElegida extends AppCompatActivity {
             startActivity(intentBuscar);
             return true;
         } else if (itemId == R.id.PerfilToobarItem) {
-            //Intent intentTwo = new Intent(this, ActivityTwo.class);
-            //startActivity(intentTwo);
+            Intent intentPerfil = new Intent(ComunidadElegida.this, PerfilUsuario.class);
+            intentPerfil.putExtra("usuario", usuario);
+            intentPerfil.putExtra("idComunidad", idComunidad);
+            intentPerfil.putExtra("idUsuarioPerfil", usuario);
+            startActivityForResult(intentPerfil,1);
             return true;
         } else if (itemId == R.id.PreferenciasToobarItem) {
             //Intent intentThree = new Intent(this, ActivityThree.class);
