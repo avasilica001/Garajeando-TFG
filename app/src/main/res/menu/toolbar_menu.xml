@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/BuscarToolbarItem"
+        android:icon="@drawable/lupa"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/PerfilToobarItem"
+        android:icon="@drawable/circulo_usuario"
+        android:title="Perfil" />
+    <item
+        android:id="@+id/PreferenciasToobarItem"
+        android:title="Preferencias" />
+    <item
+        android:id="@+id/AdministradorToobarItem"
+        android:title="Vista Administrador" />
+    <item
+        android:id="@+id/CerrarSesionToobarItem"
+        android:title="Cerrar Sesión" />
+</menu>

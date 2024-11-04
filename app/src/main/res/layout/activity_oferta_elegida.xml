@@ -351,9 +351,18 @@
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.473"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/descripcionTituloOfertaTextView" />
+
+            <TextView
+                android:id="@+id/avisoVerOfertaTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/descripcionOfertaTextView" />
 
             <Button
                 android:id="@+id/modificarOfertaButton"
@@ -365,7 +374,7 @@
                 android:text="MODIFICAR OFERTA"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/descripcionOfertaTextView" />
+                app:layout_constraintTop_toBottomOf="@id/avisoVerOfertaTextView" />
 
             <Button
                 android:id="@+id/eliminarOfertaButton"
@@ -373,13 +382,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/fondo_personalizado_elemento"
                 android:text="ELIMINAR OFERTA"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/modificarOfertaButton" />
+
+            <Button
+                android:id="@+id/reservarOfertaButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/fondo_personalizado_elemento"
+                android:text="RESERVAR COCHE"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/eliminarOfertaButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

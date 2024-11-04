@@ -6,13 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.app.Activity;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class ListaComunidadesAdapter extends ArrayAdapter<String> {
@@ -21,7 +19,6 @@ public class ListaComunidadesAdapter extends ArrayAdapter<String> {
 
     private final Activity activity;
 
-    //arraylist para cada columna en la bd
     private ArrayList<Comunidad> comunidades=new ArrayList<Comunidad>();
 
     CardView l_comunidades;
@@ -44,7 +41,7 @@ public class ListaComunidadesAdapter extends ArrayAdapter<String> {
 
         //obtener elementos de la vista
         TextView t_titulo = l.findViewById(R.id.nombreComunidadTextViewC);
-        l_comunidades= l.findViewById(R.id.card_comunidad);
+        l_comunidades= l.findViewById(R.id.card_oferta_busqueda);
 
         //se muestran los elementos de la peliculas en la posicion que se ha pasado
         t_titulo.setText(comunidades.get(p).getNombre());

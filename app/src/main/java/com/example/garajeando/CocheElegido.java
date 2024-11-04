@@ -113,6 +113,7 @@ public class CocheElegido extends AppCompatActivity {
                 intent.putExtra("idComunidad", idComunidad);
                 intent.putExtra("usuario", usuario);
                 intent.putExtra("idCoche", idCoche);
+                intent.putExtra("accion", "crear");
 
                 activity.startActivityForResult(intent, 3);
             }

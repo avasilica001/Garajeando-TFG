@@ -1,10 +1,16 @@
 package com.example.garajeando;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toolbar;
 
@@ -112,6 +118,43 @@ public class ComunidadElegida extends AppCompatActivity {
         rolComunidad = savedInstanceState.getString("rolComunidad");
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.BuscarToolbarItem) {
+            Intent intentBuscar = new Intent(this, BuscarOfertas.class);
+            intentBuscar.putExtra("idComunidad", idComunidad);
+            intentBuscar.putExtra("usuario", usuario);
+            startActivity(intentBuscar);
+            return true;
+        } else if (itemId == R.id.PerfilToobarItem) {
+            //Intent intentTwo = new Intent(this, ActivityTwo.class);
+            //startActivity(intentTwo);
+            return true;
+        } else if (itemId == R.id.PreferenciasToobarItem) {
+            //Intent intentThree = new Intent(this, ActivityThree.class);
+            //startActivity(intentThree);
+            return true;
+        } else if (itemId == R.id.AdministradorToobarItem) {
+            //Intent intentThree = new Intent(this, ActivityThree.class);
+            //startActivity(intentThree);
+            return true;
+        } else if (itemId == R.id.CerrarSesionToobarItem) {
+            //Intent intentThree = new Intent(this, ActivityThree.class);
+            //startActivity(intentThree);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void limpiarArrayLists(){
         coches.clear();
         cochesOtrasComunidades.clear();
@@ -184,7 +227,8 @@ public class ComunidadElegida extends AppCompatActivity {
                         jsonOfertasFuturas.getString("FechaHoraInicio"),
                         jsonOfertasFuturas.getString("FechaHoraFin"),
                         jsonOfertasFuturas.getString("FotoCoche"),
-                        jsonOfertasFuturas.getString("Matricula")));
+                        jsonOfertasFuturas.getString("Matricula"),
+                        jsonOfertasFuturas.getString("Reservada")));
             }
         }catch (Exception e){
             //no hace nada
@@ -202,7 +246,12 @@ public class ComunidadElegida extends AppCompatActivity {
                         jsonOfertasPasadas.getString("FechaHoraInicio"),
                         jsonOfertasPasadas.getString("FechaHoraFin"),
                         jsonOfertasPasadas.getString("FotoCoche"),
-                        jsonOfertasPasadas.getString("Matricula")));
+                        jsonOfertasPasadas.getString("Matricula"),
+                        jsonOfertasPasadas.getString("Reservada")));
+            }
+
+            if (respuestaOfertasPasadas.length() == 0){
+                findViewById(R.id.misOfertasPasadasTextView).setVisibility(View.GONE);
             }
         }catch (Exception e){
             //no hace nada

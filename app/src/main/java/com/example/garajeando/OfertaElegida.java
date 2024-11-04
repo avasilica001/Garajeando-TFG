@@ -45,11 +45,11 @@ public class OfertaElegida extends AppCompatActivity {
     private  Context context = this;
 
     private  ImageView imagenPrincipalImageView;
-    private  TextView fechaHoraInicioTextView, fechaHoraFinTextView, propietarioTextView, marcaTextView, modeloTextView, plazasTextView,puertasTextView, transmisionTextView, combustibleTextView, aireAcondicionadoTextView, bluetoothTextView, gpsTextView, descripcionTextView;
-    private  Button modificarOfertaButton, eliminarOfertaButton;
+    private  TextView fechaHoraInicioTextView, fechaHoraFinTextView, propietarioTextView, marcaTextView, modeloTextView, plazasTextView,puertasTextView, transmisionTextView, combustibleTextView, aireAcondicionadoTextView, bluetoothTextView, gpsTextView, descripcionTextView, avisoVerOfertaTextView;
+    private  Button modificarOfertaButton, eliminarOfertaButton, reservarOfertaButton;
 
-    private  String usuario, idComunidad, idCoche, idOferta, fechaHoraInicio, fechaHoraFin;
-    Boolean fechaAnterior = false;
+    private  String usuario, idComunidad, idCoche, idOferta, fechaHoraInicio, fechaHoraFin, reservada;
+    Boolean fechaFutura = false;
 
     private String propietario, nombrePropietario, apellidosPropietario, matricula, marca, modelo, transmision, combustible, descripcion, nombreFotoPrincipal;
     private Integer plazas, puertas;
@@ -97,9 +97,12 @@ public class OfertaElegida extends AppCompatActivity {
         bluetoothTextView = findViewById(R.id.bluetoothOfertaTextView);
         gpsTextView = findViewById(R.id.gpsOfertaTextView);
         descripcionTextView = findViewById(R.id.descripcionOfertaTextView);
+        avisoVerOfertaTextView = findViewById(R.id.avisoVerOfertaTextView);
+        avisoVerOfertaTextView.setVisibility(View.GONE);
 
         modificarOfertaButton = findViewById(R.id.modificarOfertaButton);
         eliminarOfertaButton = findViewById(R.id.eliminarOfertaButton);
+        reservarOfertaButton = findViewById(R.id.reservarOfertaButton);
 
         modificarOfertaButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +124,13 @@ public class OfertaElegida extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 asegurarseEliminar();
+            }
+        });
+
+        reservarOfertaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                preguntarReserva();
             }
         });
 
@@ -231,6 +241,7 @@ public class OfertaElegida extends AppCompatActivity {
             bluetooth = respuestaInfoCoche.getJSONObject(0).getString("Bluetooth").equals("1");
             gps = respuestaInfoCoche.getJSONObject(0).getString("GPS").equals("1");
             descripcion = respuestaInfoCoche.getJSONObject(0).getString("Descripcion");
+            reservada = respuestaInfoOferta.getJSONObject(0).getString("Reservada");
 
             SimpleDateFormat formatoOriginal = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             formatoOriginal.setTimeZone(zonaHorariaLondres);
@@ -257,18 +268,24 @@ public class OfertaElegida extends AppCompatActivity {
                 Date fechaActual = calendario.getTime();
 
                 if (fechaActual.before(fechaFinOferta) || fechaFinOferta.compareTo(fechaActual) == 0) {
-                    fechaAnterior = true;
+                    fechaFutura = true;
                 }
             } catch (ParseException e) {
                 //e.printStackTrace();
             }
 
-            if(propietario.equals(usuario) && fechaAnterior){
+            if(propietario.equals(usuario) && fechaFutura){
                 modificarOfertaButton.setVisibility(View.VISIBLE);
                 eliminarOfertaButton.setVisibility(View.VISIBLE);
+                reservarOfertaButton.setVisibility(View.GONE);
             }else{
                 modificarOfertaButton.setVisibility(View.GONE);
                 eliminarOfertaButton.setVisibility(View.GONE);
+                reservarOfertaButton.setVisibility(View.GONE);
+            }
+
+            if(!propietario.equals(usuario) && fechaFutura && reservada.equals("0")){
+                reservarOfertaButton.setVisibility(View.VISIBLE);
             }
 
         }catch (Exception e){
@@ -319,6 +336,95 @@ public class OfertaElegida extends AppCompatActivity {
                 })
 
                 // Negative button action
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogo, int which) {
+                        dialogo.dismiss();
+                    }
+                });
+
+        AlertDialog dialogo = builder.create();
+        dialogo.show();
+    }
+
+    private void preguntarReserva(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(OfertaElegida.this);
+        builder.setTitle("Elige una opción")
+                .setMessage("¿Estás seguro de que quieres reservar este coche?")
+
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogo, int which) {
+                        String fechaHoraInicioOriginal = getIntent().getExtras().getString("fechaHoraInicio");
+                        String fechaHoraFinalOriginal = getIntent().getExtras().getString("fechaHoraFin");
+                        SimpleDateFormat formatoOriginal = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                        formatoOriginal.setTimeZone(zonaHorariaMovil);
+
+                        try {
+                            Date  fechaHoraInicioFormatoOriginal = formatoOriginal.parse(fechaHoraInicioOriginal);
+
+                            SimpleDateFormat formatoLondresInicio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            formatoLondresInicio.setTimeZone(zonaHorariaLondres);
+
+                            Date fechaHoraFinalFormatoOriginal = formatoOriginal.parse(fechaHoraFinalOriginal);
+
+                            SimpleDateFormat formatoLondresFinal = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            formatoLondresFinal.setTimeZone(zonaHorariaLondres);
+
+                            String fechaHoraInicioReserva = formatoLondresInicio.format(fechaHoraInicioFormatoOriginal);
+                            String fechaHoraFinalReserva = formatoLondresFinal.format(fechaHoraFinalFormatoOriginal);
+
+                            StringRequest peticion = new StringRequest(Request.Method.POST,
+                                    Constantes.URL_CREARRESERVA,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String respuesta){
+                                            try {
+                                                JSONObject objetoJSON = new JSONObject(respuesta);
+
+                                                if (objetoJSON.getString("error").equals("false")) {
+                                                    Intent intentResultado = new Intent();
+                                                    setResult(3, intentResultado);
+                                                    finish();
+                                                }else{
+                                                    avisoVerOfertaTextView.setVisibility(View.VISIBLE);
+                                                    avisoVerOfertaTextView.setText(objetoJSON.getString("mensaje"));
+                                                }
+                                            } catch (JSONException e) {
+                                                //throw new RuntimeException(e);
+                                            }
+                                            AdministradorPeticiones.getInstance(context).cancelAll("peticion");
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            //
+                                        }
+                                    }) {
+                                @Nullable
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    Map<String, String> parametros = new HashMap<>();
+                                    parametros.put("IdUsuario", usuario);
+                                    parametros.put("IdComunidad", idComunidad);
+                                    parametros.put("IdCoche", idCoche);
+                                    parametros.put("FechaHoraInicio", fechaHoraInicioReserva);
+                                    parametros.put("FechaHoraFin", fechaHoraFinalReserva);
+                                    parametros.put("IdOferta", idOferta);
+
+                                    return parametros;
+                                }
+                            };
+
+                            peticion.setTag("peticion");
+                            AdministradorPeticiones.getInstance(context).addToRequestQueue(peticion);
+                        } catch (ParseException e) {
+                            //e.printStackTrace();
+                        }
+                    }
+                })
+
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogo, int which) {

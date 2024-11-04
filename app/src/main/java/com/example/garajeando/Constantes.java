@@ -17,5 +17,6 @@ public class Constantes {
     public static final String URL_OBTENERINFOOFERTA = URL_PRINCIPAL+"ObtenerInfoOferta.php";
     public static final String URL_MODIFICAROFERTA = URL_PRINCIPAL+"ModificarOferta.php";
     public static final String URL_ELIMINAROFERTA = URL_PRINCIPAL+"EliminarOferta.php";
-    public static final String URL_OBTENERCOCHESCOMUNIDAD = URL_PRINCIPAL+"ObtenerCoches.php";
+    public static final String URL_OBTENEROFERTAS = URL_PRINCIPAL+"ObtenerOfertas.php";
+    public static final String URL_CREARRESERVA = URL_PRINCIPAL+"CrearReserva.php";
     }

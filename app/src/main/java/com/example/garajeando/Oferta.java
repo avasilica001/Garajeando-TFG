@@ -9,17 +9,18 @@ import java.util.TimeZone;
 public class Oferta {
 
 
-    String idOferta, idCoche, idComunidad, fechaHoraInicio, fechaHoraFin, fotoCoche, matricula;
+    String idOferta, idCoche, idComunidad, fechaHoraInicio, fechaHoraFin, fotoCoche, matricula, reservada;
 
     TimeZone zonaHorariaMovil = TimeZone.getDefault();
     TimeZone zonaHorariaLondres = TimeZone.getTimeZone("Europe/London");
 
-    public Oferta(String idOferta, String idCoche, String idComunidad, String fechaHoraInicio, String fechaHoraFin, String fotoCoche, String matricula) {
+    public Oferta(String idOferta, String idCoche, String idComunidad, String fechaHoraInicio, String fechaHoraFin, String fotoCoche, String matricula, String reservada) {
         this.idOferta=idOferta;
         this.idCoche=idCoche;
         this.matricula=matricula;
         this.idComunidad=idComunidad;
         this.fotoCoche=fotoCoche;
+        this.reservada=reservada;
 
         SimpleDateFormat formatoOriginal = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         formatoOriginal.setTimeZone(zonaHorariaLondres);
@@ -68,6 +69,14 @@ public class Oferta {
 
     public String getFechaHoraInicio() {
         return fechaHoraInicio;
+    }
+
+    public String getReservada() {
+        return reservada;
+    }
+
+    public void setReservada(String reservada) {
+        this.reservada = reservada;
     }
 
     public void setFechaHoraInicio(String fechaHoraInicio) {
