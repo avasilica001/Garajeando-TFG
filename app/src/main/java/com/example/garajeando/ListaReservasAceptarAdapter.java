@@ -2,18 +2,15 @@ package com.example.garajeando;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,7 +21,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -82,40 +78,14 @@ public class ListaReservasAceptarAdapter extends RecyclerView.Adapter<ListaReser
         holder.card_reserva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(context, OfertaElegida.class);
+                Intent intent = new Intent(context, ReservaElegida.class);
 
+                intent.putExtra("idReserva", reservas.get(p).getIdReserva());
                 intent.putExtra("usuario", usuario);
                 intent.putExtra("idComunidad", idComunidad);
                 intent.putExtra("idCoche", reservas.get(p).getIdCoche());
-                intent.putExtra("idOferta", reservas.get(p).getIdReserva());
 
-                activity.startActivityForResult(intent, 2);*/
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle(reservas.get(p).getNombreApellidos() + " quiere reservar tu coche");
-
-                // Add three options to the dialog
-                builder.setItems(new CharSequence[]
-                                {"Ver perfil de usuario", "Aceptar reserva", "Denegar reserva"},
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Respond to each option
-                                switch (which) {
-                                    case 0:
-                                        // enseñar vista del perfil de usuario
-                                        break;
-                                    case 1:
-
-                                        break;
-                                    case 2:
-                                        //denegarReserva();
-                                        break;
-                                }
-                            }
-                        });
-
-                // Show the dialog
-                builder.create().show();
+                activity.startActivityForResult(intent, 2);
 
             }
         });
@@ -144,5 +114,4 @@ public class ListaReservasAceptarAdapter extends RecyclerView.Adapter<ListaReser
             card_reserva = itemView.findViewById(R.id.card_reserva);
         }
     }
-
 }

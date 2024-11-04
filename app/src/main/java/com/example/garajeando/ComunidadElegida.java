@@ -119,6 +119,8 @@ public class ComunidadElegida extends AppCompatActivity {
         nombreComunidad = savedInstanceState.getString("nombreComunidad");
         codInvitacion = savedInstanceState.getString("codInvitacion");
         rolComunidad = savedInstanceState.getString("rolComunidad");
+
+        obtenerInfoPrincipalUsuario();
     }
 
     @Override
