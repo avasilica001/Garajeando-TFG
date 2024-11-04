@@ -142,7 +142,7 @@ public class ListaCochesAdapter extends RecyclerView.Adapter<ListaCochesAdapter.
             matriculaTextView = itemView.findViewById(R.id.matriculaCocheTextView);
             imagenCocheImageView = itemView.findViewById(R.id.imagenPreviaCocheImageView);
             anadirCocheButton = itemView.findViewById(R.id.anadirCocheButton);
-            card_coche = itemView.findViewById(R.id.card_oferta);
+            card_coche = itemView.findViewById(R.id.card_reserva);
         }
     }
 }

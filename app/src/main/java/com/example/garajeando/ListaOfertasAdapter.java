@@ -11,24 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ListaOfertasAdapter extends RecyclerView.Adapter<ListaOfertasAdapter.OfertaHolder> {
 
@@ -136,7 +126,7 @@ public class ListaOfertasAdapter extends RecyclerView.Adapter<ListaOfertasAdapte
             inicioOfertaTextView = itemView.findViewById(R.id.inicioOfertaTextView);
             finalOfertaTextView = itemView.findViewById(R.id.finalOfertaTextView);
             anadirOfertaButton = itemView.findViewById(R.id.anadirOfertaButton);
-            card_oferta = itemView.findViewById(R.id.card_oferta);
+            card_oferta = itemView.findViewById(R.id.card_reserva);
         }
     }
 }

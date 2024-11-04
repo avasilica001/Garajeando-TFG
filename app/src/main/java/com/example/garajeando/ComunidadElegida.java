@@ -49,21 +49,23 @@ public class ComunidadElegida extends AppCompatActivity {
     private final ArrayList<Coche> cochesOtrasComunidades = new ArrayList<Coche>();
     private final ArrayList<Oferta> ofertasFuturas = new ArrayList<Oferta>();
     private final ArrayList<Oferta> ofertasPasadas = new ArrayList<Oferta>();
+    private final ArrayList<Reserva> reservasAceptar = new ArrayList<Reserva>();
 
     private ListaCochesAdapter adapterCoches;
     private ListaOfertasAdapter adapterOfertasFuturas, adapterOfertasPasadas;
+    private ListaReservasAceptarAdapter adapterReservasAceptar;
 
     private final Activity activity=this;
     private final Context context = this;
 
     private Toolbar miComunidadToolbar;
-    private RecyclerView misCochesRecyclerView, misOfertasFuturasRecyclerView, misOfertasPasadasRecyclerView;
+    private RecyclerView misCochesRecyclerView, misOfertasFuturasRecyclerView, misOfertasPasadasRecyclerView, misReservasAceptarRecyclerView;
 
-    JSONArray respuestaCoches, respuestaCochesOtrasComunidades, respuestaOfertasFuturas, respuestaOfertasPasadas;
+    JSONArray respuestaCoches, respuestaCochesOtrasComunidades, respuestaOfertasFuturas, respuestaOfertasPasadas, respuestaReservasAceptar;
 
     ListView l_coches;
 
-    LinearLayoutManager linearLayoutManagerCoches, linearLayoutManagerOfertasFuturas, linearLayoutManagerOfertasPasadas;
+    LinearLayoutManager linearLayoutManagerCoches, linearLayoutManagerOfertasFuturas, linearLayoutManagerOfertasPasadas, linearLayoutManagerReservasAceptar;
 
     String[] opciones;
 
@@ -90,6 +92,7 @@ public class ComunidadElegida extends AppCompatActivity {
         misCochesRecyclerView = findViewById(R.id.misCochesRecyclerView);
         misOfertasFuturasRecyclerView = findViewById(R.id.misOfertasFuturasRecyclerView);
         misOfertasPasadasRecyclerView = findViewById(R.id.misOfertasPasadasRecyclerView);
+        misReservasAceptarRecyclerView = findViewById(R.id.misReservasPorAceptarRecyclerView);
 
         limpiarArrayLists();
         obtenerInfoPrincipalUsuario();
@@ -160,6 +163,7 @@ public class ComunidadElegida extends AppCompatActivity {
         cochesOtrasComunidades.clear();
         ofertasFuturas.clear();
         ofertasPasadas.clear();
+        reservasAceptar.clear();
     }
 
     private void guardarCochesEstaComunidad(){
@@ -258,6 +262,31 @@ public class ComunidadElegida extends AppCompatActivity {
         }
     }
 
+    private void guardarReservasAceptar(){
+        try{
+            for (int j = 0; j < respuestaReservasAceptar.length(); j++){
+                JSONObject jsonReservasAceptar = respuestaReservasAceptar.getJSONObject(j);
+
+                reservasAceptar.add(new Reserva(jsonReservasAceptar.getString("IdReserva"),
+                        jsonReservasAceptar.getString("IdCoche"),
+                        jsonReservasAceptar.getString("IdUsuario"),
+                        jsonReservasAceptar.getString("IdComunidad"),
+                        jsonReservasAceptar.getString("FechaHoraInicio"),
+                        jsonReservasAceptar.getString("FechaHoraFin"),
+                        jsonReservasAceptar.getString("FotoCoche"),
+                        jsonReservasAceptar.getString("Matricula"),
+                        jsonReservasAceptar.getString("Aprobada"),
+                        jsonReservasAceptar.getString("Nombre") + " " + jsonReservasAceptar.getString("Apellidos")));
+            }
+
+            if (respuestaReservasAceptar.length() == 0){
+                findViewById(R.id.misReservasPorAceptarTextView).setVisibility(View.GONE);
+            }
+        }catch (Exception e){
+            //no hace nada
+        }
+    }
+
     private void obtenerInfoPrincipalUsuario(){
         StringRequest peticion = new StringRequest(Request.Method.POST,
                 Constantes.URL_OBTENERINFOPRINCIPALUSUARIO,
@@ -274,10 +303,12 @@ public class ComunidadElegida extends AppCompatActivity {
                             respuestaCochesOtrasComunidades = objetoJSON.getJSONArray("cochesOtrasComunidades");
                             respuestaOfertasFuturas = objetoJSON.getJSONArray("ofertasFuturas");
                             respuestaOfertasPasadas = objetoJSON.getJSONArray("ofertasPasadas");
+                            respuestaReservasAceptar = objetoJSON.getJSONArray("reservasPendientes");
                             guardarCochesEstaComunidad();
                             guardarCochesOtrasComunidades();
                             guardarOfertasFuturas();
                             guardarOfertasPasadas();
+                            guardarReservasAceptar();
 
                             linearLayoutManagerCoches = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
                             adapterCoches = new ListaCochesAdapter(activity, activity, coches, usuario, idComunidad, numCoches, opciones);
@@ -296,6 +327,12 @@ public class ComunidadElegida extends AppCompatActivity {
                             misOfertasPasadasRecyclerView.setLayoutManager(linearLayoutManagerOfertasPasadas);
                             misOfertasPasadasRecyclerView.setAdapter(adapterOfertasPasadas);
                             adapterOfertasPasadas.notifyDataSetChanged();
+
+                            linearLayoutManagerReservasAceptar = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
+                            adapterReservasAceptar = new ListaReservasAceptarAdapter(activity, activity, reservasAceptar, usuario, idComunidad);
+                            misReservasAceptarRecyclerView.setLayoutManager(linearLayoutManagerReservasAceptar);
+                            misReservasAceptarRecyclerView.setAdapter(adapterReservasAceptar);
+                            adapterReservasAceptar.notifyDataSetChanged();
 
                             AdministradorPeticiones.getInstance(context).cancelAll("peticion");
                         } catch (JSONException e) {
