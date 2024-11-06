@@ -98,6 +98,8 @@ public class BuscarOfertas extends AppCompatActivity {
         inicioCalendario = Calendar.getInstance(zonaHorariaMovil);
         finalCalendario = Calendar.getInstance(zonaHorariaMovil);
 
+        ofertasListView = findViewById(R.id.ofertasBusquedaListView);
+
         fechaInicioEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -331,14 +333,15 @@ public class BuscarOfertas extends AppCompatActivity {
                                 if (objetoJSON.getString("error").equals("true") || objetoJSON.getJSONArray("mensaje").length() == 0){
                                     avisoBuscarOfertaTextView.setVisibility(View.VISIBLE);
                                     avisoBuscarOfertaTextView.setText("No se han encontrado ofertas entre ese rango de fechas.");
+                                    ofertasListView.setVisibility(View.GONE);
                                 }else{
                                     avisoBuscarOfertaTextView.setVisibility(View.GONE);
+                                    ofertasListView.setVisibility(View.VISIBLE);
                                     //ver ofertas
 
                                     respuestaOfertas = objetoJSON.getJSONArray("mensaje");
 
                                     //float factor = context.getResources().getDisplayMetrics().density;
-                                    ofertasListView = findViewById(R.id.ofertasBusquedaListView);
                                     //ofertasListView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) ((150 + (objetoJSON.getJSONArray("mensaje").length()-1)*160) * factor)));
 
                                     guardarOfertas();
