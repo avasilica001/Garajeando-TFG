@@ -113,7 +113,6 @@
                 android:drawablePadding="12dp"
                 android:ems="10"
                 android:hint="Dirección"
-                android:inputType="number"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
                 android:singleLine="true"

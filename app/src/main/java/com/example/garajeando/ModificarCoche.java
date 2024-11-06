@@ -543,7 +543,7 @@ public class ModificarCoche extends AppCompatActivity {
     private void mostrarDialogoSeleccion(){
         String[] opciones = {"Sacar una foto","Seleccionar de la galería"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Selecciona una opción para tu foto de perfil");
+        builder.setTitle("Selecciona una opción para la foto de tu coche");
         builder.setItems(opciones, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

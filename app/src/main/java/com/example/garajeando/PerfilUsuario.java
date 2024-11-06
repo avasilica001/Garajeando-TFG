@@ -2,7 +2,11 @@ package com.example.garajeando;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,11 +30,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class PerfilUsuario extends AppCompatActivity {
@@ -76,6 +83,15 @@ public class PerfilUsuario extends AppCompatActivity {
         modificarDatosButton = findViewById(R.id.modificarDatosButton);
 
         obtenerInfoUsuario();
+
+        modificarDatosButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PerfilUsuario.this, ModificarPerfil.class);
+                intent.putExtra("usuario", usuario);
+                startActivityForResult(intent,1);
+            }
+        });
     }
 
     private void obtenerInfoUsuario(){
@@ -152,6 +168,15 @@ public class PerfilUsuario extends AppCompatActivity {
             }
         }catch (Exception e){
             //no hace nada
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == 3){
+            obtenerInfoUsuario();
         }
     }
 }
