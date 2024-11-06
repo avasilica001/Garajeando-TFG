@@ -69,6 +69,25 @@
                 app:layout_constraintTop_toBottomOf="@+id/nombreEditText" />
 
             <EditText
+                android:id="@+id/direccionEditText"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/fondo_personalizado_elemento"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:ems="10"
+                android:hint="Dirección"
+                android:drawableStart="@drawable/texto"
+                android:drawablePadding="12dp"
+                android:inputType="text"
+                android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/apellidosEditText" />
+
+            <EditText
                 android:id="@+id/correoElectronicoEditTextR"
                 android:layout_width="0dp"
                 android:layout_height="55dp"
@@ -85,7 +104,7 @@
                 android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/apellidosEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/direccionEditText" />
 
             <EditText
                 android:id="@+id/contrasenaEditTextR"

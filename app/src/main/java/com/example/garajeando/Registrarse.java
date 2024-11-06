@@ -56,13 +56,13 @@ import android.Manifest;
 
 public class Registrarse extends AppCompatActivity {
 
-    private EditText correoElectronicoEditText, contrasenaEditText, repetirContrasenaEditText, nombreEditText, apellidosEditText;
+    private EditText correoElectronicoEditText, contrasenaEditText, repetirContrasenaEditText, nombreEditText, apellidosEditText, direccionEditText;
     private Button registrarseButton, anadirFotoButton, anadirCarnetFrontal, anadirCarnetReverso;
     private TextView avisoTextView;
     private ImageView imagenPerfil, carnetFrontal, carnetReverso;
     Toolbar barraSuperiorRegistrarseToolbar;
 
-    private String correoElectronico, contrasena, repetirContrasena, nombre, apellidos, aviso, contrasenaEncriptada, pathImagen;
+    private String correoElectronico, contrasena, repetirContrasena, nombre, apellidos, aviso, contrasenaEncriptada, pathImagen, direccion;
     Uri uriImagen;
 
     public static Boolean contrasenaVisible;
@@ -111,6 +111,7 @@ public class Registrarse extends AppCompatActivity {
         repetirContrasenaEditText = findViewById(R.id.repetirContrasenaEditText);
         nombreEditText = findViewById(R.id.nombreEditText);
         apellidosEditText = findViewById(R.id.apellidosEditText);
+        direccionEditText = findViewById(R.id.direccionEditText);;
 
         avisoTextView = findViewById(R.id.avisoTextViewR);
 
@@ -389,6 +390,7 @@ public class Registrarse extends AppCompatActivity {
         contrasena = contrasenaEditText.getText().toString().trim();
         nombre = nombreEditText.getText().toString().trim();
         apellidos = apellidosEditText.getText().toString().trim();
+        direccion = direccionEditText.getText().toString().trim();
 
         if (validarCredencialesR()) {
             try {
@@ -466,6 +468,7 @@ public class Registrarse extends AppCompatActivity {
                 parametros.put("Contrasena", contrasenaEncriptada);
                 parametros.put("Nombre", nombre);
                 parametros.put("Apellidos", apellidos);
+                parametros.put("Direccion", direccion);
                 if (perfil != null){
                     parametros.put("FotoPerfil", b64p);
                     parametros.put("NombreFoto", nombreImagenFinal);
@@ -486,6 +489,9 @@ public class Registrarse extends AppCompatActivity {
         correoElectronico = correoElectronicoEditText.getText().toString().trim();
         contrasena = contrasenaEditText.getText().toString().trim();
         repetirContrasena = repetirContrasenaEditText.getText().toString().trim();
+        nombre = nombreEditText.getText().toString().trim();
+        apellidos = apellidosEditText.getText().toString().trim();
+        direccion = direccionEditText.getText().toString().trim();
 
         Boolean camposValidos = true;
 
@@ -520,7 +526,7 @@ public class Registrarse extends AppCompatActivity {
             avisoTextView.setText("El correo electrónico no posee un formato correcto.");
         }
 
-        if (correoElectronico.isEmpty() || contrasena.isEmpty() || nombre.isEmpty() || apellidos.isEmpty()) {
+        if (correoElectronico.isEmpty() || contrasena.isEmpty()  || repetirContrasena.isEmpty() || nombre.isEmpty() || apellidos.isEmpty() || direccion.isEmpty()) {
             camposValidos = false;
             avisoTextView.setVisibility(View.VISIBLE);
             avisoTextView.setText("Rellene todos los campos antes de continuar.");
