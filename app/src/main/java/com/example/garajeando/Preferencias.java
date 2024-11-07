@@ -3,6 +3,8 @@ package com.example.garajeando;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 public class Preferencias {
 
     private static final String NOMBRE_PREFERENCIAS = "Tema";
@@ -22,8 +24,10 @@ public class Preferencias {
 
     public static void aplicarTema(Context context) {
         if (esTemaOscuro(context)) {
+            //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             context.setTheme(R.style.Noche_Theme_Garajeando);
         } else {
+            //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             context.setTheme(R.style.Dia_Theme_Garajeando);
         }
     }

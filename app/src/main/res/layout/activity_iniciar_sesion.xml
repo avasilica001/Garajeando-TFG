@@ -18,7 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="INICIAR SESIÓN"
-        app:titleTextColor="#FFFFFF" />
+        app:titleTextColor="#FFFFFF"
+        app:popupTheme="@style/EstiloMenu"/>
 
     <ScrollView
         android:id="@+id/IniciarSesionScrollView"

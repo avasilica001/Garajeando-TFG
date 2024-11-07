@@ -11,14 +11,12 @@
         <item name="android:textColorPrimary">@color/gris_acentuado</item>
         <item name="android:textColorHint">@color/gris_oscuro</item>
         <item name="android:popupBackground">@color/blanco</item>
-    </style>
-
-    <style name="CustomAlertDialogDia" parent="ThemeOverlay.AppCompat.Dialog.Alert">
-        <item name="android:background">@color/blanco</item>
+        <item name="cardBackgroundColor">@color/blanco</item>
     </style>
 
     <style name="Noche.Theme.Garajeando" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
+        <item name="android:windowLightNavigationBar">false</item>
         <item name="colorPrimary">@color/rojo_oscuro</item>
         <item name="colorPrimaryDark">@color/rojo</item>
         <item name="colorAccent">@color/gris_oscuro</item>
@@ -29,9 +27,6 @@
         <item name="android:textColorHint">@color/gris_oscuro</item>
         <item name="colorButtonNormal">@color/rojo_oscuro</item>
         <item name="android:popupBackground">#121212</item>
-    </style>
-
-    <style name="CustomAlertDialogNoche" parent="ThemeOverlay.AppCompat.Dialog.Alert">
-        <item name="android:background">#121212</item>
+        <item name="cardBackgroundColor">#121212</item>
     </style>
 </resources>
