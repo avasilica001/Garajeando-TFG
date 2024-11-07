@@ -6,17 +6,33 @@
         android:id="@+id/BuscarToolbarItem"
         android:icon="@drawable/lupa"
         app:showAsAction="ifRoom" />
+
     <item
-        android:id="@+id/PerfilToobarItem"
-        android:icon="@drawable/circulo_usuario"
-        android:title="Perfil" />
-    <item
-        android:id="@+id/PreferenciasToobarItem"
-        android:title="Preferencias" />
-    <item
-        android:id="@+id/AdministradorToobarItem"
-        android:title="Vista Administrador" />
-    <item
-        android:id="@+id/CerrarSesionToobarItem"
-        android:title="Cerrar Sesión" />
+        android:id="@+id/tresPuntosbarItem"
+        android:icon="@drawable/tres_puntos"
+        app:showAsAction="always">
+
+        <menu>
+
+            <item
+                android:id="@+id/PerfilToobarItem"
+                android:icon="@drawable/mi_perfil"
+                android:title="Mi Perfil" />
+            <item
+                android:id="@+id/TemaToobarItem"
+                android:icon="@drawable/dia_noche"
+                android:title="Cambiar Tema" />
+            <item
+                android:id="@+id/AdministradorToobarItem"
+                android:icon="@drawable/administrador"
+                android:title="Menú Administrador" />
+            <item
+                android:id="@+id/CerrarSesionToobarItem"
+                android:icon="@drawable/cerrar_sesion"
+                android:title="Cerrar Sesión" />
+
+        </menu>
+
+    </item>
+
 </menu>

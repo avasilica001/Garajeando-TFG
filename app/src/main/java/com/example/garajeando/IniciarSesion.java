@@ -47,6 +47,7 @@ public class IniciarSesion extends AppCompatActivity {
     @SuppressLint({"ClickableViewAccessibility", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Preferencias.aplicarTema(this);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_iniciar_sesion);
@@ -154,7 +155,7 @@ public class IniciarSesion extends AppCompatActivity {
         // Adjust visibility based on conditions
         menu.findItem(R.id.BuscarToolbarItem).setVisible(false);
         menu.findItem(R.id.PerfilToobarItem).setVisible(false);
-        menu.findItem(R.id.PreferenciasToobarItem).setVisible(true);
+        menu.findItem(R.id.TemaToobarItem).setVisible(true);
         menu.findItem(R.id.AdministradorToobarItem).setVisible(false);
         menu.findItem(R.id.CerrarSesionToobarItem).setVisible(false);
 
@@ -165,9 +166,13 @@ public class IniciarSesion extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
 
-        if (itemId == R.id.PreferenciasToobarItem) {
-            //Intent intentThree = new Intent(this, ActivityThree.class);
-            //startActivity(intentThree);
+        if (itemId == R.id.TemaToobarItem) {
+            boolean esOscuro = Preferencias.esTemaOscuro(this);
+            Preferencias.setTemaOscuro(this, !esOscuro);
+            // Restart activity to apply the new theme
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
             return true;
         }
 

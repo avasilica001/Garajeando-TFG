@@ -10,10 +10,28 @@
         <item name="android:textColor">@color/gris_acentuado</item>
         <item name="android:textColorPrimary">@color/gris_acentuado</item>
         <item name="android:textColorHint">@color/gris_oscuro</item>
-        <item name="android:actionOverflowButtonStyle">@style/TresPuntosButton</item>
+        <item name="android:popupBackground">@color/blanco</item>
     </style>
 
-    <style name="TresPuntosButton" parent="Widget.AppCompat.Light.ActionButton.Overflow">
-        <item name="tint">@color/blanco</item>
+    <style name="CustomAlertDialogDia" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/blanco</item>
+    </style>
+
+    <style name="Noche.Theme.Garajeando" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <item name="colorPrimary">@color/rojo_oscuro</item>
+        <item name="colorPrimaryDark">@color/rojo</item>
+        <item name="colorAccent">@color/gris_oscuro</item>
+        <item name="homeAsUpIndicator">@drawable/flecha_atras_tema_oscuro</item>
+        <item name="android:colorBackground">#121212</item>
+        <item name="android:textColor">@color/gris_muy_claro</item>
+        <item name="android:textColorPrimary">@color/gris_muy_claro</item>
+        <item name="android:textColorHint">@color/gris_oscuro</item>
+        <item name="colorButtonNormal">@color/rojo_oscuro</item>
+        <item name="android:popupBackground">#121212</item>
+    </style>
+
+    <style name="CustomAlertDialogNoche" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:background">#121212</item>
     </style>
 </resources>

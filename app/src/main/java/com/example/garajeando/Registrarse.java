@@ -305,7 +305,7 @@ public class Registrarse extends AppCompatActivity {
         // Adjust visibility based on conditions
         menu.findItem(R.id.BuscarToolbarItem).setVisible(false);
         menu.findItem(R.id.PerfilToobarItem).setVisible(false);
-        menu.findItem(R.id.PreferenciasToobarItem).setVisible(true);
+        menu.findItem(R.id.TemaToobarItem).setVisible(true);
         menu.findItem(R.id.AdministradorToobarItem).setVisible(false);
         menu.findItem(R.id.CerrarSesionToobarItem).setVisible(false);
 
@@ -316,7 +316,7 @@ public class Registrarse extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
 
-        if (itemId == R.id.PreferenciasToobarItem) {
+        if (itemId == R.id.TemaToobarItem) {
             //Intent intentThree = new Intent(this, ActivityThree.class);
             //startActivity(intentThree);
             return true;

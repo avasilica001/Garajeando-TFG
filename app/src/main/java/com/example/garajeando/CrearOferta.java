@@ -5,17 +5,14 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -215,7 +212,7 @@ public class CrearOferta extends AppCompatActivity {
             intentPerfil.putExtra("idUsuarioPerfil", usuario);
             startActivityForResult(intentPerfil,1);
             return true;
-        } else if (itemId == R.id.PreferenciasToobarItem) {
+        } else if (itemId == R.id.TemaToobarItem) {
             //Intent intentThree = new Intent(this, ActivityThree.class);
             //startActivity(intentThree);
             return true;

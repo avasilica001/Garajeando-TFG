@@ -176,7 +176,7 @@ public class TusComunidades extends AppCompatActivity {
         // Adjust visibility based on conditions
         menu.findItem(R.id.BuscarToolbarItem).setVisible(false);
         menu.findItem(R.id.PerfilToobarItem).setVisible(true);
-        menu.findItem(R.id.PreferenciasToobarItem).setVisible(true);
+        menu.findItem(R.id.TemaToobarItem).setVisible(true);
         menu.findItem(R.id.AdministradorToobarItem).setVisible(false);
         menu.findItem(R.id.CerrarSesionToobarItem).setVisible(true);
 
@@ -193,7 +193,7 @@ public class TusComunidades extends AppCompatActivity {
             intentPerfil.putExtra("idUsuarioPerfil", idUsuario);
             startActivityForResult(intentPerfil,1);
             return true;
-        } else if (itemId == R.id.PreferenciasToobarItem) {
+        } else if (itemId == R.id.TemaToobarItem) {
             //Intent intentThree = new Intent(this, ActivityThree.class);
             //startActivity(intentThree);
             return true;

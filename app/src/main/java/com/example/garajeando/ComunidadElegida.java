@@ -1,12 +1,9 @@
 package com.example.garajeando;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -160,7 +157,7 @@ public class ComunidadElegida extends AppCompatActivity {
             intentPerfil.putExtra("idUsuarioPerfil", usuario);
             startActivityForResult(intentPerfil,1);
             return true;
-        } else if (itemId == R.id.PreferenciasToobarItem) {
+        } else if (itemId == R.id.TemaToobarItem) {
             //Intent intentThree = new Intent(this, ActivityThree.class);
             //startActivity(intentThree);
             return true;

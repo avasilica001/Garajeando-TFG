@@ -179,7 +179,7 @@ public class OfertaElegida extends AppCompatActivity {
             intentPerfil.putExtra("idUsuarioPerfil", usuario);
             startActivityForResult(intentPerfil,1);
             return true;
-        } else if (itemId == R.id.PreferenciasToobarItem) {
+        } else if (itemId == R.id.TemaToobarItem) {
             //Intent intentThree = new Intent(this, ActivityThree.class);
             //startActivity(intentThree);
             return true;

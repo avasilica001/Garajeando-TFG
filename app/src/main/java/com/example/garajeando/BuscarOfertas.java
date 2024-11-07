@@ -9,12 +9,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -204,7 +201,7 @@ public class BuscarOfertas extends AppCompatActivity {
             intentPerfil.putExtra("idUsuarioPerfil", usuario);
             startActivityForResult(intentPerfil,1);
             return true;
-        } else if (itemId == R.id.PreferenciasToobarItem) {
+        } else if (itemId == R.id.TemaToobarItem) {
             //Intent intentThree = new Intent(this, ActivityThree.class);
             //startActivity(intentThree);
             return true;

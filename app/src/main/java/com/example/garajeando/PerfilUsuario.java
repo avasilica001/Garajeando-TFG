@@ -3,10 +3,7 @@ package com.example.garajeando;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,14 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class PerfilUsuario extends AppCompatActivity {
@@ -151,7 +141,7 @@ public class PerfilUsuario extends AppCompatActivity {
         // Adjust visibility based on conditions
         menu.findItem(R.id.BuscarToolbarItem).setVisible(false);
         menu.findItem(R.id.PerfilToobarItem).setVisible(false);
-        //menu.findItem(R.id.PreferenciasToobarItem).setVisible(condition3);
+        //menu.findItem(R.id.TemaToobarItem).setVisible(condition3);
         menu.findItem(R.id.AdministradorToobarItem).setVisible(false);
         //menu.findItem(R.id.CerrarSesionToobarItem).setVisible(CerrarSesionToobarItem);
 
@@ -162,7 +152,7 @@ public class PerfilUsuario extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
 
-        if (itemId == R.id.PreferenciasToobarItem) {
+        if (itemId == R.id.TemaToobarItem) {
             //Intent intentThree = new Intent(this, ActivityThree.class);
             //startActivity(intentThree);
             return true;

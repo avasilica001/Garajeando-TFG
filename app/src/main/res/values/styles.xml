@@ -11,9 +11,4 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="MyToolbarStyle" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:colorBackground">@color/blanco</item>
-        <item name="android:textColor">@color/negro</item>
-    </style>
-
 </resources>

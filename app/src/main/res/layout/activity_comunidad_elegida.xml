@@ -19,8 +19,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/MyToolbarStyle"
-        app:titleTextColor="#FFFFFF"/>
+        app:titleTextColor="#FFFFFF" />
 
     <ScrollView
         android:layout_width="match_parent"
