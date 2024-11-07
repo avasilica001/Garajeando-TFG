@@ -7,12 +7,15 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -69,7 +72,6 @@ public class PerfilUsuario extends AppCompatActivity {
         });
 
         usuario = getIntent().getExtras().getString("usuario");
-        idComunidad = getIntent().getExtras().getString("idComunidad");
         idUsuarioPerfil = getIntent().getExtras().getString("idUsuarioPerfil");
 
         fotoPerfilUsuarioImageView = findViewById(R.id.fotoPerfilUsuarioImageView);
@@ -109,6 +111,8 @@ public class PerfilUsuario extends AppCompatActivity {
 
                             setSupportActionBar(findViewById(R.id.perfilUsuarioToolbar));
                             getSupportActionBar().setTitle(nombre + " " + apellidos);
+                            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                            getSupportActionBar().setDisplayShowHomeEnabled(true);
 
                             AdministradorPeticiones.getInstance(context).cancelAll("peticion");
                         } catch (JSONException e) {
@@ -134,6 +138,49 @@ public class PerfilUsuario extends AppCompatActivity {
 
         peticion.setTag("peticion");
         AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Adjust visibility based on conditions
+        menu.findItem(R.id.BuscarToolbarItem).setVisible(false);
+        menu.findItem(R.id.PerfilToobarItem).setVisible(false);
+        //menu.findItem(R.id.PreferenciasToobarItem).setVisible(condition3);
+        menu.findItem(R.id.AdministradorToobarItem).setVisible(false);
+        //menu.findItem(R.id.CerrarSesionToobarItem).setVisible(CerrarSesionToobarItem);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.PreferenciasToobarItem) {
+            //Intent intentThree = new Intent(this, ActivityThree.class);
+            //startActivity(intentThree);
+            return true;
+        } else if (itemId == R.id.CerrarSesionToobarItem) {
+            Intent intentCerrarSesion = new Intent(PerfilUsuario.this, IniciarSesion.class);
+            // Clear all activities in the current task stack
+            intentCerrarSesion.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intentCerrarSesion);
+            finish();
+            return true;
+        }
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void guardarInfoUsuario(){

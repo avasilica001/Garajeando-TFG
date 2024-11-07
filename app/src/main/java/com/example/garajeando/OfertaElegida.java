@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -147,6 +150,56 @@ public class OfertaElegida extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Adjust visibility based on conditions
+        menu.findItem(R.id.BuscarToolbarItem).setVisible(false);
+        //menu.findItem(R.id.PerfilToobarItem).setVisible(condition2);
+        //menu.findItem(R.id.PreferenciasToobarItem).setVisible(condition3);
+        menu.findItem(R.id.AdministradorToobarItem).setVisible(false);
+        //menu.findItem(R.id.CerrarSesionToobarItem).setVisible(CerrarSesionToobarItem);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.PerfilToobarItem) {
+            Intent intentPerfil = new Intent(OfertaElegida.this, PerfilUsuario.class);
+            intentPerfil.putExtra("usuario", usuario);
+            intentPerfil.putExtra("idComunidad", idComunidad);
+            intentPerfil.putExtra("idUsuarioPerfil", usuario);
+            startActivityForResult(intentPerfil,1);
+            return true;
+        } else if (itemId == R.id.PreferenciasToobarItem) {
+            //Intent intentThree = new Intent(this, ActivityThree.class);
+            //startActivity(intentThree);
+            return true;
+        } else if (itemId == R.id.CerrarSesionToobarItem) {
+            Intent intentCerrarSesion = new Intent(OfertaElegida.this, IniciarSesion.class);
+            // Clear all activities in the current task stack
+            intentCerrarSesion.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intentCerrarSesion);
+            finish();
+            return true;
+        }
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void obtenerInfoOferta(){
         StringRequest peticion = new StringRequest(Request.Method.POST,
                 Constantes.URL_OBTENERINFOOFERTA,
@@ -169,6 +222,8 @@ public class OfertaElegida extends AppCompatActivity {
 
                             setSupportActionBar(findViewById(R.id.matriculaOfertaElegidaToolbar));
                             getSupportActionBar().setTitle(matricula);
+                            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                            getSupportActionBar().setDisplayShowHomeEnabled(true);
 
                             propietarioTextView.setText(nombrePropietario + " " + apellidosPropietario);
                             marcaTextView.setText(marca);

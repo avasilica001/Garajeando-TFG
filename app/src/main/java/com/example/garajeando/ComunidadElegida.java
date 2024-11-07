@@ -88,6 +88,8 @@ public class ComunidadElegida extends AppCompatActivity {
 
         setSupportActionBar(findViewById(R.id.ComunidadElegidaToolbar));
         getSupportActionBar().setTitle(nombreComunidad);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         misCochesRecyclerView = findViewById(R.id.misCochesRecyclerView);
         misOfertasFuturasRecyclerView = findViewById(R.id.misOfertasFuturasRecyclerView);
@@ -130,6 +132,18 @@ public class ComunidadElegida extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Adjust visibility based on conditions
+        //menu.findItem(R.id.BuscarToolbarItem).setVisible(condition1);
+        //menu.findItem(R.id.PerfilToobarItem).setVisible(condition2);
+        //menu.findItem(R.id.PreferenciasToobarItem).setVisible(condition3);
+        menu.findItem(R.id.AdministradorToobarItem).setVisible(rolComunidad.equals("Administrador"));
+        //menu.findItem(R.id.CerrarSesionToobarItem).setVisible(CerrarSesionToobarItem);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
 
@@ -155,8 +169,16 @@ public class ComunidadElegida extends AppCompatActivity {
             //startActivity(intentThree);
             return true;
         } else if (itemId == R.id.CerrarSesionToobarItem) {
-            //Intent intentThree = new Intent(this, ActivityThree.class);
-            //startActivity(intentThree);
+            Intent intentCerrarSesion = new Intent(ComunidadElegida.this, IniciarSesion.class);
+            // Clear all activities in the current task stack
+            intentCerrarSesion.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intentCerrarSesion);
+            finish();
+            return true;
+        }
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
             return true;
         }
 

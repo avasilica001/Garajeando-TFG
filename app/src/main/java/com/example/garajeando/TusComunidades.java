@@ -32,6 +32,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.view.Menu;
+import android.view.MenuItem;
+import android.content.Intent;
+
 import java.util.ArrayList;
 
 public class TusComunidades extends AppCompatActivity {
@@ -75,6 +79,10 @@ public class TusComunidades extends AppCompatActivity {
         savedIS = savedInstanceState;
         limpiarArrayLists();
         obtenerComunidades();
+
+        setSupportActionBar(findViewById(R.id.tusComunidadesToolabr));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         comunidadesListView = findViewById(R.id.listaComunidadesListViewC);
 
@@ -156,6 +164,56 @@ public class TusComunidades extends AppCompatActivity {
         if(savedInstanceState.getBoolean("avisoCodInvitacion")){avisoCodInvitacionTextView.setVisibility(View.VISIBLE);}else{avisoCodInvitacionTextView.setVisibility(View.GONE);}
         if(savedInstanceState.getBoolean("avisoUnirseComunidad")){avisoUnirseComunidadTextView.setVisibility(View.VISIBLE);}else{avisoUnirseComunidadTextView.setVisibility(View.GONE);}
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Adjust visibility based on conditions
+        menu.findItem(R.id.BuscarToolbarItem).setVisible(false);
+        menu.findItem(R.id.PerfilToobarItem).setVisible(true);
+        menu.findItem(R.id.PreferenciasToobarItem).setVisible(true);
+        menu.findItem(R.id.AdministradorToobarItem).setVisible(false);
+        menu.findItem(R.id.CerrarSesionToobarItem).setVisible(true);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.PerfilToobarItem) {
+            Intent intentPerfil = new Intent(TusComunidades.this, PerfilUsuario.class);
+            intentPerfil.putExtra("usuario", idUsuario);
+            intentPerfil.putExtra("idUsuarioPerfil", idUsuario);
+            startActivityForResult(intentPerfil,1);
+            return true;
+        } else if (itemId == R.id.PreferenciasToobarItem) {
+            //Intent intentThree = new Intent(this, ActivityThree.class);
+            //startActivity(intentThree);
+            return true;
+        } else if (itemId == R.id.CerrarSesionToobarItem) {
+            Intent intentCerrarSesion = new Intent(TusComunidades.this, IniciarSesion.class);
+            // Clear all activities in the current task stack
+            intentCerrarSesion.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intentCerrarSesion);
+            finish();
+            return true;
+        }
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     public void obtenerComunidades(){
         StringRequest peticion = new StringRequest(Request.Method.POST,

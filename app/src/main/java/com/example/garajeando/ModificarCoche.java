@@ -15,6 +15,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -111,6 +113,10 @@ public class ModificarCoche extends AppCompatActivity {
         accion = getIntent().getExtras().getString("accion");
         idCoche = getIntent().getExtras().getString("idCoche");
 
+        setSupportActionBar(findViewById(R.id.modificarCocheToolbar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         matriculaEditText = findViewById(R.id.matriculaEditText);
         marcaEditText = findViewById(R.id.marcaEditText);
         modeloEditText = findViewById(R.id.modeloEditText);
@@ -138,8 +144,6 @@ public class ModificarCoche extends AppCompatActivity {
         fotosGridView = findViewById(R.id.imagenesSecundariasCocheGridView);
 
         guardarInformacion = findViewById(R.id.guardarInformacionButton);
-
-        setSupportActionBar(findViewById(R.id.modificarCocheToolbar));
 
         if (accion.equals("modificar")){
             idCoche = getIntent().getExtras().getString("idCoche");
@@ -305,6 +309,56 @@ public class ModificarCoche extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Adjust visibility based on conditions
+        menu.findItem(R.id.BuscarToolbarItem).setVisible(false);
+        //menu.findItem(R.id.PerfilToobarItem).setVisible(condition2);
+        //menu.findItem(R.id.PreferenciasToobarItem).setVisible(condition3);
+        menu.findItem(R.id.AdministradorToobarItem).setVisible(false);
+        //menu.findItem(R.id.CerrarSesionToobarItem).setVisible(CerrarSesionToobarItem);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.PerfilToobarItem) {
+            Intent intentPerfil = new Intent(ModificarCoche.this, PerfilUsuario.class);
+            intentPerfil.putExtra("usuario", usuario);
+            intentPerfil.putExtra("idComunidad", idComunidad);
+            intentPerfil.putExtra("idUsuarioPerfil", usuario);
+            startActivityForResult(intentPerfil,1);
+            return true;
+        } else if (itemId == R.id.PreferenciasToobarItem) {
+            //Intent intentThree = new Intent(this, ActivityThree.class);
+            //startActivity(intentThree);
+            return true;
+        } else if (itemId == R.id.CerrarSesionToobarItem) {
+            Intent intentCerrarSesion = new Intent(ModificarCoche.this, IniciarSesion.class);
+            // Clear all activities in the current task stack
+            intentCerrarSesion.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intentCerrarSesion);
+            finish();
+            return true;
+        }
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void obtenerInfoCoche(){
         StringRequest peticion = new StringRequest(Request.Method.POST,
                 Constantes.URL_OBTENERINFOCOCHE,
@@ -323,7 +377,6 @@ public class ModificarCoche extends AppCompatActivity {
                             fotosGridView.setAdapter(fotosCocheAdapter);
                             //fotosCocheAdapter.notifyDataSetChanged();
 
-                            setSupportActionBar(findViewById(R.id.perfilUsuarioToolbar));
                             getSupportActionBar().setTitle(matricula);
 
                             marcaEditText.setText(marca);

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -139,6 +141,37 @@ public class IniciarSesion extends AppCompatActivity {
         }
         contrasenaEditText.setSelection(seleccion);
         contrasenaEditText = findViewById(R.id.contrasenaEditTextIS);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Adjust visibility based on conditions
+        menu.findItem(R.id.BuscarToolbarItem).setVisible(false);
+        menu.findItem(R.id.PerfilToobarItem).setVisible(false);
+        menu.findItem(R.id.PreferenciasToobarItem).setVisible(true);
+        menu.findItem(R.id.AdministradorToobarItem).setVisible(false);
+        menu.findItem(R.id.CerrarSesionToobarItem).setVisible(false);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.PreferenciasToobarItem) {
+            //Intent intentThree = new Intent(this, ActivityThree.class);
+            //startActivity(intentThree);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void iniciarSesion(){

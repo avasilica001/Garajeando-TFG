@@ -7,7 +7,7 @@ public class Comunidad {
     private String codInvitacion;
     private String rol;
 
-    public Comunidad (String idComunidad, String nombre, String codInvitacion, String Rol){
+    public Comunidad (String idComunidad, String nombre, String codInvitacion, String rol){
         this.idComunidad=idComunidad;
         this.nombre=nombre;
         this.codInvitacion=codInvitacion;
