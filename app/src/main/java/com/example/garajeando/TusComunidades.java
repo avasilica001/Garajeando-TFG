@@ -65,6 +65,7 @@ public class TusComunidades extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Preferencias.aplicarTema(this);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_tuscomunidades);
@@ -194,8 +195,11 @@ public class TusComunidades extends AppCompatActivity {
             startActivityForResult(intentPerfil,1);
             return true;
         } else if (itemId == R.id.TemaToobarItem) {
-            //Intent intentThree = new Intent(this, ActivityThree.class);
-            //startActivity(intentThree);
+            boolean esOscuro = Preferencias.esTemaOscuro(this);
+            Preferencias.setTemaOscuro(this, !esOscuro);
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
             return true;
         } else if (itemId == R.id.CerrarSesionToobarItem) {
             Intent intentCerrarSesion = new Intent(TusComunidades.this, IniciarSesion.class);

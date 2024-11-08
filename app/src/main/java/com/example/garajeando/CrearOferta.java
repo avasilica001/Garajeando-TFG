@@ -56,6 +56,7 @@ public class CrearOferta extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Preferencias.aplicarTema(this);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_crear_oferta);
@@ -213,8 +214,11 @@ public class CrearOferta extends AppCompatActivity {
             startActivityForResult(intentPerfil,1);
             return true;
         } else if (itemId == R.id.TemaToobarItem) {
-            //Intent intentThree = new Intent(this, ActivityThree.class);
-            //startActivity(intentThree);
+            boolean esOscuro = Preferencias.esTemaOscuro(this);
+            Preferencias.setTemaOscuro(this, !esOscuro);
+            Intent intentTema = getIntent();
+            finish();
+            startActivity(intentTema);
             return true;
         } else if (itemId == R.id.CerrarSesionToobarItem) {
             Intent intentCerrarSesion = new Intent(CrearOferta.this, IniciarSesion.class);

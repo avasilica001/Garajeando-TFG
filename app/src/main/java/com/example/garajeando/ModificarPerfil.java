@@ -88,6 +88,7 @@ public class ModificarPerfil extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Preferencias.aplicarTema(this);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_modificar_perfil);
@@ -321,8 +322,11 @@ public class ModificarPerfil extends AppCompatActivity {
         int itemId = item.getItemId();
 
         if (itemId == R.id.TemaToobarItem) {
-            //Intent intentThree = new Intent(this, ActivityThree.class);
-            //startActivity(intentThree);
+            boolean esOscuro = Preferencias.esTemaOscuro(this);
+            Preferencias.setTemaOscuro(this, !esOscuro);
+            Intent intentTema = getIntent();
+            finish();
+            startActivity(intentTema);
             return true;
         } else if (itemId == R.id.CerrarSesionToobarItem) {
             Intent intentCerrarSesion = new Intent(ModificarPerfil.this, IniciarSesion.class);
@@ -469,7 +473,9 @@ public class ModificarPerfil extends AppCompatActivity {
                 }
             }
         });
-        builder.create().show();
+        builder.create();
+
+        Preferencias.setTemaAlertDialogConOpciones(builder, context);
     }
 
     //metodo para cuando se usa la camara

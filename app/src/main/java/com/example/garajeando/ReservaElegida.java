@@ -64,6 +64,7 @@ public class ReservaElegida extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Preferencias.aplicarTema(this);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_reserva_elegida);
@@ -152,6 +153,59 @@ public class ReservaElegida extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Adjust visibility based on conditions
+        menu.findItem(R.id.BuscarToolbarItem).setVisible(false);
+        //menu.findItem(R.id.PerfilToobarItem).setVisible(condition2);
+        //menu.findItem(R.id.PreferenciasToobarItem).setVisible(condition3);
+        menu.findItem(R.id.AdministradorToobarItem).setVisible(false);
+        //menu.findItem(R.id.CerrarSesionToobarItem).setVisible(CerrarSesionToobarItem);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.PerfilToobarItem) {
+            Intent intentPerfil = new Intent(ReservaElegida.this, PerfilUsuario.class);
+            intentPerfil.putExtra("usuario", usuario);
+            intentPerfil.putExtra("idComunidad", idComunidad);
+            intentPerfil.putExtra("idUsuarioPerfil", usuario);
+            startActivityForResult(intentPerfil,1);
+            return true;
+        } else if (itemId == R.id.TemaToobarItem) {
+            boolean esOscuro = Preferencias.esTemaOscuro(this);
+            Preferencias.setTemaOscuro(this, !esOscuro);
+            Intent intentTema = getIntent();
+            finish();
+            startActivity(intentTema);
+            return true;
+        } else if (itemId == R.id.CerrarSesionToobarItem) {
+            Intent intentCerrarSesion = new Intent(ReservaElegida.this, IniciarSesion.class);
+            // Clear all activities in the current task stack
+            intentCerrarSesion.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intentCerrarSesion);
+            finish();
+            return true;
+        }
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void obtenerInfoReserva(){
         StringRequest peticion = new StringRequest(Request.Method.POST,
                 Constantes.URL_OBTENERINFORESERVA,
@@ -215,56 +269,6 @@ public class ReservaElegida extends AppCompatActivity {
 
         peticion.setTag("peticion");
         AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // Adjust visibility based on conditions
-        menu.findItem(R.id.BuscarToolbarItem).setVisible(false);
-        //menu.findItem(R.id.PerfilToobarItem).setVisible(condition2);
-        //menu.findItem(R.id.PreferenciasToobarItem).setVisible(condition3);
-        menu.findItem(R.id.AdministradorToobarItem).setVisible(false);
-        //menu.findItem(R.id.CerrarSesionToobarItem).setVisible(CerrarSesionToobarItem);
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-
-        if (itemId == R.id.PerfilToobarItem) {
-            Intent intentPerfil = new Intent(ReservaElegida.this, PerfilUsuario.class);
-            intentPerfil.putExtra("usuario", usuario);
-            intentPerfil.putExtra("idComunidad", idComunidad);
-            intentPerfil.putExtra("idUsuarioPerfil", usuario);
-            startActivityForResult(intentPerfil,1);
-            return true;
-        } else if (itemId == R.id.TemaToobarItem) {
-            //Intent intentThree = new Intent(this, ActivityThree.class);
-            //startActivity(intentThree);
-            return true;
-        } else if (itemId == R.id.CerrarSesionToobarItem) {
-            Intent intentCerrarSesion = new Intent(ReservaElegida.this, IniciarSesion.class);
-            // Clear all activities in the current task stack
-            intentCerrarSesion.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intentCerrarSesion);
-            finish();
-            return true;
-        }
-
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void guardarInfo(){

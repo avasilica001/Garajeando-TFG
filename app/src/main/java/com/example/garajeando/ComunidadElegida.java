@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
@@ -68,6 +72,7 @@ public class ComunidadElegida extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Preferencias.aplicarTema(this);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_comunidad_elegida);
@@ -158,8 +163,11 @@ public class ComunidadElegida extends AppCompatActivity {
             startActivityForResult(intentPerfil,1);
             return true;
         } else if (itemId == R.id.TemaToobarItem) {
-            //Intent intentThree = new Intent(this, ActivityThree.class);
-            //startActivity(intentThree);
+            boolean esOscuro = Preferencias.esTemaOscuro(this);
+            Preferencias.setTemaOscuro(this, !esOscuro);
+            Intent intentTema = getIntent();
+            finish();
+            startActivity(intentTema);
             return true;
         } else if (itemId == R.id.AdministradorToobarItem) {
             //Intent intentThree = new Intent(this, ActivityThree.class);
@@ -415,7 +423,8 @@ public class ComunidadElegida extends AppCompatActivity {
                         adapterCoches.notifyDataSetChanged();
                     }
                 }});
-            builder.create().show();
+
+            Preferencias.setTemaAlertDialogConOpciones(builder, context);
         } else {
             //se pasan todos los datos para ver el coche
             Intent intent = new Intent(context, ModificarCoche.class);
@@ -495,7 +504,8 @@ public class ComunidadElegida extends AppCompatActivity {
 
                     activity.startActivityForResult(intent, 3);
                 }});
-            builder.create().show();
+
+            Preferencias.setTemaAlertDialogConOpciones(builder, context);
         } else {
             //
         }

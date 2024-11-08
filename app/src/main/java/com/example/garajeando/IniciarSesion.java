@@ -2,6 +2,7 @@ package com.example.garajeando;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -169,7 +170,6 @@ public class IniciarSesion extends AppCompatActivity {
         if (itemId == R.id.TemaToobarItem) {
             boolean esOscuro = Preferencias.esTemaOscuro(this);
             Preferencias.setTemaOscuro(this, !esOscuro);
-            // Restart activity to apply the new theme
             Intent intent = getIntent();
             finish();
             startActivity(intent);
@@ -263,4 +263,10 @@ public class IniciarSesion extends AppCompatActivity {
         AdministradorPeticiones.getInstance(this).addToRequestQueue(peticion);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reapply the theme when the activity is resumed (e.g., after navigating back)
+        Preferencias.aplicarTema(this);  // Ensure the theme is applied when coming back to the activity
+    }
 }
