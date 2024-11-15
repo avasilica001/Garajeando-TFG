@@ -172,8 +172,10 @@ public class ComunidadElegida extends AppCompatActivity {
             startActivity(intentTema);
             return true;
         } else if (itemId == R.id.AdministradorToobarItem) {
-            //Intent intentThree = new Intent(this, ActivityThree.class);
-            //startActivity(intentThree);
+            Intent intentAdministrador = new Intent(ComunidadElegida.this, MenuAdministrador.class);
+            intentAdministrador.putExtra("usuario", usuario);
+            intentAdministrador.putExtra("idComunidad", idComunidad);
+            startActivityForResult(intentAdministrador,1);
             return true;
         } else if (itemId == R.id.CerrarSesionToobarItem) {
             Intent intentCerrarSesion = new Intent(ComunidadElegida.this, IniciarSesion.class);

@@ -126,7 +126,7 @@ public class ListaOfertasAdapter extends RecyclerView.Adapter<ListaOfertasAdapte
             inicioOfertaTextView = itemView.findViewById(R.id.inicioOfertaTextView);
             finalOfertaTextView = itemView.findViewById(R.id.finalOfertaTextView);
             anadirOfertaButton = itemView.findViewById(R.id.anadirOfertaButton);
-            card_oferta = itemView.findViewById(R.id.card_reserva);
+            card_oferta = itemView.findViewById(R.id.card_ofertas);
         }
     }
 }

@@ -40,7 +40,7 @@ public class PerfilUsuario extends AppCompatActivity {
     private Activity activity = this;
     private Context context = this;
 
-    String usuario, idComunidad, idUsuarioPerfil;
+    String usuario, idComunidad, idUsuarioPerfil, administrador;
 
     private ImageView fotoPerfilUsuarioImageView;
     private TextView nombreUsuarioTextView, apellidosTextView, correoTextView, direccionTextView, puntosTextView;
@@ -66,6 +66,8 @@ public class PerfilUsuario extends AppCompatActivity {
 
         usuario = getIntent().getExtras().getString("usuario");
         idUsuarioPerfil = getIntent().getExtras().getString("idUsuarioPerfil");
+        administrador = getIntent().getExtras().getString("Administrador");
+        idComunidad = getIntent().getExtras().getString("IdComunidad");
 
         fotoPerfilUsuarioImageView = findViewById(R.id.fotoPerfilUsuarioImageView);
 
@@ -204,16 +206,17 @@ public class PerfilUsuario extends AppCompatActivity {
             direccionTextView.setText(direccion);
             puntosTextView.setText(puntos);
 
-            if(usuario.equals(idUsuarioPerfil)){
+            if(usuario.equals(idUsuarioPerfil) || administrador.equals("Administrador")){
                 direccionTextView.setVisibility(View.VISIBLE);
                 modificarDatosButton.setVisibility(View.VISIBLE);
-
             }
             else{
                 direccionTextView.setVisibility(View.GONE);
                 findViewById(R.id.direccionTituloTextView).setVisibility(View.GONE);
                 modificarDatosButton.setVisibility(View.GONE);
             }
+
+            if (administrador.equals("Administrador")){modificarDatosButton.setVisibility(View.GONE);}
         }catch (Exception e){
             //no hace nada
         }

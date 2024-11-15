@@ -149,6 +149,7 @@ public class ReservaElegida extends AppCompatActivity {
                 intent.putExtra("usuario", usuario);
                 intent.putExtra("idComunidad", idComunidad);
                 intent.putExtra("idUsuarioPerfil", usuarioReserva);
+                intent.putExtra("Administrador", "No");
                 startActivityForResult(intent,1);
             }
         });
