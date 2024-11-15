@@ -30,6 +30,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,8 +90,15 @@ public class PerfilUsuario extends AppCompatActivity {
     }
 
     private void obtenerInfoUsuario(){
-        StringRequest peticion = new StringRequest(Request.Method.POST,
-                Constantes.URL_OBTENERUSUARIO,
+        String idUsuarioPerfilEncoded = "";
+        try {
+            idUsuarioPerfilEncoded = URLEncoder.encode(idUsuarioPerfil, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            //e.printStackTrace();
+        }
+
+        StringRequest peticion = new StringRequest(Request.Method.GET,
+                Constantes.URL_OBTENERUSUARIO+"?IdUsuario="+idUsuarioPerfilEncoded,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String respuesta) {
@@ -117,13 +126,11 @@ public class PerfilUsuario extends AppCompatActivity {
                         //
                     }
                 }) {
-            @Nullable
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parametros = new HashMap<>();
-                parametros.put("IdUsuario", idUsuarioPerfil);
-
-                return parametros;
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
             }
         };
 

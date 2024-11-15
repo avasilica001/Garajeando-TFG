@@ -3,6 +3,7 @@ package com.example.garajeando;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 
 public class Preferencias {
 
@@ -106,5 +108,13 @@ public class Preferencias {
         Button negativeButton = dialogo.getButton(AlertDialog.BUTTON_NEGATIVE);
         if (positiveButton != null) positiveButton.setTextColor(colorBotonTexto);
         if (negativeButton != null) negativeButton.setTextColor(colorBotonTexto);
+    }
+
+    public static void actualizarFondoMenu(Context context, Toolbar toolbar){
+        if (esTemaOscuro(context)) {
+            toolbar.setPopupTheme(R.style.PopupMenu_Noche);
+        } else {
+            toolbar.setPopupTheme(R.style.PopupMenu_Dia);
+        }
     }
 }

@@ -36,6 +36,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -320,8 +322,17 @@ public class ComunidadElegida extends AppCompatActivity {
     }
 
     private void obtenerInfoPrincipalUsuario(){
-        StringRequest peticion = new StringRequest(Request.Method.POST,
-                Constantes.URL_OBTENERINFOPRINCIPALUSUARIO,
+        String idUsuarioEncoded = "";
+        String idComunidadEncoded = "";
+        try {
+            idUsuarioEncoded = URLEncoder.encode(usuario, "UTF-8");
+            idComunidadEncoded = URLEncoder.encode(idComunidad, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            //e.printStackTrace();
+        }
+
+        StringRequest peticion = new StringRequest(Request.Method.GET,
+                Constantes.URL_OBTENERINFOPRINCIPALUSUARIO+"?IdUsuario="+idUsuarioEncoded+"&IdComunidad="+idComunidadEncoded,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String respuesta) {
@@ -378,14 +389,11 @@ public class ComunidadElegida extends AppCompatActivity {
                         //
                     }
                 }) {
-            @Nullable
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parametros = new HashMap<>();
-                parametros.put("IdUsuario", usuario);
-                parametros.put("IdComunidad", idComunidad);
-
-                return parametros;
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
             }
         };
 

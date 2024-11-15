@@ -34,6 +34,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -377,8 +379,14 @@ public class BuscarOfertas extends AppCompatActivity {
             String fechaHoraInicio = formatoLondresInicio.format(fechaHoraInicioFormatoOriginal);
             String fechaHoraFinal = formatoLondresFinal.format(fechaHoraFinalFormatoOriginal);
 
-            StringRequest peticion = new StringRequest(Request.Method.POST,
-                    Constantes.URL_OBTENEROFERTAS,
+
+            String idComunidadEncoded = URLEncoder.encode(idComunidad, "UTF-8");
+            String idUsuarioEncoded = URLEncoder.encode(usuario, "UTF-8");
+            String fechaHoraInicioEncoded = URLEncoder.encode(fechaHoraInicio, "UTF-8");
+            String fechaHoraFinEncoded = URLEncoder.encode(fechaHoraFinal, "UTF-8");
+
+            StringRequest peticion = new StringRequest(Request.Method.GET,
+                    Constantes.URL_OBTENEROFERTAS+"?IdComunidad="+idComunidadEncoded+"&IdUsuario="+idUsuarioEncoded+"&FechaHoraInicio="+fechaHoraInicioEncoded+"&FechaHoraFin="+fechaHoraFinEncoded,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String respuesta) {
@@ -417,16 +425,11 @@ public class BuscarOfertas extends AppCompatActivity {
                             //
                         }
                     }) {
-                @Nullable
                 @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> parametros = new HashMap<>();
-                    parametros.put("IdComunidad", idComunidad);
-                    parametros.put("IdUsuario", usuario);
-                    parametros.put("FechaHoraInicio", fechaHoraInicio);
-                    parametros.put("FechaHoraFin", fechaHoraFinal);
-
-                    return parametros;
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String,String> params = new HashMap<String, String>();
+                    params.put("Content-Type","application/x-www-form-urlencoded");
+                    return params;
                 }
             };
 
@@ -435,7 +438,7 @@ public class BuscarOfertas extends AppCompatActivity {
 
 
 
-        } catch (ParseException e) {
+        } catch (Exception e) {
             //e.printStackTrace();
         }
     }

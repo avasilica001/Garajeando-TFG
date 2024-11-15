@@ -1,15 +1,18 @@
 package com.example.garajeando;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,6 +21,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -31,6 +35,8 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -60,6 +66,7 @@ public class IniciarSesion extends AppCompatActivity {
 
         //Setear barra superior
         setSupportActionBar(findViewById(R.id.iniciarSesionToolbar));
+        Preferencias.actualizarFondoMenu(this, findViewById(R.id.iniciarSesionToolbar));
 
         correoElectronicoEditText = findViewById(R.id.correoElectronicoEditTextIS);
         contrasenaEditText = findViewById(R.id.contrasenaEditTextIS);
@@ -148,6 +155,7 @@ public class IniciarSesion extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        //Preferencias.actualizarFondoMenu(this, (Toolbar) findViewById(R.id.iniciarSesionToolbar));
         return true;
     }
 
@@ -218,8 +226,16 @@ public class IniciarSesion extends AppCompatActivity {
     }
 
     private void peticionVerificarUsuario() {
-        StringRequest peticion = new StringRequest(Request.Method.POST,
-                Constantes.URL_VERIFICARUSUARIO,
+        String correoElectronicoEncoded = "";
+        String contrasenaEncriptadaEncoded = "";
+        try {
+            correoElectronicoEncoded = URLEncoder.encode(correoElectronico, "UTF-8");
+            contrasenaEncriptadaEncoded = URLEncoder.encode(contrasenaEncriptada, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            //e.printStackTrace();
+        }
+        StringRequest peticion = new StringRequest(Request.Method.GET,
+                Constantes.URL_VERIFICARUSUARIO+"?CorreoElectronico="+correoElectronicoEncoded+"&Contrasena="+contrasenaEncriptadaEncoded,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String respuesta) {
@@ -249,14 +265,11 @@ public class IniciarSesion extends AppCompatActivity {
 
                     }
                 }) {
-            @Nullable
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parametros = new HashMap<>();
-                parametros.put("CorreoElectronico", correoElectronico);
-                parametros.put("Contrasena", contrasenaEncriptada);
-
-                return parametros;
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
             }
         };
 

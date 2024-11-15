@@ -54,6 +54,8 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -364,8 +366,15 @@ public class ModificarCoche extends AppCompatActivity {
     }
 
     private void obtenerInfoCoche(){
-        StringRequest peticion = new StringRequest(Request.Method.POST,
-                Constantes.URL_OBTENERINFOCOCHE,
+        String idCocheEncoded = "";
+        try {
+            idCocheEncoded = URLEncoder.encode(idCoche, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            //e.printStackTrace();
+        }
+
+        StringRequest peticion = new StringRequest(Request.Method.GET,
+                Constantes.URL_OBTENERINFOCOCHE+"?IdCoche="+idCocheEncoded,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String respuesta) {
@@ -418,13 +427,11 @@ public class ModificarCoche extends AppCompatActivity {
                         //
                     }
                 }) {
-            @Nullable
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parametros = new HashMap<>();
-                parametros.put("IdCoche", idCoche);
-
-                return parametros;
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
             }
         };
 

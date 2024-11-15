@@ -360,7 +360,7 @@ public class CrearOferta extends AppCompatActivity {
             avisoCrearOfertaTextView.setText("La diferencia mínima de oferta debe ser de una hora");
             return;
         }
-        //caso cuando es todo ok
+        //caso cuando OK
         avisoCrearOfertaTextView.setVisibility(View.GONE);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
