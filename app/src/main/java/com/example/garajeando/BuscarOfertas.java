@@ -202,6 +202,7 @@ public class BuscarOfertas extends AppCompatActivity {
             intentPerfil.putExtra("usuario", usuario);
             intentPerfil.putExtra("idComunidad", idComunidad);
             intentPerfil.putExtra("idUsuarioPerfil", usuario);
+            intentPerfil.putExtra("Administrador", "No");
             startActivityForResult(intentPerfil,1);
             return true;
         } else if (itemId == R.id.TemaToobarItem) {

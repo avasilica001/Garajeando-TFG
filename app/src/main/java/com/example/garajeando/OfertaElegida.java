@@ -51,7 +51,7 @@ public class OfertaElegida extends AppCompatActivity {
 
     private  ImageView imagenPrincipalImageView;
     private  TextView fechaHoraInicioTextView, fechaHoraFinTextView, propietarioTextView, marcaTextView, modeloTextView, plazasTextView,puertasTextView, transmisionTextView, combustibleTextView, aireAcondicionadoTextView, bluetoothTextView, gpsTextView, descripcionTextView, avisoVerOfertaTextView;
-    private  Button modificarOfertaButton, eliminarOfertaButton, reservarOfertaButton;
+    private  Button modificarOfertaButton, eliminarOfertaButton, reservarOfertaButton, verPerfilUsuarioButton;
 
     private  String usuario, idComunidad, idCoche, idOferta, fechaHoraInicio, fechaHoraFin, reservada;
     Boolean fechaFutura = false;
@@ -109,6 +109,7 @@ public class OfertaElegida extends AppCompatActivity {
         modificarOfertaButton = findViewById(R.id.modificarOfertaButton);
         eliminarOfertaButton = findViewById(R.id.eliminarOfertaButton);
         reservarOfertaButton = findViewById(R.id.reservarOfertaButton);
+        verPerfilUsuarioButton = findViewById(R.id.verPerfilDuenoOfertaButton);
 
         modificarOfertaButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +138,19 @@ public class OfertaElegida extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 preguntarReserva();
+            }
+        });
+
+        verPerfilUsuarioButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(OfertaElegida.this, PerfilUsuario.class);
+                intent.putExtra("usuario", usuario);
+                intent.putExtra("idComunidad", idComunidad);
+                intent.putExtra("idUsuarioPerfil", propietario);
+                intent.putExtra("Administrador", "No");
+                startActivityForResult(intent,1);
             }
         });
 
@@ -180,6 +194,7 @@ public class OfertaElegida extends AppCompatActivity {
             intentPerfil.putExtra("usuario", usuario);
             intentPerfil.putExtra("idComunidad", idComunidad);
             intentPerfil.putExtra("idUsuarioPerfil", usuario);
+            intentPerfil.putExtra("Administrador", "No");
             startActivityForResult(intentPerfil,1);
             return true;
         } else if (itemId == R.id.TemaToobarItem) {

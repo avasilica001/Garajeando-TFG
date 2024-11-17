@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,7 +45,7 @@ public class PerfilUsuario extends AppCompatActivity {
 
     private ImageView fotoPerfilUsuarioImageView;
     private TextView nombreUsuarioTextView, apellidosTextView, correoTextView, direccionTextView, puntosTextView;
-    private Button modificarDatosButton;
+    private Button modificarDatosButton, aceptarUsuarioComunidadButton, denegarUsuarioComunidadButton;
 
     String nombre, apellidos, correo, direccion, puntos, nombreFotoPrincipal;
 
@@ -78,6 +79,27 @@ public class PerfilUsuario extends AppCompatActivity {
         puntosTextView = findViewById(R.id.puntosTextView);
 
         modificarDatosButton = findViewById(R.id.modificarDatosButton);
+        aceptarUsuarioComunidadButton = findViewById(R.id.aceptarUsuarioComunidadButton);
+        denegarUsuarioComunidadButton = findViewById(R.id.denegarUsuarioComunidadButton);
+
+        if(usuario.equals(idUsuarioPerfil) || administrador.equals("Administrador")){
+            direccionTextView.setVisibility(View.VISIBLE);
+            modificarDatosButton.setVisibility(View.VISIBLE);
+        }
+        else{
+            direccionTextView.setVisibility(View.GONE);
+            findViewById(R.id.direccionTituloTextView).setVisibility(View.GONE);
+            modificarDatosButton.setVisibility(View.GONE);
+        }
+
+        if (administrador.equals("Administrador")){
+            modificarDatosButton.setVisibility(View.GONE);
+            aceptarUsuarioComunidadButton.setVisibility(View.VISIBLE);
+            denegarUsuarioComunidadButton.setVisibility(View.VISIBLE);
+        }else{
+            aceptarUsuarioComunidadButton.setVisibility(View.GONE);
+            denegarUsuarioComunidadButton.setVisibility(View.GONE);
+        }
 
         obtenerInfoUsuario();
 
@@ -89,6 +111,17 @@ public class PerfilUsuario extends AppCompatActivity {
                 startActivityForResult(intent,1);
             }
         });
+
+        OnBackPressedCallback volverActividadAnterior = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intentResultado = new Intent();
+                setResult(3, intentResultado);
+                finish();
+            }
+        };
+
+        getOnBackPressedDispatcher().addCallback(this, volverActividadAnterior);
     }
 
     private void obtenerInfoUsuario(){
@@ -141,6 +174,41 @@ public class PerfilUsuario extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("usuario", usuario);
+        outState.putString("idUsuarioPerfil", idUsuarioPerfil);
+        outState.putString("idComunidad", idComunidad);
+        outState.putString("administrador", administrador);
+
+        outState.putBoolean("modificarButton", modificarDatosButton.getVisibility() == View.VISIBLE);
+        outState.putBoolean("aceptarButton", aceptarUsuarioComunidadButton.getVisibility() == View.VISIBLE);
+        outState.putBoolean("denegarButton", denegarUsuarioComunidadButton.getVisibility() == View.VISIBLE);
+        outState.putBoolean("direccionTextView", direccionTextView.getVisibility() == View.VISIBLE);
+        outState.putString("direccionText", direccionTextView.getText().toString().trim());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        usuario = savedInstanceState.getString("usuario");
+        idUsuarioPerfil = savedInstanceState.getString("idUsuarioPerfil");
+        idComunidad = savedInstanceState.getString("idComunidad");
+        administrador = savedInstanceState.getString("administrador");
+
+        direccionTextView.setText(savedInstanceState.getString("direccionText"));
+
+        if(savedInstanceState.getBoolean("modificarButton")){modificarDatosButton.setVisibility(View.VISIBLE);}else{modificarDatosButton.setVisibility(View.GONE);}
+        if(savedInstanceState.getBoolean("aceptarButton")){aceptarUsuarioComunidadButton.setVisibility(View.VISIBLE);}else{aceptarUsuarioComunidadButton.setVisibility(View.GONE);}
+        if(savedInstanceState.getBoolean("denegarButton")){denegarUsuarioComunidadButton.setVisibility(View.VISIBLE);}else{denegarUsuarioComunidadButton.setVisibility(View.GONE);}
+        if(savedInstanceState.getBoolean("direccionTextView")){direccionTextView.setVisibility(View.VISIBLE);}else{direccionTextView.setVisibility(View.GONE);}
+
+        obtenerInfoUsuario();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
@@ -150,7 +218,7 @@ public class PerfilUsuario extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // Adjust visibility based on conditions
         menu.findItem(R.id.BuscarToolbarItem).setVisible(false);
-        menu.findItem(R.id.PerfilToobarItem).setVisible(false);
+        if(usuario.equals(idUsuarioPerfil)){menu.findItem(R.id.PerfilToobarItem).setVisible(false);}else{menu.findItem(R.id.PerfilToobarItem).setVisible(true);}
         //menu.findItem(R.id.TemaToobarItem).setVisible(condition3);
         menu.findItem(R.id.AdministradorToobarItem).setVisible(false);
         //menu.findItem(R.id.CerrarSesionToobarItem).setVisible(CerrarSesionToobarItem);
@@ -162,7 +230,15 @@ public class PerfilUsuario extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
 
-        if (itemId == R.id.TemaToobarItem) {
+        if (itemId == R.id.PerfilToobarItem) {
+            Intent intentPerfil = new Intent(PerfilUsuario.this, PerfilUsuario.class);
+            intentPerfil.putExtra("usuario", usuario);
+            intentPerfil.putExtra("idComunidad", idComunidad);
+            intentPerfil.putExtra("idUsuarioPerfil", usuario);
+            intentPerfil.putExtra("Administrador", "No");
+            startActivityForResult(intentPerfil,1);
+            return true;
+        }else if (itemId == R.id.TemaToobarItem) {
             boolean esOscuro = Preferencias.esTemaOscuro(this);
             Preferencias.setTemaOscuro(this, !esOscuro);
             Intent intentTema = getIntent();
@@ -205,18 +281,6 @@ public class PerfilUsuario extends AppCompatActivity {
             correoTextView.setText(correo);
             direccionTextView.setText(direccion);
             puntosTextView.setText(puntos);
-
-            if(usuario.equals(idUsuarioPerfil) || administrador.equals("Administrador")){
-                direccionTextView.setVisibility(View.VISIBLE);
-                modificarDatosButton.setVisibility(View.VISIBLE);
-            }
-            else{
-                direccionTextView.setVisibility(View.GONE);
-                findViewById(R.id.direccionTituloTextView).setVisibility(View.GONE);
-                modificarDatosButton.setVisibility(View.GONE);
-            }
-
-            if (administrador.equals("Administrador")){modificarDatosButton.setVisibility(View.GONE);}
         }catch (Exception e){
             //no hace nada
         }

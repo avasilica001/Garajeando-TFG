@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -71,6 +72,17 @@ public class MenuAdministrador extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         usuariosAceptarRecyclerView = findViewById(R.id.usuariosAceptarRecyclerView);
+
+        OnBackPressedCallback volverActividadAnterior = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intentResultado = new Intent();
+                setResult(3, intentResultado);
+                finish();
+            }
+        };
+
+        getOnBackPressedDispatcher().addCallback(this, volverActividadAnterior);
     }
 
     @Override
@@ -124,6 +136,7 @@ public class MenuAdministrador extends AppCompatActivity {
             intentPerfil.putExtra("usuario", usuario);
             intentPerfil.putExtra("idComunidad", idComunidad);
             intentPerfil.putExtra("idUsuarioPerfil", usuario);
+            intentPerfil.putExtra("Administrador", "No");
             startActivityForResult(intentPerfil,1);
             return true;
         } else if (itemId == R.id.TemaToobarItem) {

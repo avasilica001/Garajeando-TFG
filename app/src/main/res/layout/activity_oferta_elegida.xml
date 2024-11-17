@@ -365,6 +365,18 @@
                 app:layout_constraintTop_toBottomOf="@id/descripcionOfertaTextView" />
 
             <Button
+                android:id="@+id/verPerfilDuenoOfertaButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/fondo_personalizado_elemento"
+                android:text="VER PERFIL DE USUARIO"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/avisoVerOfertaTextView" />
+
+            <Button
                 android:id="@+id/modificarOfertaButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -374,7 +386,7 @@
                 android:text="MODIFICAR OFERTA"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/avisoVerOfertaTextView" />
+                app:layout_constraintTop_toBottomOf="@id/verPerfilDuenoOfertaButton" />
 
             <Button
                 android:id="@+id/eliminarOfertaButton"

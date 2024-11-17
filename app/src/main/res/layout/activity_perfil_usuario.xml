@@ -158,13 +158,37 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/fondo_personalizado_elemento"
                 android:text="MODIFICAR DATOS"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/puntosTextView" />
+
+            <Button
+                android:id="@+id/aceptarUsuarioComunidadButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/fondo_personalizado_elemento"
+                android:text="ACEPTAR USUARIO A LA COMUNIDAD"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/modificarDatosButton" />
+
+            <Button
+                android:id="@+id/denegarUsuarioComunidadButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/fondo_personalizado_elemento"
+                android:text="DENEGAR USUARIO EN LA COMUNIDAD"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/aceptarUsuarioComunidadButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
