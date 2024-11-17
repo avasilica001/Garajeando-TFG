@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -467,6 +468,7 @@ public class OfertaElegida extends AppCompatActivity {
                                                     Intent intentResultado = new Intent();
                                                     setResult(3, intentResultado);
                                                     finish();
+                                                    Toast.makeText(OfertaElegida.this, "¡Ahora solo queda esperar a que el dueño del coche acepte la reserva!", Toast.LENGTH_LONG).show();
                                                 }else{
                                                     avisoVerOfertaTextView.setVisibility(View.VISIBLE);
                                                     avisoVerOfertaTextView.setText(objetoJSON.getString("mensaje"));

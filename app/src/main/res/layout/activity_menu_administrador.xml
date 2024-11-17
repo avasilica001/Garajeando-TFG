@@ -32,16 +32,53 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/usuariosAceptarTextView"
+                android:id="@+id/codigoInvitacionTextoTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="10dp"
-                android:text="USUARIOS PENDIENTES DE ACEPTAR A LA COMUNIDAD"
+                android:text="CÓDIGO DE INVITACIÓN A LA COMUNIDAD:"
                 android:textSize="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/codigoInvitacionMenuAdministradorTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/codigoInvitacionTextoTextView" />
+
+            <Button
+                android:id="@+id/actualizarCodInvitacionButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/fondo_personalizado_elemento"
+                android:text="ACTUALIZAR CÓDIGO DE INVITACIÓN"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/codigoInvitacionMenuAdministradorTextView" />
+
+            <TextView
+                android:id="@+id/usuariosAceptarTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="20dp"
+                android:text="USUARIOS PENDIENTES DE ACEPTAR A LA COMUNIDAD"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/actualizarCodInvitacionButton" />
 
             <LinearLayout
                 android:id="@+id/usuariosAceptarLinearLayout"

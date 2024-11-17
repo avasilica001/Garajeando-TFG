@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -39,8 +42,10 @@ public class MenuAdministrador extends AppCompatActivity {
     private final Activity activity=this;
     private final Context context = this;
 
-    String usuario, idComunidad;
+    String usuario, idComunidad, codInvitacion;
 
+    TextView codigoInvitacionMenuAdministradorTextView;
+    Button actualizarCodInvitacionButton;
     RecyclerView usuariosAceptarRecyclerView;
 
     JSONArray respuestaUsuariosAceptar;
@@ -72,6 +77,8 @@ public class MenuAdministrador extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         usuariosAceptarRecyclerView = findViewById(R.id.usuariosAceptarRecyclerView);
+        codigoInvitacionMenuAdministradorTextView = findViewById(R.id.codigoInvitacionMenuAdministradorTextView);
+        actualizarCodInvitacionButton = findViewById(R.id.actualizarCodInvitacionButton);
 
         OnBackPressedCallback volverActividadAnterior = new OnBackPressedCallback(true) {
             @Override
@@ -184,8 +191,11 @@ public class MenuAdministrador extends AppCompatActivity {
                     public void onResponse(String respuesta) {
                         try {
                             JSONObject objetoJSON = new JSONObject(respuesta);
-                            //limpiarArrayLists();
+                            limpiarArrayLists();
                             respuestaUsuariosAceptar = objetoJSON.getJSONArray("UsuariosAceptar");
+                            codInvitacion = objetoJSON.getString("CodInvitacion");
+
+                            codigoInvitacionMenuAdministradorTextView.setText(codInvitacion);
                             //respuestaCochesOtrasComunidades = objetoJSON.getJSONArray("cochesOtrasComunidades");
                             //respuestaOfertasFuturas = objetoJSON.getJSONArray("ofertasFuturas");
                             //respuestaOfertasPasadas = objetoJSON.getJSONArray("ofertasPasadas");
@@ -262,6 +272,19 @@ public class MenuAdministrador extends AppCompatActivity {
             }
         }catch (Exception e){
             //no hace nada
+        }
+    }
+
+    private void limpiarArrayLists(){
+        usuariosAceptar.clear();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == 3){
+            obtenerInfoMenuAdministradorComunidad();
         }
     }
 }

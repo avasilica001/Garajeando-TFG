@@ -25,4 +25,6 @@ public class Constantes {
     public static final String URL_OBTENERUSUARIO = URL_PRINCIPAL+"ObtenerUsuario.php";
     public static final String URL_ACTUALIZARINFOUSUARIO = URL_PRINCIPAL+"ActualizarInfoUsuario.php";
     public static final String URL_OBTENERINFOCOMUNIDAD  = URL_PRINCIPAL+"ObtenerInfoComunidad.php";
+    public static final String URL_ACEPTARUSUARIOACOMUNIDAD  = URL_PRINCIPAL+"AceptarUsuarioAComunidad.php";
+    public static final String URL_DENEGARUSUARIOACOMUNIDAD  = URL_PRINCIPAL+"DenegarUsuarioAComunidad.php";
     }

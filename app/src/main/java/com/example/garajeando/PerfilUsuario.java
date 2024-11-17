@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -109,6 +110,20 @@ public class PerfilUsuario extends AppCompatActivity {
                 Intent intent = new Intent(PerfilUsuario.this, ModificarPerfil.class);
                 intent.putExtra("usuario", usuario);
                 startActivityForResult(intent,1);
+            }
+        });
+
+        aceptarUsuarioComunidadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aceptarUsuarioComunidad();
+            }
+        });
+
+        denegarUsuarioComunidadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                denegarUsuarioComunidad();
             }
         });
 
@@ -293,5 +308,93 @@ public class PerfilUsuario extends AppCompatActivity {
         if(resultCode == 3){
             obtenerInfoUsuario();
         }
+    }
+
+    private void aceptarUsuarioComunidad(){
+        StringRequest peticion = new StringRequest(Request.Method.POST,
+                Constantes.URL_ACEPTARUSUARIOACOMUNIDAD,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String respuesta){
+                        try {
+                            JSONObject objetoJSON = new JSONObject(respuesta);
+
+                            Toast.makeText(PerfilUsuario.this, objetoJSON.getString("mensaje"), Toast.LENGTH_LONG).show();
+                            if (objetoJSON.getString("error").equals("false")) {
+                                aceptarUsuarioComunidadButton.setVisibility(View.GONE);
+                                denegarUsuarioComunidadButton.setVisibility(View.GONE);
+                                Intent intentResultado = new Intent();
+                                setResult(3, intentResultado);
+                                finish();
+                            }
+                        } catch (JSONException e) {
+                            //throw new RuntimeException(e);
+                        }
+                        AdministradorPeticiones.getInstance(context).cancelAll("peticion");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //
+                    }
+                }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("IdUsuario", idUsuarioPerfil);
+                parametros.put("IdComunidad", idComunidad);
+
+                return parametros;
+            }
+        };
+
+        peticion.setTag("peticion");
+        AdministradorPeticiones.getInstance(context).addToRequestQueue(peticion);
+    }
+
+    private void denegarUsuarioComunidad(){
+        StringRequest peticion = new StringRequest(Request.Method.POST,
+                Constantes.URL_DENEGARUSUARIOACOMUNIDAD,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String respuesta){
+                        try {
+                            JSONObject objetoJSON = new JSONObject(respuesta);
+
+                            Toast.makeText(PerfilUsuario.this, objetoJSON.getString("mensaje"), Toast.LENGTH_LONG).show();
+                            if (objetoJSON.getString("error").equals("false")) {
+                                aceptarUsuarioComunidadButton.setVisibility(View.GONE);
+                                denegarUsuarioComunidadButton.setVisibility(View.GONE);
+                                Intent intentResultado = new Intent();
+                                setResult(3, intentResultado);
+                                finish();
+                            }
+                        } catch (JSONException e) {
+                            //throw new RuntimeException(e);
+                        }
+                        AdministradorPeticiones.getInstance(context).cancelAll("peticion");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //
+                    }
+                }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("IdUsuario", idUsuarioPerfil);
+                parametros.put("IdComunidad", idComunidad);
+
+                return parametros;
+            }
+        };
+
+        peticion.setTag("peticion");
+        AdministradorPeticiones.getInstance(context).addToRequestQueue(peticion);
     }
 }

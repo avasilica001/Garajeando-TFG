@@ -71,7 +71,7 @@ public class ListaUsuariosAdapter extends RecyclerView.Adapter<ListaUsuariosAdap
                 intent.putExtra("usuario", usuario);
                 intent.putExtra("idUsuarioPerfil", usuarios.get(p).getIdUsuario());
                 intent.putExtra("Administrador", "Administrador");
-                intent.putExtra("IdComunidad", "IdComunidad");
+                intent.putExtra("IdComunidad", idComunidad);
 
                 activity.startActivityForResult(intent, 2);
             }

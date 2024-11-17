@@ -37,6 +37,7 @@ import java.util.Map;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -301,6 +302,10 @@ public class TusComunidades extends AppCompatActivity {
                             try {
                                 JSONObject objetoJSON = new JSONObject(respuesta);
                                 avisoUnirseComunidadTextView.setText(objetoJSON.getString("mensaje"));
+
+                                if(objetoJSON.getString("error").equals("false")){
+                                    Toast.makeText(TusComunidades.this, "¡Ahora solo queda esperar a que un administrador acepte tu solicitud!", Toast.LENGTH_LONG).show();
+                                }
                                 AdministradorPeticiones.getInstance(context).cancelAll("peticion");
                             } catch (JSONException e) {
                                 //
