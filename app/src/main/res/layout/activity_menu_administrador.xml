@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MenuAdministrador">
+    tools:context=".ComunidadElegida">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/menuAdministradorToolbar"
@@ -16,7 +16,6 @@
         android:theme="?attr/actionBarTheme"
         app:collapseIcon="@drawable/flecha_atras_tema_claro"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="#FFFFFF" />
