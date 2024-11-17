@@ -2,15 +2,16 @@ package com.example.garajeando;
 
 public class Usuario {
 
-    private String idUsuario, correoElectronico, nombre, apellidos, direccion, fotoPerfil;
+    private String idUsuario, correoElectronico, nombre, apellidos, direccion, fotoPerfil, rol;
 
-    public Usuario(String idUsuario, String correoElectronico, String nombre, String apellidos, String direccion, String fotoPerfil){
+    public Usuario(String idUsuario, String correoElectronico, String nombre, String apellidos, String direccion, String fotoPerfil, String rol){
         this.idUsuario = idUsuario;
         this.correoElectronico = correoElectronico;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.direccion = direccion;
         this.fotoPerfil = fotoPerfil;
+        this.rol = rol;
     }
 
     public String getIdUsuario() {
@@ -59,5 +60,13 @@ public class Usuario {
 
     public void setFotoPerfil(String fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 }

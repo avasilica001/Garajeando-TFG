@@ -48,18 +48,19 @@ public class MenuAdministrador extends AppCompatActivity {
     private final Activity activity=this;
     private final Context context = this;
 
-    String usuario, idComunidad, codInvitacion;
+    private String usuario, idComunidad, codInvitacion;
 
-    TextView codigoInvitacionMenuAdministradorTextView;
-    Button actualizarCodInvitacionButton;
-    RecyclerView usuariosAceptarRecyclerView;
+    private TextView codigoInvitacionMenuAdministradorTextView;
+    private Button actualizarCodInvitacionButton;
+    private RecyclerView usuariosAceptarRecyclerView, usuariosComunidadRecyclerView;
 
-    JSONArray respuestaUsuariosAceptar;
+    private JSONArray respuestaUsuariosAceptar, respuestaUsuarios;
 
     private final ArrayList<Usuario> usuariosAceptar = new ArrayList<Usuario>();
+    private final ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 
-    LinearLayoutManager linearLayoutManagerUsuariosAceptar;
-    private ListaUsuariosAdapter adapterUsuariosAceptar;
+    private LinearLayoutManager linearLayoutManagerUsuariosAceptar, linearLayoutManagerUsuarios;
+    private ListaUsuariosAdapter adapterUsuariosAceptar, adapterUsuarios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +80,12 @@ public class MenuAdministrador extends AppCompatActivity {
         obtenerInfoMenuAdministradorComunidad();
 
         setSupportActionBar(findViewById(R.id.menuAdministradorToolbar));
-        getSupportActionBar().setTitle("MENÚ ADMINISTRADOR COMUNIDAD");
+        getSupportActionBar().setTitle("MENÚ ADMINISTRADOR");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         usuariosAceptarRecyclerView = findViewById(R.id.usuariosAceptarRecyclerView);
+        usuariosComunidadRecyclerView = findViewById(R.id.usuariosComunidadRecyclerView);
         codigoInvitacionMenuAdministradorTextView = findViewById(R.id.codigoInvitacionMenuAdministradorTextView);
         actualizarCodInvitacionButton = findViewById(R.id.actualizarCodInvitacionButton);
 
@@ -207,6 +209,7 @@ public class MenuAdministrador extends AppCompatActivity {
                             JSONObject objetoJSON = new JSONObject(respuesta);
                             limpiarArrayLists();
                             respuestaUsuariosAceptar = objetoJSON.getJSONArray("UsuariosAceptar");
+                            respuestaUsuarios = objetoJSON.getJSONArray("Usuarios");
                             codInvitacion = objetoJSON.getString("CodInvitacion");
 
                             codigoInvitacionMenuAdministradorTextView.setText(codInvitacion);
@@ -215,6 +218,7 @@ public class MenuAdministrador extends AppCompatActivity {
                             //respuestaOfertasPasadas = objetoJSON.getJSONArray("ofertasPasadas");
                             //respuestaReservasAceptar = objetoJSON.getJSONArray("reservasPendientes");
                             guardarUsuariosAceptar();
+                            guardarUsuarios();
                             //guardarCochesOtrasComunidades();
                             //guardarOfertasFuturas();
                             //guardarOfertasPasadas();
@@ -226,13 +230,13 @@ public class MenuAdministrador extends AppCompatActivity {
                             usuariosAceptarRecyclerView.setAdapter(adapterUsuariosAceptar);
                             adapterUsuariosAceptar.notifyDataSetChanged();
 
-                            /*linearLayoutManagerOfertasFuturas = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
-                            adapterOfertasFuturas = new ListaOfertasAdapter(activity, activity, ofertasFuturas, usuario, idComunidad, "futuras");
-                            misOfertasFuturasRecyclerView.setLayoutManager(linearLayoutManagerOfertasFuturas);
-                            misOfertasFuturasRecyclerView.setAdapter(adapterOfertasFuturas);
-                            adapterOfertasFuturas.notifyDataSetChanged();
+                            linearLayoutManagerUsuarios = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
+                            adapterUsuarios = new ListaUsuariosAdapter(activity, activity, usuarios, usuario, idComunidad);
+                            usuariosComunidadRecyclerView.setLayoutManager(linearLayoutManagerUsuarios);
+                            usuariosComunidadRecyclerView.setAdapter(adapterUsuarios);
+                            adapterUsuarios.notifyDataSetChanged();
 
-                            linearLayoutManagerOfertasPasadas = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
+                            /*linearLayoutManagerOfertasPasadas = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
                             adapterOfertasPasadas = new ListaOfertasAdapter(activity, activity, ofertasPasadas, usuario, idComunidad, "pasadas");
                             misOfertasPasadasRecyclerView.setLayoutManager(linearLayoutManagerOfertasPasadas);
                             misOfertasPasadasRecyclerView.setAdapter(adapterOfertasPasadas);
@@ -278,7 +282,8 @@ public class MenuAdministrador extends AppCompatActivity {
                         jsonUsuariosAceptar.getString("Nombre"),
                         jsonUsuariosAceptar.getString("Apellidos"),
                         jsonUsuariosAceptar.getString("Direccion"),
-                        jsonUsuariosAceptar.getString("FotoPerfil")));
+                        jsonUsuariosAceptar.getString("FotoPerfil"),
+                        jsonUsuariosAceptar.getString("Rol")));
             }
 
             if (respuestaUsuariosAceptar.length() == 0){
@@ -289,8 +294,31 @@ public class MenuAdministrador extends AppCompatActivity {
         }
     }
 
+    private void guardarUsuarios(){
+        try{
+            for (int j = 0; j < respuestaUsuarios.length(); j++){
+                JSONObject jsonUsuarios = respuestaUsuarios.getJSONObject(j);
+
+                usuarios.add(new Usuario(jsonUsuarios.getString("IdUsuario"),
+                        jsonUsuarios.getString("CorreoElectronico"),
+                        jsonUsuarios.getString("Nombre"),
+                        jsonUsuarios.getString("Apellidos"),
+                        jsonUsuarios.getString("Direccion"),
+                        jsonUsuarios.getString("FotoPerfil"),
+                        jsonUsuarios.getString("Rol")));
+            }
+
+            if (respuestaUsuarios.length() == 0){
+                findViewById(R.id.usuariosEnComunidadTextView).setVisibility(View.GONE);
+            }
+        }catch (Exception e){
+            //no hace nada
+        }
+    }
+
     private void limpiarArrayLists(){
         usuariosAceptar.clear();
+        usuarios.clear();
     }
 
     private void dialogoActualizarCodigoInvitacion(){

@@ -50,7 +50,7 @@ public class ListaUsuariosAdapter extends RecyclerView.Adapter<ListaUsuariosAdap
 
     @Override
     public void onBindViewHolder(@NonNull UsuarioHolder holder, @SuppressLint("RecyclerView") int p) {
-        Glide.with(this.context).load("http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotosperfil/"+ usuarios.get(p).getFotoPerfil()).into(holder.fotoPerfilUsuarioAceptarImageView);
+        if(usuarios.get(p).getFotoPerfil().equals("")){holder.fotoPerfilUsuarioAceptarImageView.setImageResource(R.drawable.circulo_usuario);}else{Glide.with(this.context).load("http://ec2-51-20-10-72.eu-north-1.compute.amazonaws.com/imagenes/fotosperfil/"+ usuarios.get(p).getFotoPerfil()).into(holder.fotoPerfilUsuarioAceptarImageView);}
         holder.nombreApellidosUsuarioAceptarTextView.setText(usuarios.get(p).getNombre() + " " + usuarios.get(p).getApellidos());
         holder.correoUsuarioAceptarTextView.setText(usuarios.get(p).getCorreoElectronico());
         holder.direccionUsuarioAceptarTextView.setText(usuarios.get(p).getDireccion());
