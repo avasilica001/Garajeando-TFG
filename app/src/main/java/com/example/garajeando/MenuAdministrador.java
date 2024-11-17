@@ -2,6 +2,7 @@ package com.example.garajeando;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,11 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -33,7 +36,10 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,6 +85,13 @@ public class MenuAdministrador extends AppCompatActivity {
         usuariosAceptarRecyclerView = findViewById(R.id.usuariosAceptarRecyclerView);
         codigoInvitacionMenuAdministradorTextView = findViewById(R.id.codigoInvitacionMenuAdministradorTextView);
         actualizarCodInvitacionButton = findViewById(R.id.actualizarCodInvitacionButton);
+
+        actualizarCodInvitacionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogoActualizarCodigoInvitacion();
+            }
+        });
 
         OnBackPressedCallback volverActividadAnterior = new OnBackPressedCallback(true) {
             @Override
@@ -277,6 +290,63 @@ public class MenuAdministrador extends AppCompatActivity {
 
     private void limpiarArrayLists(){
         usuariosAceptar.clear();
+    }
+
+    private void dialogoActualizarCodigoInvitacion(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MenuAdministrador.this);
+        builder.setTitle("Elige una opción")
+                .setMessage("¿Estás seguro de que quieres generar un nuevo código de invitación?")
+
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogo, int which) {
+                        StringRequest peticion = new StringRequest(Request.Method.POST,
+                                Constantes.URL_ACTUALIZARCODIGOINVITACION,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String respuesta){
+                                        try {
+                                            JSONObject objetoJSON = new JSONObject(respuesta);
+
+                                            if (objetoJSON.getString("error").equals("false")) {
+                                                codInvitacion = objetoJSON.getString("CodInvitacion");
+                                                codigoInvitacionMenuAdministradorTextView.setText(codInvitacion);
+                                            }
+                                        } catch (JSONException e) {
+                                            //throw new RuntimeException(e);
+                                        }
+                                        AdministradorPeticiones.getInstance(context).cancelAll("peticion");
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        //
+                                    }
+                                }) {
+                            @Nullable
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> parametros = new HashMap<>();
+                                parametros.put("IdComunidad", idComunidad);
+
+                                return parametros;
+                            }
+                        };
+
+                        peticion.setTag("peticion");
+                        AdministradorPeticiones.getInstance(context).addToRequestQueue(peticion);
+                    }
+                })
+
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogo, int which) {
+                        dialogo.dismiss();
+                    }
+                });
+
+        Preferencias.setTemaAlertDialogPositivoNegativo(builder,context);
     }
 
     @Override
