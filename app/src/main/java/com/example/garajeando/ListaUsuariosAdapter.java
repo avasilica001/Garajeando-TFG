@@ -31,13 +31,15 @@ public class ListaUsuariosAdapter extends RecyclerView.Adapter<ListaUsuariosAdap
     CardView l_usuarios;
 
     String usuario, idComunidad;
+    Boolean noComunidadTodavia;
 
-    public ListaUsuariosAdapter(Activity activity, Activity context, ArrayList<Usuario> usuarios, String usuario, String idComunidad) {
+    public ListaUsuariosAdapter(Activity activity, Activity context, ArrayList<Usuario> usuarios, String usuario, String idComunidad, Boolean noComunidadTodavia) {
         this.context = context;
         this.activity = activity;
         this.usuarios = usuarios;
         this.usuario=usuario;
         this.idComunidad=idComunidad;
+        this.noComunidadTodavia = noComunidadTodavia;
     }
 
     @NonNull

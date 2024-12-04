@@ -89,6 +89,36 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/misReservasFuturasTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="20dp"
+                android:text="MIS RESERVAS ACTUALES Y/O FUTURAS"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/misCochesLinearLayout" />
+
+            <LinearLayout
+                android:id="@+id/misReservasFuturasLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/misReservasFuturasTextView">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/misReservasFuturasRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp" />
+            </LinearLayout>
+
+            <TextView
                 android:id="@+id/misOfertasFuturasTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -98,7 +128,7 @@
                 android:textSize="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/misCochesLinearLayout" />
+                app:layout_constraintTop_toBottomOf="@id/misReservasFuturasLinearLayout" />
 
             <LinearLayout
                 android:id="@+id/misOfertasFuturasLinearLayout"

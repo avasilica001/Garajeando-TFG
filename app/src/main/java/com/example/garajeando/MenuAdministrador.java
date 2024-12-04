@@ -225,13 +225,13 @@ public class MenuAdministrador extends AppCompatActivity {
                             //guardarReservasAceptar();
 
                             linearLayoutManagerUsuariosAceptar = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
-                            adapterUsuariosAceptar = new ListaUsuariosAdapter(activity, activity, usuariosAceptar, usuario, idComunidad);
+                            adapterUsuariosAceptar = new ListaUsuariosAdapter(activity, activity, usuariosAceptar, usuario, idComunidad, true);
                             usuariosAceptarRecyclerView.setLayoutManager(linearLayoutManagerUsuariosAceptar);
                             usuariosAceptarRecyclerView.setAdapter(adapterUsuariosAceptar);
                             adapterUsuariosAceptar.notifyDataSetChanged();
 
                             linearLayoutManagerUsuarios = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
-                            adapterUsuarios = new ListaUsuariosAdapter(activity, activity, usuarios, usuario, idComunidad);
+                            adapterUsuarios = new ListaUsuariosAdapter(activity, activity, usuarios, usuario, idComunidad, false);
                             usuariosComunidadRecyclerView.setLayoutManager(linearLayoutManagerUsuarios);
                             usuariosComunidadRecyclerView.setAdapter(adapterUsuarios);
                             adapterUsuarios.notifyDataSetChanged();

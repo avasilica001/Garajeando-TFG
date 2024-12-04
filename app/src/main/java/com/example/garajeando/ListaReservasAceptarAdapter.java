@@ -60,6 +60,7 @@ public class ListaReservasAceptarAdapter extends RecyclerView.Adapter<ListaReser
         holder.matricula = reservas.get(p).getMatricula();
         holder.aprobada = reservas.get(p).getAprobada();
         holder.nombreApellidos = reservas.get(p).getNombreApellidos();
+        holder.propietario = reservas.get(p).getPropietario();
         holder.usuarioReserva = reservas.get(p).getIdUsuario();
 
         holder.usuarioReservaTextView.setText(String.valueOf(holder.nombreApellidos));
@@ -91,7 +92,7 @@ public class ListaReservasAceptarAdapter extends RecyclerView.Adapter<ListaReser
         ImageView imagenPreviaCocheReservaImageView;
         CardView card_reserva;
 
-        String idReserva, idCoche, idComunidad, fechaHoraInicio, fechaHoraFin, fotoCoche, matricula, aprobada, usuarioReserva, nombreApellidos;
+        String idReserva, idCoche, idComunidad, fechaHoraInicio, fechaHoraFin, fotoCoche, matricula, aprobada, usuarioReserva, propietario, nombreApellidos;
 
         public ReservaHolder(@NonNull View itemView) {
             super(itemView);

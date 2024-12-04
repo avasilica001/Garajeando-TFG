@@ -9,12 +9,12 @@ import java.util.TimeZone;
 public class Reserva {
 
 
-    String idReserva, idCoche, idUsuario, idComunidad, fechaHoraInicio, fechaHoraFin, fotoCoche, matricula, aprobada, nombreApellidos;
+    String idReserva, idCoche, idUsuario, idComunidad, fechaHoraInicio, fechaHoraFin, fotoCoche, matricula, aprobada, propietario, nombreApellidos;
 
     TimeZone zonaHorariaMovil = TimeZone.getDefault();
     TimeZone zonaHorariaLondres = TimeZone.getTimeZone("Europe/London");
 
-    public Reserva(String idReserva, String idCoche, String idUsuario, String idComunidad, String fechaHoraInicio, String fechaHoraFin, String fotoCoche, String matricula, String aprobada, String nombreApellidos) {
+    public Reserva(String idReserva, String idCoche, String idUsuario, String idComunidad, String fechaHoraInicio, String fechaHoraFin, String fotoCoche, String matricula, String aprobada,String propietario, String nombreApellidos) {
         this.idReserva=idReserva;
         this.idUsuario=idUsuario;
         this.idCoche=idCoche;
@@ -22,6 +22,7 @@ public class Reserva {
         this.idComunidad=idComunidad;
         this.fotoCoche=fotoCoche;
         this.aprobada=aprobada;
+        this.propietario=propietario;
         this.nombreApellidos=nombreApellidos;
 
         SimpleDateFormat formatoOriginal = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -139,5 +140,13 @@ public class Reserva {
 
     public void setNombreApellidos(String nombreApellidos) {
         this.nombreApellidos = nombreApellidos;
+    }
+
+    public String getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(String propietario) {
+        this.propietario = propietario;
     }
 }
