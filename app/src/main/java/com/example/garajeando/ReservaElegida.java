@@ -49,10 +49,10 @@ public class ReservaElegida extends AppCompatActivity {
     private Context context = this;
 
     private ImageView imagenPrincipalImageView;
-    private TextView fechaHoraInicioTextView, fechaHoraFinTextView, propietarioTextView, usuarioReservaTextView, marcaTextView, modeloTextView, plazasTextView,puertasTextView, transmisionTextView, combustibleTextView, aireAcondicionadoTextView, bluetoothTextView, gpsTextView, descripcionTextView, avisoVerReservaTextView;
-    private Button verPerfilUsuarioButton, aceptarReservaButton, denegarReservaButton, cancelarReservaButton;
+    private TextView fechaHoraInicioTextView, fechaHoraFinTextView, propietarioTextView, usuarioReservaTextView, marcaTextView, modeloTextView, plazasTextView,puertasTextView, transmisionTextView, combustibleTextView, aireAcondicionadoTextView, bluetoothTextView, gpsTextView, descripcionTextView, avisoVerReservaTextView, puntosUsuarioTituloTextView, puntosUsuarioTextView, puntosPropietarioTituloTextView, puntosPropietarioTextView;
+    private Button verPerfilUsuarioButton, aceptarReservaButton, denegarReservaButton, cancelarReservaButton, puntuarReservaButton;
 
-    private String propietario, nombrePropietario, apellidosPropietario, matricula, marca, modelo, transmision, combustible, descripcion, nombreFotoPrincipal, aceptada, nombreUsuarioReserva, apellidosUsuarioReserva;
+    private String propietario, nombrePropietario, apellidosPropietario, matricula, marca, modelo, transmision, combustible, descripcion, nombreFotoPrincipal, aceptada, nombreUsuarioReserva, apellidosUsuarioReserva, tipoReserva;
     private Integer plazas, puertas;
     private Boolean aireAcondicionado, bluetooth, gps;
 
@@ -80,6 +80,8 @@ public class ReservaElegida extends AppCompatActivity {
         idComunidad = getIntent().getExtras().getString("idComunidad");
         idCoche = getIntent().getExtras().getString("idCoche");
         idReserva = getIntent().getExtras().getString("idReserva");
+        tipoReserva = getIntent().getExtras().getString("tipoReserva");
+        propietario = getIntent().getExtras().getString("propietario");
 
         imagenPrincipalImageView = findViewById(R.id.imagenPrincipalCocheReservaImageView);
         fechaHoraInicioTextView = findViewById(R.id.fechayHoraInicioReservaTextView);
@@ -98,11 +100,18 @@ public class ReservaElegida extends AppCompatActivity {
         usuarioReservaTextView = findViewById(R.id.usuarioReservaTextView);
         avisoVerReservaTextView = findViewById(R.id.avisoVerReservaTextView);
         avisoVerReservaTextView.setVisibility(View.GONE);
+        puntosPropietarioTextView = findViewById(R.id.puntosPropietarioReservaTextView);
+        puntosPropietarioTextView.setVisibility(View.GONE);
+        puntosPropietarioTituloTextView = findViewById(R.id.puntosPropietarioTituloReservaTextView);
+        puntosPropietarioTituloTextView.setVisibility(View.GONE);
+        puntosUsuarioTituloTextView = findViewById(R.id.puntosUsuarioTituloReservaTextView);
+        puntosUsuarioTituloTextView.setVisibility(View.GONE);
 
         verPerfilUsuarioButton = findViewById(R.id.verPerfilusuarioReservaButton);
         aceptarReservaButton = findViewById(R.id.aceptarReservaButton);
         denegarReservaButton = findViewById(R.id.denegarReservaButton);
         cancelarReservaButton = findViewById(R.id.cancelarReservaButton);
+        puntuarReservaButton = findViewById(R.id.puntuarReservaButton);
 
         obtenerInfoReserva();
 
@@ -337,18 +346,44 @@ public class ReservaElegida extends AppCompatActivity {
                 //e.printStackTrace();
             }
 
-            if(propietario.equals(usuario)){
-                aceptarReservaButton.setVisibility(View.VISIBLE);
-                denegarReservaButton.setVisibility(View.VISIBLE);
-                cancelarReservaButton.setVisibility(View.GONE);
-            }else{
+            if((propietario.equals(usuario) || usuarioReserva.equals(usuario)) && aceptada.equals("1")){
+                cancelarReservaButton.setVisibility(View.VISIBLE);
+            }
+
+            if(tipoReserva.equals("aceptar")){
+                puntuarReservaButton.setVisibility(View.GONE);
+                if(propietario.equals(usuario)) {
+                    aceptarReservaButton.setVisibility(View.VISIBLE);
+                    denegarReservaButton.setVisibility(View.VISIBLE);
+                    cancelarReservaButton.setVisibility(View.GONE);
+                }else{
+                    aceptarReservaButton.setVisibility(View.GONE);
+                    denegarReservaButton.setVisibility(View.GONE);
+                    cancelarReservaButton.setVisibility(View.VISIBLE);
+                }
+            }else if(tipoReserva.equals("futuras")){
+                aceptarReservaButton.setVisibility(View.GONE);
+                denegarReservaButton.setVisibility(View.GONE);
+                puntuarReservaButton.setVisibility(View.GONE);
+                if(propietario.equals(usuario)){
+                    cancelarReservaButton.setVisibility(View.VISIBLE);
+                }else{
+                    cancelarReservaButton.setVisibility(View.GONE);
+                }
+            }else if(tipoReserva.equals("pasadas")){
                 aceptarReservaButton.setVisibility(View.GONE);
                 denegarReservaButton.setVisibility(View.GONE);
                 cancelarReservaButton.setVisibility(View.GONE);
-            }
 
-            if((propietario.equals(usuario) || usuarioReserva.equals(usuario)) && aceptada.equals("1")){
-                cancelarReservaButton.setVisibility(View.VISIBLE);
+                puntosPropietarioTituloTextView.setVisibility(View.VISIBLE);
+                puntosPropietarioTextView.setVisibility(View.VISIBLE);
+                puntosUsuarioTituloTextView.setVisibility(View.VISIBLE);
+                puntosUsuarioTextView.setVisibility(View.VISIBLE);
+                if(propietario.equals(usuario)){
+                    puntuarReservaButton.setVisibility(View.VISIBLE);
+                }else{
+                    puntuarReservaButton.setVisibility(View.GONE);
+                }
             }
 
         }catch (Exception e){

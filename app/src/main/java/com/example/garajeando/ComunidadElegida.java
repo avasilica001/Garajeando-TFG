@@ -4,15 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
@@ -58,7 +54,7 @@ public class ComunidadElegida extends AppCompatActivity {
 
     private ListaCochesAdapter adapterCoches;
     private ListaOfertasAdapter adapterOfertasFuturas, adapterOfertasPasadas;
-    private ListaReservasAceptarAdapter adapterReservasAceptar, adapterReservasFuturas, adapterReservasPasadas;
+    private ListaReservasAdapter adapterReservasAceptar, adapterReservasFuturas, adapterReservasPasadas;
 
     private final Activity activity=this;
     private final Context context = this;
@@ -430,19 +426,19 @@ public class ComunidadElegida extends AppCompatActivity {
                             adapterOfertasPasadas.notifyDataSetChanged();
 
                             linearLayoutManagerReservasAceptar = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
-                            adapterReservasAceptar = new ListaReservasAceptarAdapter(activity, activity, reservasAceptar, usuario, idComunidad);
+                            adapterReservasAceptar = new ListaReservasAdapter(activity, activity, reservasAceptar, usuario, idComunidad, "aceptar");
                             misReservasAceptarRecyclerView.setLayoutManager(linearLayoutManagerReservasAceptar);
                             misReservasAceptarRecyclerView.setAdapter(adapterReservasAceptar);
                             adapterReservasAceptar.notifyDataSetChanged();
 
                             linearLayoutManagerReservasFuturas = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
-                            adapterReservasFuturas = new ListaReservasAceptarAdapter(activity, activity, reservasFuturas, usuario, idComunidad);
+                            adapterReservasFuturas = new ListaReservasAdapter(activity, activity, reservasFuturas, usuario, idComunidad, "futuras");
                             misReservasFuturasRecyclerView.setLayoutManager(linearLayoutManagerReservasFuturas);
                             misReservasFuturasRecyclerView.setAdapter(adapterReservasFuturas);
                             adapterReservasFuturas.notifyDataSetChanged();
 
                             linearLayoutManagerReservasPasadas = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
-                            adapterReservasPasadas = new ListaReservasAceptarAdapter(activity, activity, reservasPasadas, usuario, idComunidad);
+                            adapterReservasPasadas = new ListaReservasAdapter(activity, activity, reservasPasadas, usuario, idComunidad, "pasadas");
                             misReservasPasadasRecyclerView.setLayoutManager(linearLayoutManagerReservasPasadas);
                             misReservasPasadasRecyclerView.setAdapter(adapterReservasPasadas);
                             adapterReservasPasadas.notifyDataSetChanged();

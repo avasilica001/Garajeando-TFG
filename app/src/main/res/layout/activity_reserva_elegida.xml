@@ -26,7 +26,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/matriculaOfertaElegidaToolbar">
+        app:layout_constraintTop_toBottomOf="@+id/matriculaReservaElegidaToolbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -87,6 +87,52 @@
                 app:layout_constraintTop_toBottomOf="@+id/fechayHoraFinTituloReservaTextView" />
 
             <TextView
+                android:id="@+id/puntosPropietarioTituloReservaTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:text="Puntos obtenidos por el propietario"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fechayHoraFinReservaTextView" />
+
+            <TextView
+                android:id="@+id/puntosPropietarioReservaTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:text="0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/puntosPropietarioTituloReservaTextView" />
+
+            <TextView
+                android:id="@+id/puntosUsuarioTituloReservaTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:text="Puntos obtenidos por el usuario"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/puntosPropietarioReservaTextView" />
+
+            <TextView
+                android:id="@+id/puntosUsuarioReservaTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:text="0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/puntosUsuarioTituloReservaTextView" />
+
+            <TextView
                 android:id="@+id/usuarioTituloReservaTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -96,7 +142,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fechayHoraFinReservaTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/puntosUsuarioReservaTextView" />
 
             <TextView
                 android:id="@+id/usuarioReservaTextView"
@@ -407,10 +453,22 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/fondo_personalizado_elemento"
                 android:text="CANCELAR RESERVA"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/denegarReservaButton" />
+
+            <Button
+                android:id="@+id/puntuarReservaButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/fondo_personalizado_elemento"
+                android:text="PUNTUAR RESERVA"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cancelarReservaButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

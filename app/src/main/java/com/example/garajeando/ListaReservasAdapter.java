@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class ListaReservasAceptarAdapter extends RecyclerView.Adapter<ListaReservasAceptarAdapter.ReservaHolder> {
+public class ListaReservasAdapter extends RecyclerView.Adapter<ListaReservasAdapter.ReservaHolder> {
 
     private final Activity context;
 
@@ -26,26 +26,27 @@ public class ListaReservasAceptarAdapter extends RecyclerView.Adapter<ListaReser
     //arraylist para cada columna en la bd
     private ArrayList<Reserva> reservas=new ArrayList<Reserva>();
 
-    String usuario, idComunidad;
+    String usuario, idComunidad, tipoReservas;
 
-    public ListaReservasAceptarAdapter(Activity activity, Activity context, ArrayList<Reserva> reservas, String usuario, String idComunidad) {
+    public ListaReservasAdapter(Activity activity, Activity context, ArrayList<Reserva> reservas, String usuario, String idComunidad, String tipoReservas) {
         this.context = context;
         this.activity = activity;
         this.reservas = reservas;
         this.usuario = usuario;
         this.idComunidad = idComunidad;
+        this.tipoReservas = tipoReservas;
     }
 
     @NonNull
     @Override
-    public ListaReservasAceptarAdapter.ReservaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ListaReservasAdapter.ReservaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View l = LayoutInflater.from(context).inflate(R.layout.layout_reservas, parent, false);
 
-        return new ListaReservasAceptarAdapter.ReservaHolder(l);
+        return new ListaReservasAdapter.ReservaHolder(l);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListaReservasAceptarAdapter.ReservaHolder holder, @SuppressLint("RecyclerView") int p) {
+    public void onBindViewHolder(@NonNull ListaReservasAdapter.ReservaHolder holder, @SuppressLint("RecyclerView") int p) {
         holder.matriculaCocheReservaTextView.setText(String.valueOf(reservas.get(p).matricula));
         holder.inicioReservaTextView.setText(String.valueOf("Inicio: " + reservas.get(p).fechaHoraInicio));
         holder.finalReservaTextView.setText(String.valueOf("Fin: " + reservas.get(p).fechaHoraFin));
@@ -62,6 +63,7 @@ public class ListaReservasAceptarAdapter extends RecyclerView.Adapter<ListaReser
         holder.nombreApellidos = reservas.get(p).getNombreApellidos();
         holder.propietario = reservas.get(p).getPropietario();
         holder.usuarioReserva = reservas.get(p).getIdUsuario();
+        holder.tipoReservas = tipoReservas;
 
         holder.usuarioReservaTextView.setText(String.valueOf(holder.nombreApellidos));
 
@@ -74,6 +76,8 @@ public class ListaReservasAceptarAdapter extends RecyclerView.Adapter<ListaReser
                 intent.putExtra("usuario", usuario);
                 intent.putExtra("idComunidad", idComunidad);
                 intent.putExtra("idCoche", reservas.get(p).getIdCoche());
+                intent.putExtra("tipoReserva", tipoReservas);
+                intent.putExtra("propietario", reservas.get(p).getPropietario());
 
                 activity.startActivityForResult(intent, 2);
 
@@ -92,7 +96,7 @@ public class ListaReservasAceptarAdapter extends RecyclerView.Adapter<ListaReser
         ImageView imagenPreviaCocheReservaImageView;
         CardView card_reserva;
 
-        String idReserva, idCoche, idComunidad, fechaHoraInicio, fechaHoraFin, fotoCoche, matricula, aprobada, usuarioReserva, propietario, nombreApellidos;
+        String idReserva, idCoche, idComunidad, fechaHoraInicio, fechaHoraFin, fotoCoche, matricula, aprobada, usuarioReserva, propietario, nombreApellidos, tipoReservas;
 
         public ReservaHolder(@NonNull View itemView) {
             super(itemView);
