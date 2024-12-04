@@ -149,6 +149,36 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/misReservasPasadasTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="20dp"
+                android:text="MIS RESERVAS PASADAS"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/misOfertasFuturasLinearLayout" />
+
+            <LinearLayout
+                android:id="@+id/misReservasPasadasLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/misReservasPasadasTextView">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/misReservasPasadasRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp" />
+            </LinearLayout>
+
+            <TextView
                 android:id="@+id/misOfertasPasadasTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -158,7 +188,7 @@
                 android:textSize="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/misOfertasFuturasLinearLayout" />
+                app:layout_constraintTop_toBottomOf="@id/misReservasPasadasLinearLayout" />
 
             <LinearLayout
                 android:id="@+id/misOfertasPasadasLinearLayout"
