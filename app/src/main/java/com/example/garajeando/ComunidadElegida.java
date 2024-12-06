@@ -51,22 +51,23 @@ public class ComunidadElegida extends AppCompatActivity {
     private final ArrayList<Reserva> reservasAceptar = new ArrayList<Reserva>();
     private final ArrayList<Reserva> reservasFuturas = new ArrayList<Reserva>();
     private final ArrayList<Reserva> reservasPasadas = new ArrayList<Reserva>();
+    private final ArrayList<Reserva> reservasResenar = new ArrayList<Reserva>();
 
     private ListaCochesAdapter adapterCoches;
     private ListaOfertasAdapter adapterOfertasFuturas, adapterOfertasPasadas;
-    private ListaReservasAdapter adapterReservasAceptar, adapterReservasFuturas, adapterReservasPasadas;
+    private ListaReservasAdapter adapterReservasAceptar, adapterReservasFuturas, adapterReservasPasadas, adapterReservasResenar;
 
     private final Activity activity=this;
     private final Context context = this;
 
     private Toolbar miComunidadToolbar;
-    private RecyclerView misCochesRecyclerView, misOfertasFuturasRecyclerView, misOfertasPasadasRecyclerView, misReservasAceptarRecyclerView, misReservasFuturasRecyclerView, misReservasPasadasRecyclerView;
+    private RecyclerView misCochesRecyclerView, misOfertasFuturasRecyclerView, misOfertasPasadasRecyclerView, misReservasAceptarRecyclerView, misReservasFuturasRecyclerView, misReservasPasadasRecyclerView, misReservasResenarRecyclerView;
 
-    JSONArray respuestaCoches, respuestaCochesOtrasComunidades, respuestaOfertasFuturas, respuestaOfertasPasadas, respuestaReservasAceptar, respuestaReservasFuturas, respuestaReservasPasadas;
+    JSONArray respuestaCoches, respuestaCochesOtrasComunidades, respuestaOfertasFuturas, respuestaOfertasPasadas, respuestaReservasAceptar, respuestaReservasFuturas, respuestaReservasPasadas, respuestaReservasResenar;
 
     ListView l_coches;
 
-    LinearLayoutManager linearLayoutManagerCoches, linearLayoutManagerOfertasFuturas, linearLayoutManagerOfertasPasadas, linearLayoutManagerReservasAceptar, linearLayoutManagerReservasFuturas, linearLayoutManagerReservasPasadas;
+    LinearLayoutManager linearLayoutManagerCoches, linearLayoutManagerOfertasFuturas, linearLayoutManagerOfertasPasadas, linearLayoutManagerReservasAceptar, linearLayoutManagerReservasFuturas, linearLayoutManagerReservasPasadas, linearLayoutManagerReservasResenar;
 
     String[] opciones;
 
@@ -99,6 +100,7 @@ public class ComunidadElegida extends AppCompatActivity {
         misReservasAceptarRecyclerView = findViewById(R.id.misReservasPorAceptarRecyclerView);
         misReservasFuturasRecyclerView = findViewById(R.id.misReservasFuturasRecyclerView);
         misReservasPasadasRecyclerView = findViewById(R.id.misReservasPasadasRecyclerView);
+        misReservasResenarRecyclerView = findViewById(R.id.misReservasPorResenarRecyclerView);
 
         limpiarArrayLists();
         obtenerInfoPrincipalUsuario();
@@ -203,6 +205,7 @@ public class ComunidadElegida extends AppCompatActivity {
         reservasAceptar.clear();
         reservasFuturas.clear();
         reservasPasadas.clear();
+        reservasResenar.clear();
     }
 
     private void guardarCochesEstaComunidad(){
@@ -371,6 +374,28 @@ public class ComunidadElegida extends AppCompatActivity {
         }
     }
 
+    private void guardarReservasResenar(){
+        try{
+            for (int j = 0; j < respuestaReservasResenar.length(); j++){
+                JSONObject jsonReservasResenar = respuestaReservasResenar.getJSONObject(j);
+
+                reservasResenar.add(new Reserva(jsonReservasResenar.getString("IdReserva"),
+                        jsonReservasResenar.getString("IdCoche"),
+                        jsonReservasResenar.getString("IdUsuario"),
+                        jsonReservasResenar.getString("IdComunidad"),
+                        jsonReservasResenar.getString("FechaHoraInicio"),
+                        jsonReservasResenar.getString("FechaHoraFin"),
+                        jsonReservasResenar.getString("FotoCoche"),
+                        jsonReservasResenar.getString("Matricula"),
+                        jsonReservasResenar.getString("Aprobada"),
+                        jsonReservasResenar.getString("Propietario"),
+                        jsonReservasResenar.getString("Nombre") + " " + jsonReservasResenar.getString("Apellidos")));
+            }
+        }catch (Exception e){
+            //no hace nada
+        }
+    }
+
     private void obtenerInfoPrincipalUsuario(){
         String idUsuarioEncoded = "";
         String idComunidadEncoded = "";
@@ -399,6 +424,7 @@ public class ComunidadElegida extends AppCompatActivity {
                             respuestaReservasAceptar = objetoJSON.getJSONArray("reservasPendientes");
                             respuestaReservasFuturas = objetoJSON.getJSONArray("reservasFuturas");
                             respuestaReservasPasadas = objetoJSON.getJSONArray("reservasPasadas");
+                            respuestaReservasResenar = objetoJSON.getJSONArray("reservasResenar");
                             guardarCochesEstaComunidad();
                             guardarCochesOtrasComunidades();
                             guardarOfertasFuturas();
@@ -406,6 +432,7 @@ public class ComunidadElegida extends AppCompatActivity {
                             guardarReservasAceptar();
                             guardarReservasFuturas();
                             guardarReservasPasadas();
+                            guardarReservasResenar();
 
                             linearLayoutManagerCoches = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
                             adapterCoches = new ListaCochesAdapter(activity, activity, coches, usuario, idComunidad, numCoches, opciones);
@@ -442,6 +469,12 @@ public class ComunidadElegida extends AppCompatActivity {
                             misReservasPasadasRecyclerView.setLayoutManager(linearLayoutManagerReservasPasadas);
                             misReservasPasadasRecyclerView.setAdapter(adapterReservasPasadas);
                             adapterReservasPasadas.notifyDataSetChanged();
+
+                            linearLayoutManagerReservasResenar = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
+                            adapterReservasResenar = new ListaReservasAdapter(activity, activity, reservasResenar, usuario, idComunidad, "pasadas");
+                            misReservasResenarRecyclerView.setLayoutManager(linearLayoutManagerReservasResenar);
+                            misReservasResenarRecyclerView.setAdapter(adapterReservasResenar);
+                            adapterReservasResenar.notifyDataSetChanged();
 
                             AdministradorPeticiones.getInstance(context).cancelAll("peticion");
                         } catch (JSONException e) {

@@ -101,11 +101,14 @@ public class ReservaElegida extends AppCompatActivity {
         avisoVerReservaTextView = findViewById(R.id.avisoVerReservaTextView);
         avisoVerReservaTextView.setVisibility(View.GONE);
         puntosPropietarioTextView = findViewById(R.id.puntosPropietarioReservaTextView);
-        puntosPropietarioTextView.setVisibility(View.GONE);
         puntosPropietarioTituloTextView = findViewById(R.id.puntosPropietarioTituloReservaTextView);
-        puntosPropietarioTituloTextView.setVisibility(View.GONE);
         puntosUsuarioTituloTextView = findViewById(R.id.puntosUsuarioTituloReservaTextView);
+        puntosUsuarioTextView = findViewById(R.id.puntosUsuarioReservaTextView);
+
+        puntosPropietarioTituloTextView.setVisibility(View.GONE);
+        puntosPropietarioTextView.setVisibility(View.GONE);
         puntosUsuarioTituloTextView.setVisibility(View.GONE);
+        puntosUsuarioTextView.setVisibility(View.GONE);
 
         verPerfilUsuarioButton = findViewById(R.id.verPerfilusuarioReservaButton);
         aceptarReservaButton = findViewById(R.id.aceptarReservaButton);
@@ -159,6 +162,20 @@ public class ReservaElegida extends AppCompatActivity {
                 intent.putExtra("idComunidad", idComunidad);
                 intent.putExtra("idUsuarioPerfil", usuarioReserva);
                 intent.putExtra("Administrador", "No");
+                startActivityForResult(intent,1);
+            }
+        });
+
+        puntuarReservaButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReservaElegida.this, PuntuarReserva.class);
+                intent.putExtra("usuario", usuario);
+                intent.putExtra("idComunidad", idComunidad);
+                intent.putExtra("idUsuarioReserva", usuarioReserva);
+                intent.putExtra("idReserva", idReserva);
+                intent.putExtra("idCoche", idCoche);
                 startActivityForResult(intent,1);
             }
         });

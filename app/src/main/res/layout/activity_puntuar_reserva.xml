@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ReservaElegida">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/puntuarReservaToolbar"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="#FFFFFF" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/puntuarReservaToolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imagenPrincipalCocheResenaImageView"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_marginHorizontal="25dp"
+                android:foregroundGravity="center"
+                android:scaleType="fitCenter"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/coche" />
+
+            <TextView
+                android:id="@+id/estadoExteriorTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Estado exterior del coche"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imagenPrincipalCocheResenaImageView" />
+
+            <RadioGroup
+                android:id="@+id/estadoExteriorRadioGroup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/estadoExteriorTextView">
+
+                <RadioButton
+                    android:id="@+id/sinDanosRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sin daños" />
+
+                <RadioButton
+                    android:id="@+id/rallonesRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rallones" />
+
+                <RadioButton
+                    android:id="@+id/abolladoRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Abollado" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/estadoInteriorTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Estado interior del coche"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/estadoExteriorRadioGroup" />
+
+            <RadioGroup
+                android:id="@+id/estadoInteriorRadioGroup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/estadoInteriorTextView">
+
+                <RadioButton
+                    android:id="@+id/IgualRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Igual" />
+
+                <RadioButton
+                    android:id="@+id/sucioDesordenadoRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sucio o Desordenado" />
+
+            </RadioGroup>
+
+            <CheckBox
+                android:id="@+id/devueltoATiempoExteriorCheckBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:text="Coche devuelto a tiempo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/estadoInteriorRadioGroup" />
+
+            <EditText
+                android:id="@+id/minutosTardeEditText"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/fondo_personalizado_elemento"
+                android:drawableStart="@drawable/texto"
+                android:drawablePadding="12dp"
+                android:ems="10"
+                android:hint="Minutos tarde en devolver el coche"
+                android:inputType="number"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/devueltoATiempoExteriorCheckBox" />
+
+            <CheckBox
+                android:id="@+id/aparcadoCorrectamenteCheckBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:text="Coche aparcado correctamente"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/minutosTardeEditText" />
+
+            <TextView
+                android:id="@+id/favoresUsuarioTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Favores del usuario"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/aparcadoCorrectamenteCheckBox" />
+
+            <CheckBox
+                android:id="@+id/exteriorLimpiadoCheckBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:text="Exterior limpiado"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/favoresUsuarioTextView" />
+
+            <CheckBox
+                android:id="@+id/interiorLimpiadoCheckBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:text="Interior limpiado"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/exteriorLimpiadoCheckBox" />
+
+            <CheckBox
+                android:id="@+id/depositoLlenadoCheckBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:text="Depósito llenado"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/interiorLimpiadoCheckBox" />
+
+            <EditText
+                android:id="@+id/litrosDepositoEditText"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/fondo_personalizado_elemento"
+                android:drawableStart="@drawable/texto"
+                android:drawablePadding="12dp"
+                android:ems="10"
+                android:hint="Litros aproximados llenados en el depósito"
+                android:inputType="number"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/depositoLlenadoCheckBox" />
+
+            <Button
+                android:id="@+id/guardarResenaButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/fondo_personalizado_elemento"
+                android:text="GUARDAR PUNTUACIÓN RESERVA"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/litrosDepositoEditText" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
