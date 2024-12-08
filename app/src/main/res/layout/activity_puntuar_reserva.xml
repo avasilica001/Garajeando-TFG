@@ -206,7 +206,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="10dp"
-                android:text="Depósito llenado"
+                android:text="Depósito llenado o batería recargada"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/interiorLimpiadoCheckBox" />
@@ -221,13 +221,25 @@
                 android:drawableStart="@drawable/texto"
                 android:drawablePadding="12dp"
                 android:ems="10"
-                android:hint="Litros aproximados llenados en el depósito"
+                android:hint="Litros aproximados o % batería aportados"
                 android:inputType="number"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/depositoLlenadoCheckBox" />
+
+            <TextView
+                android:id="@+id/avisoResenaTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Favores del usuario"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/litrosDepositoEditText" />
 
             <Button
                 android:id="@+id/guardarResenaButton"
@@ -241,7 +253,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/litrosDepositoEditText" />
+                app:layout_constraintTop_toBottomOf="@id/avisoResenaTextView" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

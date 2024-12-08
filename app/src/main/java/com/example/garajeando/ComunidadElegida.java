@@ -319,7 +319,9 @@ public class ComunidadElegida extends AppCompatActivity {
                         jsonReservasAceptar.getString("Matricula"),
                         jsonReservasAceptar.getString("Aprobada"),
                         jsonReservasAceptar.getString("Propietario"),
-                        jsonReservasAceptar.getString("Nombre") + " " + jsonReservasAceptar.getString("Apellidos")));
+                        jsonReservasAceptar.getString("Nombre") + " " + jsonReservasAceptar.getString("Apellidos"),
+                        jsonReservasAceptar.getString("PuntosUsuario"),
+                        jsonReservasAceptar.getString("PuntosPropietario")));
             }
 
             if (respuestaReservasAceptar.length() == 0){
@@ -345,7 +347,9 @@ public class ComunidadElegida extends AppCompatActivity {
                         jsonReservasFuturas.getString("Matricula"),
                         jsonReservasFuturas.getString("Aprobada"),
                         jsonReservasFuturas.getString("Propietario"),
-                        jsonReservasFuturas.getString("Nombre") + " " + jsonReservasFuturas.getString("Apellidos")));
+                        jsonReservasFuturas.getString("Nombre") + " " + jsonReservasFuturas.getString("Apellidos"),
+                        jsonReservasFuturas.getString("PuntosUsuario"),
+                        jsonReservasFuturas.getString("PuntosPropietario")));
             }
         }catch (Exception e){
             //no hace nada
@@ -367,7 +371,9 @@ public class ComunidadElegida extends AppCompatActivity {
                         jsonReservasPasadas.getString("Matricula"),
                         jsonReservasPasadas.getString("Aprobada"),
                         jsonReservasPasadas.getString("Propietario"),
-                        jsonReservasPasadas.getString("Nombre") + " " + jsonReservasPasadas.getString("Apellidos")));
+                        jsonReservasPasadas.getString("Nombre") + " " + jsonReservasPasadas.getString("Apellidos"),
+                        jsonReservasPasadas.getString("PuntosUsuario"),
+                        jsonReservasPasadas.getString("PuntosPropietario")));
             }
         }catch (Exception e){
             //no hace nada
@@ -389,7 +395,13 @@ public class ComunidadElegida extends AppCompatActivity {
                         jsonReservasResenar.getString("Matricula"),
                         jsonReservasResenar.getString("Aprobada"),
                         jsonReservasResenar.getString("Propietario"),
-                        jsonReservasResenar.getString("Nombre") + " " + jsonReservasResenar.getString("Apellidos")));
+                        jsonReservasResenar.getString("Nombre") + " " + jsonReservasResenar.getString("Apellidos"),
+                        jsonReservasResenar.getString("PuntosUsuario"),
+                        jsonReservasResenar.getString("PuntosPropietario")));
+            }
+
+            if (respuestaReservasResenar.length() == 0){
+                findViewById(R.id.misReservasPorResenarTextView).setVisibility(View.GONE);
             }
         }catch (Exception e){
             //no hace nada

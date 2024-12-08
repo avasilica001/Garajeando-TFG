@@ -9,12 +9,12 @@ import java.util.TimeZone;
 public class Reserva {
 
 
-    String idReserva, idCoche, idUsuario, idComunidad, fechaHoraInicio, fechaHoraFin, fotoCoche, matricula, aprobada, propietario, nombreApellidos;
+    String idReserva, idCoche, idUsuario, idComunidad, fechaHoraInicio, fechaHoraFin, fotoCoche, matricula, aprobada, propietario, nombreApellidos, puntosPropietario, puntosUsuario;
 
     TimeZone zonaHorariaMovil = TimeZone.getDefault();
     TimeZone zonaHorariaLondres = TimeZone.getTimeZone("Europe/London");
 
-    public Reserva(String idReserva, String idCoche, String idUsuario, String idComunidad, String fechaHoraInicio, String fechaHoraFin, String fotoCoche, String matricula, String aprobada,String propietario, String nombreApellidos) {
+    public Reserva(String idReserva, String idCoche, String idUsuario, String idComunidad, String fechaHoraInicio, String fechaHoraFin, String fotoCoche, String matricula, String aprobada,String propietario, String nombreApellidos, String puntosUsuario, String puntosPropietario) {
         this.idReserva=idReserva;
         this.idUsuario=idUsuario;
         this.idCoche=idCoche;
@@ -24,6 +24,8 @@ public class Reserva {
         this.aprobada=aprobada;
         this.propietario=propietario;
         this.nombreApellidos=nombreApellidos;
+        this.puntosPropietario=puntosPropietario;
+        this.puntosUsuario=puntosUsuario;
 
         SimpleDateFormat formatoOriginal = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         formatoOriginal.setTimeZone(zonaHorariaLondres);
@@ -148,5 +150,21 @@ public class Reserva {
 
     public void setPropietario(String propietario) {
         this.propietario = propietario;
+    }
+
+    public String getPuntosPropietario() {
+        return puntosPropietario;
+    }
+
+    public void setPuntosPropietario(String puntosPropietario) {
+        this.puntosPropietario = puntosPropietario;
+    }
+
+    public String getPuntosUsuario() {
+        return puntosUsuario;
+    }
+
+    public void setPuntosUsuario(String puntosUsuario) {
+        this.puntosUsuario = puntosUsuario;
     }
 }

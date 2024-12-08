@@ -52,7 +52,7 @@ public class ReservaElegida extends AppCompatActivity {
     private TextView fechaHoraInicioTextView, fechaHoraFinTextView, propietarioTextView, usuarioReservaTextView, marcaTextView, modeloTextView, plazasTextView,puertasTextView, transmisionTextView, combustibleTextView, aireAcondicionadoTextView, bluetoothTextView, gpsTextView, descripcionTextView, avisoVerReservaTextView, puntosUsuarioTituloTextView, puntosUsuarioTextView, puntosPropietarioTituloTextView, puntosPropietarioTextView;
     private Button verPerfilUsuarioButton, aceptarReservaButton, denegarReservaButton, cancelarReservaButton, puntuarReservaButton;
 
-    private String propietario, nombrePropietario, apellidosPropietario, matricula, marca, modelo, transmision, combustible, descripcion, nombreFotoPrincipal, aceptada, nombreUsuarioReserva, apellidosUsuarioReserva, tipoReserva;
+    private String propietario, nombrePropietario, apellidosPropietario, matricula, marca, modelo, transmision, combustible, descripcion, nombreFotoPrincipal, aceptada, nombreUsuarioReserva, apellidosUsuarioReserva, tipoReserva, resena, puntosUsuario, puntosPropietario;
     private Integer plazas, puertas;
     private Boolean aireAcondicionado, bluetooth, gps;
 
@@ -281,6 +281,8 @@ public class ReservaElegida extends AppCompatActivity {
                             usuarioReservaTextView.setText(nombreUsuarioReserva + " " + apellidosUsuarioReserva);
                             fechaHoraInicioTextView.setText(fechaHoraInicio);
                             fechaHoraFinTextView.setText(fechaHoraFin);
+                            puntosUsuarioTextView.setText(puntosUsuario);
+                            puntosPropietarioTextView.setText(puntosPropietario);
 
                             AdministradorPeticiones.getInstance(context).cancelAll("peticion");
                         } catch (JSONException e) {
@@ -335,6 +337,9 @@ public class ReservaElegida extends AppCompatActivity {
             usuarioReserva = respuestaInfoReserva.getJSONObject(0).getString("IdUsuario");
             nombreUsuarioReserva = respuestaInfoReserva.getJSONObject(0).getString("Nombre");
             apellidosUsuarioReserva = respuestaInfoReserva.getJSONObject(0).getString("Apellidos");
+            puntosUsuario = respuestaInfoReserva.getJSONObject(0).getString("PuntosUsuario");
+            puntosPropietario = respuestaInfoReserva.getJSONObject(0).getString("PuntosPropietario");
+            resena = respuestaInfoReserva.getJSONObject(0).getString("Resena");
 
             SimpleDateFormat formatoOriginal = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             formatoOriginal.setTimeZone(zonaHorariaLondres);
@@ -397,7 +402,11 @@ public class ReservaElegida extends AppCompatActivity {
                 puntosUsuarioTituloTextView.setVisibility(View.VISIBLE);
                 puntosUsuarioTextView.setVisibility(View.VISIBLE);
                 if(propietario.equals(usuario)){
-                    puntuarReservaButton.setVisibility(View.VISIBLE);
+                    if(resena.equals("1")){
+                        puntuarReservaButton.setVisibility(View.GONE);
+                    }else{
+                        puntuarReservaButton.setVisibility(View.VISIBLE);
+                    }
                 }else{
                     puntuarReservaButton.setVisibility(View.GONE);
                 }
@@ -484,5 +493,14 @@ public class ReservaElegida extends AppCompatActivity {
 
         peticion.setTag("peticion");
         AdministradorPeticiones.getInstance(context).addToRequestQueue(peticion);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == 3){
+            obtenerInfoReserva();
+        }
     }
 }

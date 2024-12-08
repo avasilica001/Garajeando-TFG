@@ -64,6 +64,8 @@ public class ListaReservasAdapter extends RecyclerView.Adapter<ListaReservasAdap
         holder.propietario = reservas.get(p).getPropietario();
         holder.usuarioReserva = reservas.get(p).getIdUsuario();
         holder.tipoReservas = tipoReservas;
+        holder.puntosPropietario = reservas.get(p).getPuntosPropietario();
+        holder.puntosUsuario = reservas.get(p).getPuntosUsuario();
 
         holder.usuarioReservaTextView.setText(String.valueOf(holder.nombreApellidos));
 
@@ -96,7 +98,7 @@ public class ListaReservasAdapter extends RecyclerView.Adapter<ListaReservasAdap
         ImageView imagenPreviaCocheReservaImageView;
         CardView card_reserva;
 
-        String idReserva, idCoche, idComunidad, fechaHoraInicio, fechaHoraFin, fotoCoche, matricula, aprobada, usuarioReserva, propietario, nombreApellidos, tipoReservas;
+        String idReserva, idCoche, idComunidad, fechaHoraInicio, fechaHoraFin, fotoCoche, matricula, aprobada, usuarioReserva, propietario, nombreApellidos, tipoReservas, puntosUsuario, puntosPropietario;
 
         public ReservaHolder(@NonNull View itemView) {
             super(itemView);
