@@ -320,8 +320,8 @@ public class ComunidadElegida extends AppCompatActivity {
                         jsonReservasAceptar.getString("Aprobada"),
                         jsonReservasAceptar.getString("Propietario"),
                         jsonReservasAceptar.getString("Nombre") + " " + jsonReservasAceptar.getString("Apellidos"),
-                        jsonReservasAceptar.getString("PuntosUsuario"),
-                        jsonReservasAceptar.getString("PuntosPropietario")));
+                        "0",
+                        "0"));
             }
 
             if (respuestaReservasAceptar.length() == 0){
