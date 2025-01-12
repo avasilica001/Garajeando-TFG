@@ -46,7 +46,7 @@ public class PerfilUsuario extends AppCompatActivity {
 
     private ImageView fotoPerfilUsuarioImageView;
     private TextView nombreUsuarioTextView, apellidosTextView, correoTextView, direccionTextView, puntosTextView;
-    private Button modificarDatosButton, aceptarUsuarioComunidadButton, denegarUsuarioComunidadButton;
+    private Button modificarDatosButton, aceptarUsuarioComunidadButton, denegarUsuarioComunidadButton, verHistorialPuntosButton;
 
     String nombre, apellidos, correo, direccion, puntos, nombreFotoPrincipal;
 
@@ -82,8 +82,14 @@ public class PerfilUsuario extends AppCompatActivity {
         modificarDatosButton = findViewById(R.id.modificarDatosButton);
         aceptarUsuarioComunidadButton = findViewById(R.id.aceptarUsuarioComunidadButton);
         denegarUsuarioComunidadButton = findViewById(R.id.denegarUsuarioComunidadButton);
+        verHistorialPuntosButton = findViewById(R.id.verHistorialPuntosButton);
 
         if(usuario.equals(idUsuarioPerfil) || administrador.equals("Administrador")){
+            if(usuario.equals(idUsuarioPerfil)){
+                verHistorialPuntosButton.setVisibility(View.VISIBLE);
+            }else{
+                verHistorialPuntosButton.setVisibility(View.GONE);
+            }
             direccionTextView.setVisibility(View.VISIBLE);
             modificarDatosButton.setVisibility(View.VISIBLE);
         }
@@ -103,6 +109,15 @@ public class PerfilUsuario extends AppCompatActivity {
         }
 
         obtenerInfoUsuario();
+
+        verHistorialPuntosButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PerfilUsuario.this, HistorialPuntos.class);
+                intent.putExtra("usuario", usuario);
+                startActivityForResult(intent,1);
+            }
+        });
 
         modificarDatosButton.setOnClickListener(new View.OnClickListener() {
             @Override

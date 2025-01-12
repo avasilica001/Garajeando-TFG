@@ -29,4 +29,5 @@ public class Constantes {
     public static final String URL_DENEGARUSUARIOACOMUNIDAD  = URL_PRINCIPAL+"DenegarUsuarioAComunidad.php";
     public static final String URL_ACTUALIZARCODIGOINVITACION  = URL_PRINCIPAL+"ActualizarCodigoInvitacion.php";
     public static final String URL_GUARDARPUNTOSRESENA  = URL_PRINCIPAL+"GuardarPuntosResena.php";
+    public static final String URL_OBTENERPUNTOS  = URL_PRINCIPAL+"ObtenerPuntos.php";
     }
