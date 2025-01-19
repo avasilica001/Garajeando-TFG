@@ -179,7 +179,7 @@ public class TusComunidades extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // Adjust visibility based on conditions
         menu.findItem(R.id.BuscarToolbarItem).setVisible(false);
-        menu.findItem(R.id.PerfilToobarItem).setVisible(true);
+        menu.findItem(R.id.PerfilToobarItem).setVisible(false);
         menu.findItem(R.id.TemaToobarItem).setVisible(true);
         menu.findItem(R.id.AdministradorToobarItem).setVisible(false);
         menu.findItem(R.id.CerrarSesionToobarItem).setVisible(true);

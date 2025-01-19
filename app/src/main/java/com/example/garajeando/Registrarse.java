@@ -575,12 +575,6 @@ public class Registrarse extends AppCompatActivity {
             avisoTextView.setText("Rellene todos los campos antes de continuar.");
         }
 
-        if(String.valueOf(frontal).isEmpty() || String.valueOf(reverso).isEmpty() || frontal == null || reverso == null){
-            camposValidos = false;
-            avisoTextView.setVisibility(View.VISIBLE);
-            avisoTextView.setText("Las fotos del carnet de conducir son obligatorias.");
-        }
-
         return camposValidos;
     }
 
