@@ -93,8 +93,6 @@ public class CocheElegido extends AppCompatActivity {
         gpsTextView = findViewById(R.id.gpsTextView);
         descripcionTextView = findViewById(R.id.descripcionTextView);
 
-        fotosGridView = findViewById(R.id.imagenesSecundariasCocheGridView);
-
         modificarInformacionButton = findViewById(R.id.modificarDatosCocheButton);
         modificarInformacionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,10 +209,6 @@ public class CocheElegido extends AppCompatActivity {
                             respuestaFotos = objetoJSON.getJSONArray("Fotos");
                             respuestaInfo = objetoJSON.getJSONArray("Coche");
                             guardarInfo();
-
-                            fotosCocheAdapter = new FotosCocheAdapter(context, nombreFotosCoche, numFotos);
-                            fotosGridView.setAdapter(fotosCocheAdapter);
-                            //fotosCocheAdapter.notifyDataSetChanged();
 
                             setSupportActionBar(findViewById(R.id.cocheElegidoToolbar));
                             getSupportActionBar().setTitle(matricula);

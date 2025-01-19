@@ -141,8 +141,8 @@ public class ComunidadElegida extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // Adjust visibility based on conditions
         //menu.findItem(R.id.BuscarToolbarItem).setVisible(condition1);
-        //menu.findItem(R.id.PerfilToobarItem).setVisible(condition2);
-        //menu.findItem(R.id.PreferenciasToobarItem).setVisible(condition3);
+        //menu.findItem(R.id.PerfilToobarItem).setVisible(false);
+        //menu.findItem(R.id.PreferenciasToobarItem).setVisible(false);
         menu.findItem(R.id.AdministradorToobarItem).setVisible(rolComunidad.equals("Administrador"));
         //menu.findItem(R.id.CerrarSesionToobarItem).setVisible(CerrarSesionToobarItem);
 

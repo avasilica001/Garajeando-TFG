@@ -45,27 +45,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/coche" />
 
-            <GridView
-                android:id="@+id/imagenesSecundariasCocheGridView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:clipToPadding="true"
-                android:defaultFocusHighlightEnabled="false"
-                android:horizontalSpacing="5dp"
-                android:numColumns="3"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:scrollbarAlwaysDrawHorizontalTrack="false"
-                android:scrollbarAlwaysDrawVerticalTrack="false"
-                android:scrollbars="none"
-                android:scrollingCache="false"
-                android:smoothScrollbar="false"
-                android:verticalSpacing="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imagenPrincipalCocheImageView" />
-
             <EditText
                 android:id="@+id/matriculaEditText"
                 android:layout_width="0dp"
@@ -83,7 +62,7 @@
                 android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imagenesSecundariasCocheGridView" />
+                app:layout_constraintTop_toBottomOf="@+id/imagenPrincipalCocheImageView" />
 
             <EditText
                 android:id="@+id/marcaEditText"

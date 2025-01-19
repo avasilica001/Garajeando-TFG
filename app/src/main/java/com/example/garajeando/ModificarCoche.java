@@ -144,8 +144,6 @@ public class ModificarCoche extends AppCompatActivity {
 
         imagenPrincipalImageView = findViewById(R.id.imagenPrincipalCocheImageView);
 
-        fotosGridView = findViewById(R.id.imagenesSecundariasCocheGridView);
-
         guardarInformacion = findViewById(R.id.guardarInformacionButton);
 
         if (accion.equals("modificar")){
@@ -387,10 +385,6 @@ public class ModificarCoche extends AppCompatActivity {
                             respuestaInfo = objetoJSON.getJSONArray("Coche");
                             guardarInfo();
 
-                            fotosCocheAdapter = new FotosCocheAdapter(context, nombreFotosCoche, numFotos);
-                            fotosGridView.setAdapter(fotosCocheAdapter);
-                            //fotosCocheAdapter.notifyDataSetChanged();
-
                             getSupportActionBar().setTitle(matricula);
 
                             marcaEditText.setText(marca);
@@ -446,12 +440,7 @@ public class ModificarCoche extends AppCompatActivity {
                 nombreFotoPrincipal = respuestaFotos.getJSONObject(0).getString("FotoCoche");
                 Glide.with(this.context).load(URL_BASE_FOTOS+nombreFotoPrincipal).into(imagenPrincipalImageView);
             }
-            for (int i = 1; i < respuestaFotos.length(); i++)
-            {
-                JSONObject jsonCoches = respuestaFotos.getJSONObject(i);
 
-                nombreFotosCoche[i] = jsonCoches.getString("FotoCoche");
-            }
             matricula = respuestaInfo.getJSONObject(0).getString("Matricula");
             marca = respuestaInfo.getJSONObject(0).getString("Marca");
             modelo = respuestaInfo.getJSONObject(0).getString("Modelo");
