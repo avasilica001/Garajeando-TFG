@@ -299,6 +299,9 @@ public class PerfilUsuario extends AppCompatActivity {
             if(!nombreFotoPrincipal.equals("")){
                 Glide.with(this.context).load(URL_BASE_FOTOS+nombreFotoPrincipal).into(fotoPerfilUsuarioImageView);
             }
+            if(nombreFotoPrincipal.equals("")){
+                fotoPerfilUsuarioImageView.setImageResource(R.drawable.mi_perfil);
+            }
 
             nombre = respuestaUsuario.getJSONObject(0).getString("Nombre");
             apellidos = respuestaUsuario.getJSONObject(0).getString("Apellidos");
