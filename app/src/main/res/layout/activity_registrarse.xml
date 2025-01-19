@@ -169,18 +169,6 @@
                 app:layout_constraintStart_toStartOf="@+id/fotoPerfilImageViewR" />
 
             <TextView
-                android:id="@+id/fotoCarnetAvisoTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="25dp"
-                android:layout_marginTop="10dp"
-                android:text="Será necesario aportar fotos del carnet de conducir, tanto de la parte frontal como del reverso. A continuación puede adjuntar esas fotografías."
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fotoPerfilImageViewR" />
-
-            <TextView
                 android:id="@+id/avisoTextViewR"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -191,51 +179,7 @@
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fotoCarnetReversoImageView" />
-
-            <ImageView
-                android:id="@+id/fotoCarnetFrontalImageView"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.502"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fotoCarnetAvisoTextView"
-                app:srcCompat="@drawable/carnet_conducir_frontal" />
-
-            <Button
-                android:id="@+id/fotoCarnetFrontalAnadirButton"
-                android:layout_width="48dp"
-                android:layout_height="55dp"
-                android:foreground="@drawable/mas"
-                app:layout_constraintBottom_toBottomOf="@+id/fotoCarnetFrontalImageView"
-                app:layout_constraintEnd_toEndOf="@+id/fotoCarnetFrontalImageView"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/fotoCarnetFrontalImageView" />
-
-            <ImageView
-                android:id="@+id/fotoCarnetReversoImageView"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.501"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fotoCarnetFrontalImageView"
-                app:srcCompat="@drawable/carnet_conducir_reverso" />
-
-            <Button
-                android:id="@+id/fotoCarnetReversoAnadirButton"
-                android:layout_width="48dp"
-                android:layout_height="55dp"
-                android:foreground="@drawable/mas"
-                app:layout_constraintBottom_toBottomOf="@+id/fotoCarnetReversoImageView"
-                app:layout_constraintEnd_toEndOf="@+id/fotoCarnetReversoImageView"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/fotoCarnetReversoImageView" />
+                app:layout_constraintTop_toBottomOf="@id/anadirFotoPerfilButtonR" />
 
             <Button
                 android:id="@+id/registrarseButtonR"

@@ -66,7 +66,7 @@ public class Registrarse extends AppCompatActivity {
     private EditText correoElectronicoEditText, contrasenaEditText, repetirContrasenaEditText, nombreEditText, apellidosEditText, direccionEditText;
     private Button registrarseButton, anadirFotoButton, anadirCarnetFrontal, anadirCarnetReverso;
     private TextView avisoTextView;
-    private ImageView imagenPerfil, carnetFrontal, carnetReverso;
+    private ImageView imagenPerfil;
     Toolbar barraSuperiorRegistrarseToolbar;
 
     private String correoElectronico, contrasena, repetirContrasena, nombre, apellidos, aviso, contrasenaEncriptada, pathImagen, direccion;
@@ -74,16 +74,12 @@ public class Registrarse extends AppCompatActivity {
 
     public static Boolean contrasenaVisible;
 
-    private Uri imagen, frontal, reverso, perfil;
-    private Uri CarnetFrontal;
-    private Uri CarnetReverso;
+    private Uri imagen, perfil;
     private final int F_PERFIL = 0;
-    private final int F_FRONTAL = 1;
-    private final int F_REVERSO = 2;
     private int target;
 
     private Bitmap bperfil, bfrontal, breverso;
-    private String b64p, b64f, b64r;
+    private String b64p;
 
     private static final int IMAGE_CODE=112;
     private static final int PHOTO_CODE=111;
@@ -133,8 +129,6 @@ public class Registrarse extends AppCompatActivity {
         });
 
         imagenPerfil = findViewById(R.id.fotoPerfilImageViewR);
-        carnetFrontal = findViewById(R.id.fotoCarnetFrontalImageView);
-        carnetReverso = findViewById(R.id.fotoCarnetReversoImageView);
 
         activityResultLauncherSacarFoto = registerForActivityResult(
                 new ActivityResultContracts.TakePicture(),
@@ -193,26 +187,6 @@ public class Registrarse extends AppCompatActivity {
             }
         });
 
-        anadirCarnetFrontal = findViewById(R.id.fotoCarnetFrontalAnadirButton);
-        anadirCarnetFrontal.bringToFront();
-        anadirCarnetFrontal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                target = F_FRONTAL;
-                mostrarDialogoSeleccion();
-            }
-        });
-
-        anadirCarnetReverso = findViewById(R.id.fotoCarnetReversoAnadirButton);
-        anadirCarnetReverso.bringToFront();
-        anadirCarnetReverso.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                target = F_REVERSO;
-                mostrarDialogoSeleccion();
-            }
-        });
-
         contrasenaEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -252,14 +226,6 @@ public class Registrarse extends AppCompatActivity {
         if(perfil != null && !perfil.equals(Uri.EMPTY)) {
             outState.putParcelable("perfil", perfil);
         }
-
-        if(frontal != null && !frontal.equals(Uri.EMPTY)) {
-            outState.putParcelable("frontal", frontal);
-        }
-
-        if(reverso != null && !reverso.equals(Uri.EMPTY)) {
-            outState.putParcelable("reverso", reverso);
-        }
     }
 
     @Override
@@ -287,16 +253,6 @@ public class Registrarse extends AppCompatActivity {
         perfil = savedInstanceState.getParcelable("perfil");
         if(perfil != null && !perfil.equals(Uri.EMPTY)) {
             imagenPerfil.setImageURI(savedInstanceState.getParcelable("perfil"));
-        }
-
-        frontal = savedInstanceState.getParcelable("frontal");
-        if(frontal != null && !frontal.equals(Uri.EMPTY)) {
-            carnetFrontal.setImageURI(savedInstanceState.getParcelable("frontal"));
-        }
-
-        reverso = savedInstanceState.getParcelable("reverso");
-        if(reverso != null && !reverso.equals(Uri.EMPTY)) {
-            carnetReverso.setImageURI(savedInstanceState.getParcelable("reverso"));
         }
     }
 
@@ -459,26 +415,12 @@ public class Registrarse extends AppCompatActivity {
                 byte[] b1= baos1.toByteArray();
                 b64p = Base64.encodeToString(b1, Base64.DEFAULT);
             }
-            bfrontal = MediaStore.Images.Media.getBitmap(getContentResolver(),frontal);
-            breverso = MediaStore.Images.Media.getBitmap(getContentResolver(),reverso);
         } catch (IOException e) {
             //no hace nada
         }
 
-        ByteArrayOutputStream baos2= new ByteArrayOutputStream();
-        bfrontal.compress(Bitmap.CompressFormat.PNG, 100, baos2);
-        byte[] b2= baos2.toByteArray();
-        b64f = Base64.encodeToString(b2, Base64.DEFAULT);
-
-        ByteArrayOutputStream baos3 = new ByteArrayOutputStream();
-        breverso.compress(Bitmap.CompressFormat.PNG, 100, baos2);
-        byte[] b3= baos2.toByteArray();
-        b64r = Base64.encodeToString(b3, Base64.DEFAULT);
-
         String tiempo = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String nombreImagenFinal = "IMG_" + tiempo + "_" + F_PERFIL +".png";
-        String nombreFrontalFinal = "IMG_" + tiempo + "_" + F_FRONTAL +".png";
-        String nombreReversoFinal = "IMG_" + tiempo + "_" + F_REVERSO +".png";
 
         StringRequest peticion = new StringRequest(Request.Method.POST,
                 Constantes.URL_CREARUSUARIO,
@@ -516,10 +458,6 @@ public class Registrarse extends AppCompatActivity {
                     parametros.put("FotoPerfil", b64p);
                     parametros.put("NombreFoto", nombreImagenFinal);
                 }
-                parametros.put("FotoCarnetFrontal", b64f);
-                parametros.put("NombreCarnetFrontal", nombreFrontalFinal);
-                parametros.put("FotoCarnetReverso", b64r);
-                parametros.put("NombreCarnetReverso", nombreReversoFinal);
 
                 return parametros;
             }
@@ -592,12 +530,6 @@ public class Registrarse extends AppCompatActivity {
                 if (target == F_PERFIL){
                     perfil = uriResultadoRecorte;
                     imagenPerfil.setImageURI(perfil);
-                }else if(target == F_FRONTAL){
-                    frontal = uriResultadoRecorte;
-                    carnetFrontal.setImageURI(frontal);
-                }else if(target == F_REVERSO){
-                    reverso = uriResultadoRecorte;
-                    carnetReverso.setImageURI(reverso);
                 }
             }
         }
